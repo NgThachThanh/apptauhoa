@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.apptauhoa.ui.account.LoginFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.view.View
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,7 +17,8 @@ class MainActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         // Custom listener to handle back stack
@@ -37,7 +40,17 @@ class MainActivity : AppCompatActivity() {
 
         // Keep the selected item in sync with the current destination
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            navView.menu.findItem(destination.id)?.isChecked = true
+            when (destination.id) {
+                R.id.loginFragment, R.id.registerFragment -> {
+                    navView.visibility = View.GONE
+                }
+
+                else -> {
+                    navView.visibility = View.VISIBLE
+                    val item = navView.menu.findItem(destination.id)
+                    item?.isChecked = true
+                }
+            }
         }
     }
 }

@@ -15,9 +15,9 @@
     <EditText
         android:id="@+id/search_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tìm tên/mã ga"
-        android:layout_margin="8dp"/>
+        android:layout_height="62dp"
+        android:layout_margin="8dp"
+        android:hint="Tìm tên/mã ga" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stations_recycler_view"
