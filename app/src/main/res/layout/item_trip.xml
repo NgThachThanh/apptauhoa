@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_trip"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="4dp"
+    app:cardElevation="1dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E0E0E0">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Row 1: Class and Seats -->
+        <TextView
+            android:id="@+id/txt_class_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Giường nằm khoang 4" />
+
+        <TextView
+            android:id="@+id/txt_seats_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Còn 8 chỗ" />
+
+        <!-- Row 2: Time -->
+        <TextView
+            android:id="@+id/txt_departure_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_class_title"
+            tools:text="05:00" />
+
+        <TextView
+            android:id="@+id/txt_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/txt_departure_time"
+            app:layout_constraintEnd_toStartOf="@+id/txt_arrival_time"
+            app:layout_constraintStart_toEndOf="@id/txt_departure_time"
+            app:layout_constraintTop_toTopOf="@id/txt_departure_time"
+            tools:text="2h 40m" />
+            
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#BDBDBD"
+            app:layout_constraintTop_toTopOf="@id/txt_duration"
+            app:layout_constraintBottom_toBottomOf="@id/txt_duration"
+            app:layout_constraintStart_toEndOf="@id/txt_departure_time"
+            app:layout_constraintEnd_toStartOf="@id/txt_duration"
+            android:layout_marginHorizontal="8dp"/>
+            
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#BDBDBD"
+            app:layout_constraintTop_toTopOf="@id/txt_duration"
+            app:layout_constraintBottom_toBottomOf="@id/txt_duration"
+            app:layout_constraintStart_toEndOf="@id/txt_duration"
+            app:layout_constraintEnd_toStartOf="@id/txt_arrival_time"
+            android:layout_marginHorizontal="8dp"/>
+
+        <TextView
+            android:id="@+id/txt_arrival_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txt_departure_time"
+            tools:text="07:40" />
+            
+        <!-- Row 3: Stations -->
+        <TextView
+            android:id="@+id/txt_origin_station_line1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_departure_time"
+            tools:text="Ga Sài Gòn" />
+
+        <TextView
+            android:id="@+id/txt_destination_station_line1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_arrival_time"
+            tools:text="Ga Nha Trang" />
+
+        <!-- Row 4: Train Code and Price -->
+        <TextView
+            android:id="@+id/txt_train_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_origin_station_line1"
+            tools:text="SE3" />
+
+        <TextView
+            android:id="@+id/txt_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/txt_train_code"
+            app:layout_constraintBottom_toBottomOf="@id/txt_train_code"
+            tools:text="250.000đ" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
