@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.apptauhoa.R
 import com.google.android.material.textfield.TextInputEditText
+import androidx.navigation.fragment.findNavController
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -54,7 +55,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         }
 
         tvGoToLogin.setOnClickListener {
-            parentFragmentManager.popBackStack() // quay lại LoginFragment
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
     }
 }

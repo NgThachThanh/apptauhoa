@@ -8,10 +8,12 @@
     tools:context=".ui.account.AccountFragment">
 
     <LinearLayout
+        android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -20,18 +22,20 @@
             android:textSize="24sp" />
 
         <Button
+            android:id="@+id/btnLoginNow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Đăng nhập ngay" />
-
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@id/layoutHeader"
+        android:layout_marginTop="32dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -56,10 +60,10 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:text="Cài đặt" />
-
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layoutFooter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -77,7 +81,6 @@
             android:layout_height="wrap_content"
             android:text="Hotline: 1900 xxxx"
             android:textSize="12sp" />
-
     </LinearLayout>
 
 </RelativeLayout>

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.apptauhoa.R
 import com.google.android.material.textfield.TextInputEditText
+import androidx.navigation.fragment.findNavController
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -40,6 +41,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     "Đăng nhập thành công (demo)",
                     Toast.LENGTH_SHORT
                 ).show()
+                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
             }
         }
 
@@ -52,11 +54,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         tvGoToRegister.setOnClickListener {
-            // chuyển sang RegisterFragment thủ công
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_view, RegisterFragment()) // ID container trong activity_main.xml
-                .addToBackStack(null)
-                .commit()
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+
     }
 }

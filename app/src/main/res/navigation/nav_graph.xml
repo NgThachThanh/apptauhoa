@@ -21,7 +21,7 @@
             android:id="@+id/action_home_to_search_results"
             app:destination="@id/navigation_search_results" />
     </fragment>
-    
+
     <fragment
         android:id="@+id/navigation_station_picker"
         android:name="com.example.apptauhoa.ui.home.StationPickerFragment"
@@ -52,7 +52,7 @@
             android:id="@+id/action_search_results_to_seat_selection"
             app:destination="@id/navigation_seat_selection" />
     </fragment>
-        
+
     <fragment
         android:id="@+id/navigation_seat_selection"
         android:name="com.example.apptauhoa.ui.ticket.SeatSelectionFragment"
@@ -66,7 +66,7 @@
         <action android:id="@+id/action_seat_selection_to_policy" app:destination="@id/dialog_policy"/>
         <action android:id="@+id/action_seat_selection_to_ticket_detail" app:destination="@id/navigation_ticket_detail"/>
     </fragment>
-    
+
     <dialog
         android:id="@+id/dialog_route_info"
         android:name="com.example.apptauhoa.ui.ticket.info.RouteInfoFragment"
@@ -96,7 +96,7 @@
         <argument android:name="tripId" app:argType="string" app:nullable="true"/>
         <argument android:name="selectionResult" app:argType="com.example.apptauhoa.ui.ticket.SeatSelectionResult" app:nullable="true"/>
     </fragment>
-    
+
     <!-- Other top-level destinations -->
     <fragment
         android:id="@+id/navigation_journey"
@@ -121,7 +121,12 @@
         android:id="@+id/navigation_account"
         android:name="com.example.apptauhoa.ui.account.AccountFragment"
         android:label="fragment_account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_navigation_account_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.apptauhoa.ui.account.LoginFragment"
@@ -131,7 +136,7 @@
             app:destination="@id/registerFragment" />
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/navigation_home"
+            app:destination="@id/navigation_account"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -146,5 +151,6 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
 
 </navigation>
