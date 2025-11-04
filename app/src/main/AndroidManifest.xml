@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Apptauhoa">
         <activity
+            android:name=".ui.lookup.SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LookupFragment"
+            android:exported="false" />
+        <activity
+            android:name=".ui.LookupFragment"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -21,4 +30,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

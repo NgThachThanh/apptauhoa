@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 NavigationUI.onNavDestinationSelected(item, navController)
             }
         }
-// yhry
+
         // Keep the selected item in sync with the current destination
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {

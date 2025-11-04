@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.journey.TripListFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trip_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
+    <!-- Tiêu đề của trang -->
     <TextView
-        android:id="@+id/empty_view"
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Chưa có hành trình nào."
-        android:visibility="visible" />
+        android:background="?attr/colorPrimary"
+        android:padding="16dp"
+        android:text="Hành trình của tôi"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textColor="?attr/colorOnPrimary" />
 
-</FrameLayout>
+    <!-- Thanh Tab để chuyển đổi giữa các trạng thái -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabIndicatorFullWidth="true"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
+
+    <!-- Vùng chứa nội dung của các tab, cho phép vuốt qua lại -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
