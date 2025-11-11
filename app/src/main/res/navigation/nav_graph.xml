@@ -5,7 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/navigation_home">
 
-    <!-- Home Flow -->
+    <!-- ... (Tất cả các fragment khác của bạn giữ nguyên) ... -->
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.apptauhoa.ui.home.HomeFragment"
@@ -36,7 +36,6 @@
         android:label="DatePickerFragment"
         tools:layout="@layout/fragment_date_picker" />
 
-    <!-- Search & Seat Selection Flow -->
     <fragment
         android:id="@+id/navigation_search_results"
         android:name="com.example.apptauhoa.ui.search.SearchResultsFragment"
@@ -58,7 +57,6 @@
         android:name="com.example.apptauhoa.ui.ticket.SeatSelectionFragment"
         android:label="SeatSelectionFragment"
         tools:layout="@layout/fragment_seat_selection">
-        <!-- Arguments are passed manually, so no argType is needed here for the complex list -->
         <action android:id="@+id/action_seat_selection_to_route_info" app:destination="@id/dialog_route_info"/>
         <action android:id="@+id/action_seat_selection_to_facilities" app:destination="@id/dialog_facilities"/>
         <action android:id="@+id/action_seat_selection_to_gallery" app:destination="@id/dialog_gallery"/>
@@ -83,7 +81,7 @@
         android:id="@+id/dialog_reviews"
         android:name="com.example.apptauhoa.ui.ticket.info.ReviewsFragment"
         android:label="ReviewsFragment" />
-     <dialog
+    <dialog
         android:id="@+id/dialog_policy"
         android:name="com.example.apptauhoa.ui.ticket.info.PolicyFragment"
         android:label="PolicyFragment" />
@@ -97,7 +95,6 @@
         <argument android:name="selectionResult" app:argType="com.example.apptauhoa.ui.ticket.SeatSelectionResult" app:nullable="true"/>
     </fragment>
 
-    <!-- Other top-level destinations -->
     <fragment
         android:id="@+id/navigation_journey"
         android:name="com.example.apptauhoa.ui.journey.JourneyFragment"
@@ -117,14 +114,46 @@
         android:name="com.example.apptauhoa.ui.notifications.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <!--
+      ĐÂY LÀ PHẦN SỬA LỖI QUAN TRỌNG
+      Thêm 5 action vào bên trong fragment "navigation_account"
+    -->
     <fragment
         android:id="@+id/navigation_account"
         android:name="com.example.apptauhoa.ui.account.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" >
+
+        <!-- Action về Home (đã có) -->
         <action
             android:id="@+id/action_navigation_account_to_navigation_home"
             app:destination="@id/navigation_home" />
+
+        <!-- Action 1: Đến Đăng nhập -->
+        <action
+            android:id="@+id/action_accountFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
+        <!-- Action 2: Đến Giới thiệu -->
+        <action
+            android:id="@+id/action_accountFragment_to_introFragment"
+            app:destination="@id/introFragment" />
+
+        <!-- Action 3: Đến Lộ trình -->
+        <action
+            android:id="@+id/action_accountFragment_to_routesFragment"
+            app:destination="@id/routesFragment" />
+
+        <!-- Action 4: Đến Văn phòng -->
+        <action
+            android:id="@+id/action_accountFragment_to_officeFragment"
+            app:destination="@id/officeFragment" />
+
+        <!-- Action 5: Đến Cài đặt -->
+        <action
+            android:id="@+id/action_accountFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -152,5 +181,31 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <!--
+      ĐỊNH NGHĨA 4 FRAGMENT MỚI
+    -->
+    <fragment
+        android:id="@+id/introFragment"
+        android:name="com.example.apptauhoa.ui.account.IntroFragment"
+        android:label="fragment_intro"
+        tools:layout="@layout/fragment_intro" />
+
+    <fragment
+        android:id="@+id/routesFragment"
+        android:name="com.example.apptauhoa.ui.account.RoutesFragment"
+        android:label="fragment_routes"
+        tools:layout="@layout/fragment_routes" />
+
+    <fragment
+        android:id="@+id/officeFragment"
+        android:name="com.example.apptauhoa.ui.account.OfficeFragment"
+        android:label="fragment_office"
+        tools:layout="@layout/fragment_office" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.apptauhoa.ui.account.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

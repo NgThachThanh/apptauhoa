@@ -37,29 +37,48 @@
         android:layout_below="@id/layoutHeader"
         android:layout_marginTop="32dp">
 
+        <!--
+          LỖI 1 ĐƯỢC SỬA Ở ĐÂY: Thêm 4 ID và thuộc tính Click
+        -->
         <TextView
+            android:id="@+id/tvIntro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Giới thiệu nhà tàu" />
+            android:text="Giới thiệu nhà tàu"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
 
         <TextView
+            android:id="@+id/tvRoutes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Lộ trình phổ biến" />
+            android:text="Lộ trình phổ biến"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
 
         <TextView
+            android:id="@+id/tvOffice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Văn phòng nhà tàu" />
+            android:text="Văn phòng nhà tàu"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
 
         <TextView
+            android:id="@+id/tvSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Cài đặt" />
+            android:text="Cài đặt"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 
     <LinearLayout
