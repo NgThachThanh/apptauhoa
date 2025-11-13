@@ -8,7 +8,7 @@ class JourneyPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
-        // Return a NEW fragment instance in createFragment(int)
-        return TripListFragment.newInstance()
+        // Return a NEW fragment instance for each position
+        return TripListFragment.newInstance(position)
     }
 }

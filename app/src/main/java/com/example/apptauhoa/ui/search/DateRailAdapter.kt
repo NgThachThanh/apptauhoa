@@ -27,8 +27,11 @@ class DateRailAdapter(
     
     class DateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(date: LocalDate) {
-            val formatter = DateTimeFormatter.ofPattern("dd\nMMM", Locale("vi", "VN"))
-            itemView.findViewById<TextView>(R.id.date_text).text = date.format(formatter)
+            val dayOfWeekFormatter = DateTimeFormatter.ofPattern("E", Locale("vi", "VN"))
+            itemView.findViewById<TextView>(R.id.txt_day_of_week).text = date.format(dayOfWeekFormatter)
+
+            val dayMonthFormatter = DateTimeFormatter.ofPattern("dd/MM", Locale("vi", "VN"))
+            itemView.findViewById<TextView>(R.id.txt_date).text = date.format(dayMonthFormatter)
         }
     }
 }
