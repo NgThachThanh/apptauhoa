@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".ui.account.IntroFragment"> <!-- Sửa context cho đúng file Kotlin mới -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!--
+            Lưu ý: Bạn nên sử dụng Toolbar/AppBar ở đây để có nút quay lại.
+            Nhưng để đơn giản, tôi chỉ hiển thị nội dung.
+            Nút quay lại (Up button) thường sẽ được quản lý bởi NavGraph và Activity của bạn.
+        -->
+
+        <TextView
+            android:id="@+id/tvIntroTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Giới thiệu nhà tàu"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/tvIntroContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:text="[NỘI DUNG GIỚI THIỆU NHÀ TÀU CỦA BẠN SẼ Ở ĐÂY]\n\nCông ty TNHH Đường sắt Việt Nam (VNR) là doanh nghiệp hàng đầu trong lĩnh vực vận tải đường sắt tại Việt Nam, chịu trách nhiệm quản lý, khai thác và bảo trì hệ thống đường sắt quốc gia.\n\nVới lịch sử hơn 100 năm, chúng tôi cam kết mang đến dịch vụ vận tải hành khách và hàng hóa an toàn, hiệu quả và đáng tin cậy, kết nối mọi miền đất nước.\n\n[Thêm thông tin về sứ mệnh, tầm nhìn, giá trị cốt lõi...]"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</ScrollView>

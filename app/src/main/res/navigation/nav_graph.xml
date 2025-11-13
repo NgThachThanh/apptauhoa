@@ -39,7 +39,7 @@
     <!-- Search & Seat Selection Flow -->
     <fragment
         android:id="@+id/navigation_search_results"
-        android:name="com.example.apptauhoa.ui.journey.SearchResultsFragment"
+        android:name="com.example.apptauhoa.ui.search.SearchResultsFragment"
         android:label="fragment_search_results"
         tools:layout="@layout/fragment_search_results">
         <argument android:name="originName" app:argType="string"/>
@@ -58,23 +58,13 @@
         android:name="com.example.apptauhoa.ui.ticket.SeatSelectionFragment"
         android:label="SeatSelectionFragment"
         tools:layout="@layout/fragment_seat_selection">
+        <!-- Arguments are passed manually, so no argType is needed here for the complex list -->
         <action android:id="@+id/action_seat_selection_to_route_info" app:destination="@id/dialog_route_info"/>
         <action android:id="@+id/action_seat_selection_to_facilities" app:destination="@id/dialog_facilities"/>
         <action android:id="@+id/action_seat_selection_to_gallery" app:destination="@id/dialog_gallery"/>
         <action android:id="@+id/action_seat_selection_to_reviews" app:destination="@id/dialog_reviews"/>
         <action android:id="@+id/action_seat_selection_to_policy" app:destination="@id/dialog_policy"/>
         <action android:id="@+id/action_seat_selection_to_ticket_detail" app:destination="@id/navigation_ticket_detail"/>
-        
-        <argument android:name="tripId" app:argType="string"/>
-        <argument android:name="trainCode" app:argType="string"/>
-        <argument android:name="departureTime" app:argType="string"/>
-        <argument android:name="arrivalTime" app:argType="string"/>
-        <argument android:name="coachClass" app:argType="string"/>
-        <argument android:name="price" app:argType="long"/>
-        <argument android:name="availableSeats" app:argType="integer"/>
-        <argument android:name="originStation" app:argType="string"/>
-        <argument android:name="destinationStation" app:argType="string"/>
-        <argument android:name="tripDate" app:argType="string"/>
     </fragment>
 
     <dialog
@@ -161,5 +151,6 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
 
 </navigation>
