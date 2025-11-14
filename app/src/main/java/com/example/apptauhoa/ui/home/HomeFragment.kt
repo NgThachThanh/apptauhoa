@@ -41,34 +41,8 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Listen on the Child Fragment Manager for results from the bottom sheet
-        childFragmentManager.setFragmentResultListener("passengers_result", this) { _, bundle ->
-            adults = bundle.getInt("adults")
-            children = bundle.getInt("children")
-            infants = bundle.getInt("infants")
-            updatePassengersUI()
-            validateForm()
-        }
-        
-        // Listen on the Parent Fragment Manager for results from other fragments
-        parentFragmentManager.setFragmentResultListener("ORIGIN", this) { _, bundle ->
-            originStation = bundle.getParcelable("station")
-            updateStationUI()
-            validateForm()
-        }
-        parentFragmentManager.setFragmentResultListener("DESTINATION", this) { _, bundle ->
-            destinationStation = bundle.getParcelable("station")
-            updateStationUI()
-            validateForm()
-        }
-        parentFragmentManager.setFragmentResultListener("date_result", this) { _, bundle ->
-            val dateString = bundle.getString("selected_date")
-            if (dateString != null) {
-                departureDate = LocalDate.parse(dateString)
-                updateDateUI()
-                validateForm()
-            }
-        }
+        // Listeners should be set up here as they don't depend on the view
+        setupResultListeners()
     }
 
     override fun onCreateView(
@@ -77,6 +51,7 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        // Initialize views
         originValue = view.findViewById(R.id.origin_value)
         destinationValue = view.findViewById(R.id.destination_value)
         stationError = view.findViewById(R.id.station_error_message)
@@ -85,18 +60,44 @@ class HomeFragment : Fragment() {
         passengersValue = view.findViewById(R.id.txt_passengers_value)
         searchButton = view.findViewById(R.id.btn_search_trips)
         passengersPanel = view.findViewById(R.id.panel_passengers)
-
-        setupListeners(view)
-        
-        updateStationUI()
-        updateDateUI()
-        updatePassengersUI()
-        validateForm()
         
         return view
     }
 
-    private fun setupListeners(view: View) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        
+        // Setup view listeners and initial UI state here
+        setupViewListeners(view)
+        updateAllUI()
+    }
+    
+    private fun setupResultListeners() {
+        childFragmentManager.setFragmentResultListener("passengers_result", this) { _, bundle ->
+            adults = bundle.getInt("adults")
+            children = bundle.getInt("children")
+            infants = bundle.getInt("infants")
+            updateAllUI()
+        }
+        
+        parentFragmentManager.setFragmentResultListener("ORIGIN", this) { _, bundle ->
+            originStation = bundle.getParcelable("station")
+            updateAllUI()
+        }
+        parentFragmentManager.setFragmentResultListener("DESTINATION", this) { _, bundle ->
+            destinationStation = bundle.getParcelable("station")
+            updateAllUI()
+        }
+        parentFragmentManager.setFragmentResultListener("date_result", this) { _, bundle ->
+            val dateString = bundle.getString("selected_date")
+            if (dateString != null) {
+                departureDate = LocalDate.parse(dateString)
+                updateAllUI()
+            }
+        }
+    }
+
+    private fun setupViewListeners(view: View) {
         view.findViewById<ConstraintLayout>(R.id.origin_station_row).setOnClickListener {
             findNavController().navigate(R.id.action_home_to_station_picker, bundleOf("purpose" to "ORIGIN"))
         }
@@ -107,8 +108,7 @@ class HomeFragment : Fragment() {
             val temp = originStation
             originStation = destinationStation
             destinationStation = temp
-            updateStationUI()
-            validateForm()
+            updateAllUI()
         }
         view.findViewById<LinearLayout>(R.id.panel_departure_date).setOnClickListener {
             findNavController().navigate(R.id.action_home_to_date_picker)
@@ -120,9 +120,7 @@ class HomeFragment : Fragment() {
         searchButton.setOnClickListener {
             if (validateForm(showErrors = true)) {
                 val args = bundleOf(
-                    "originCode" to originStation!!.code,
                     "originName" to originStation!!.name,
-                    "destinationCode" to destinationStation!!.code,
                     "destinationName" to destinationStation!!.name,
                     "departureDate" to departureDate!!.toString(),
                     "adults" to adults,
@@ -132,6 +130,13 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.action_home_to_search_results, args)
             }
         }
+    }
+    
+    private fun updateAllUI() {
+        updateStationUI()
+        updateDateUI()
+        updatePassengersUI()
+        validateForm()
     }
 
     private fun updateStationUI() {
@@ -162,11 +167,9 @@ class HomeFragment : Fragment() {
         passengersPanel.contentDescription = contentDescriptionText
     }
 
-
     private fun validateForm(showErrors: Boolean = false): Boolean {
         var isValid = true
         
-        // Station validation
         val stationsSelected = originStation != null && destinationStation != null
         val stationsNotSame = originStation != destinationStation
         if (!stationsSelected || !stationsNotSame) {
@@ -179,7 +182,6 @@ class HomeFragment : Fragment() {
             stationError.visibility = View.GONE
         }
         
-        // Date validation
         if (departureDate == null) {
             isValid = false
             if (showErrors) {
@@ -189,7 +191,6 @@ class HomeFragment : Fragment() {
             departureDateError.visibility = View.GONE
         }
         
-        // Passenger validation (already handled in bottom sheet, but good practice)
         if (adults < 1 || infants > adults) {
             isValid = false
         }

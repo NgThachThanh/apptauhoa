@@ -5,7 +5,9 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/navigation_home">
 
+    <!-- =================================================================== -->
     <!-- Home Flow -->
+    <!-- =================================================================== -->
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.apptauhoa.ui.home.HomeFragment"
@@ -36,10 +38,12 @@
         android:label="DatePickerFragment"
         tools:layout="@layout/fragment_date_picker" />
 
-    <!-- Search & Seat Selection Flow -->
+    <!-- =================================================================== -->
+    <!-- Search > Coach > Seat Selection Flow -->
+    <!-- =================================================================== -->
     <fragment
         android:id="@+id/navigation_search_results"
-        android:name="com.example.apptauhoa.ui.search.SearchResultsFragment"
+        android:name="com.example.apptauhoa.ui.journey.SearchResultsFragment"
         android:label="fragment_search_results"
         tools:layout="@layout/fragment_search_results">
         <argument android:name="originName" app:argType="string"/>
@@ -49,7 +53,34 @@
         <argument android:name="children" app:argType="integer"/>
         <argument android:name="infants" app:argType="integer"/>
         <action
-            android:id="@+id/action_search_results_to_seat_selection"
+            android:id="@+id/action_search_results_to_coach_picker"
+            app:destination="@id/coachPickerFragment" />
+        <action
+            android:id="@+id/action_search_results_to_trip_filter"
+            app:destination="@id/tripFilterFragment" />
+    </fragment>
+    
+    <dialog
+        android:id="@+id/tripFilterFragment"
+        android:name="com.example.apptauhoa.ui.journey.TripFilterFragment"
+        android:label="TripFilterFragment"
+        tools:layout="@layout/fragment_trip_filter" />
+
+    <fragment
+        android:id="@+id/coachPickerFragment"
+        android:name="com.example.apptauhoa.ui.journey.CoachPickerFragment"
+        android:label="CoachPickerFragment"
+        tools:layout="@layout/fragment_coach_picker">
+        <argument android:name="tripId" app:argType="string" />
+        <argument android:name="trainCode" app:argType="string" />
+        <argument android:name="departureTime" app:argType="string" />
+        <argument android:name="arrivalTime" app:argType="string" />
+        <argument android:name="coachList" app:argType="com.example.apptauhoa.ui.journey.Coach[]" />
+        <argument android:name="originStation" app:argType="string" />
+        <argument android:name="destinationStation" app:argType="string" />
+        <argument android:name="tripDate" app:argType="string" />
+        <action
+            android:id="@+id/action_coach_picker_to_seat_selection"
             app:destination="@id/navigation_seat_selection" />
     </fragment>
 
@@ -58,35 +89,30 @@
         android:name="com.example.apptauhoa.ui.ticket.SeatSelectionFragment"
         android:label="SeatSelectionFragment"
         tools:layout="@layout/fragment_seat_selection">
-        <!-- Arguments are passed manually, so no argType is needed here for the complex list -->
         <action android:id="@+id/action_seat_selection_to_route_info" app:destination="@id/dialog_route_info"/>
         <action android:id="@+id/action_seat_selection_to_facilities" app:destination="@id/dialog_facilities"/>
         <action android:id="@+id/action_seat_selection_to_gallery" app:destination="@id/dialog_gallery"/>
         <action android:id="@+id/action_seat_selection_to_reviews" app:destination="@id/dialog_reviews"/>
         <action android:id="@+id/action_seat_selection_to_policy" app:destination="@id/dialog_policy"/>
         <action android:id="@+id/action_seat_selection_to_ticket_detail" app:destination="@id/navigation_ticket_detail"/>
+        
+        <argument android:name="tripId" app:argType="string"/>
+        <argument android:name="trainCode" app:argType="string"/>
+        <argument android:name="departureTime" app:argType="string"/>
+        <argument android:name="arrivalTime" app:argType="string"/>
+        <argument android:name="coachClass" app:argType="string"/>
+        <argument android:name="price" app:argType="long"/>
+        <argument android:name="availableSeats" app:argType="integer"/>
+        <argument android:name="originStation" app:argType="string"/>
+        <argument android:name="destinationStation" app:argType="string"/>
+        <argument android:name="tripDate" app:argType="string"/>
     </fragment>
 
-    <dialog
-        android:id="@+id/dialog_route_info"
-        android:name="com.example.apptauhoa.ui.ticket.info.RouteInfoFragment"
-        android:label="RouteInfoFragment" />
-    <dialog
-        android:id="@+id/dialog_facilities"
-        android:name="com.example.apptauhoa.ui.ticket.info.FacilitiesFragment"
-        android:label="FacilitiesFragment" />
-    <dialog
-        android:id="@+id/dialog_gallery"
-        android:name="com.example.apptauhoa.ui.ticket.info.GalleryFragment"
-        android:label="GalleryFragment" />
-    <dialog
-        android:id="@+id/dialog_reviews"
-        android:name="com.example.apptauhoa.ui.ticket.info.ReviewsFragment"
-        android:label="ReviewsFragment" />
-     <dialog
-        android:id="@+id/dialog_policy"
-        android:name="com.example.apptauhoa.ui.ticket.info.PolicyFragment"
-        android:label="PolicyFragment" />
+    <dialog android:id="@+id/dialog_route_info" android:name="com.example.apptauhoa.ui.ticket.info.RouteInfoFragment" />
+    <dialog android:id="@+id/dialog_facilities" android:name="com.example.apptauhoa.ui.ticket.info.FacilitiesFragment"/>
+    <dialog android:id="@+id/dialog_gallery" android:name="com.example.apptauhoa.ui.ticket.info.GalleryFragment" />
+    <dialog android:id="@+id/dialog_reviews" android:name="com.example.apptauhoa.ui.ticket.info.ReviewsFragment" />
+    <dialog android:id="@+id/dialog_policy" android:name="com.example.apptauhoa.ui.ticket.info.PolicyFragment" />
 
     <fragment
         android:id="@+id/navigation_ticket_detail"
@@ -97,7 +123,9 @@
         <argument android:name="selectionResult" app:argType="com.example.apptauhoa.ui.ticket.SeatSelectionResult" app:nullable="true"/>
     </fragment>
 
-    <!-- Other top-level destinations -->
+    <!-- =================================================================== -->
+    <!-- Other Top-Level Destinations -->
+    <!-- =================================================================== -->
     <fragment
         android:id="@+id/navigation_journey"
         android:name="com.example.apptauhoa.ui.journey.JourneyFragment"
@@ -107,25 +135,31 @@
         android:id="@+id/navigation_lookup"
         android:name="com.example.apptauhoa.ui.lookup.LookupFragment"
         android:label="fragment_lookup"
-        tools:layout="@layout/fragment_lookup">
-        <action
-            android:id="@+id/action_lookup_to_ticket_detail"
-            app:destination="@id/navigation_ticket_detail" />
-    </fragment>
+        tools:layout="@layout/fragment_lookup" />
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.apptauhoa.ui.notifications.NotificationsFragment"
         android:label="fragment_notifications"
         tools:layout="@layout/fragment_notifications" />
+        
     <fragment
         android:id="@+id/navigation_account"
         android:name="com.example.apptauhoa.ui.account.AccountFragment"
         android:label="fragment_account"
-        tools:layout="@layout/fragment_account" >
-        <action
-            android:id="@+id/action_navigation_account_to_navigation_home"
-            app:destination="@id/navigation_home" />
+        tools:layout="@layout/fragment_account">
+        <action android:id="@+id/action_accountFragment_to_loginFragment" app:destination="@id/loginFragment" />
+        <action android:id="@+id/action_accountFragment_to_introFragment" app:destination="@id/introFragment" />
+        <action android:id="@+id/action_accountFragment_to_routesFragment" app:destination="@id/routesFragment" />
+        <action android:id="@+id/action_accountFragment_to_officeFragment" app:destination="@id/officeFragment" />
+        <action android:id="@+id/action_accountFragment_to_settingsFragment" app:destination="@id/settingsFragment" />
     </fragment>
+    
+    <!-- Placeholder fragments for Account actions -->
+    <fragment android:id="@+id/introFragment" android:name="androidx.fragment.app.Fragment" android:label="Intro"/>
+    <fragment android:id="@+id/routesFragment" android:name="androidx.fragment.app.Fragment" android:label="Routes"/>
+    <fragment android:id="@+id/officeFragment" android:name="androidx.fragment.app.Fragment" android:label="Office"/>
+    <fragment android:id="@+id/settingsFragment" android:name="androidx.fragment.app.Fragment" android:label="Settings"/>
+
 
     <fragment
         android:id="@+id/loginFragment"
@@ -151,6 +185,5 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
-
 
 </navigation>
