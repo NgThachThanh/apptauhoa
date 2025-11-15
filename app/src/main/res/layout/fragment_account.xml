@@ -1,105 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:padding="16dp"
+    android:background="?attr/colorPrimary"
     tools:context=".ui.account.AccountFragment">
 
+    <!-- Header Section -->
     <LinearLayout
-        android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_alignParentTop="true">
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chưa đăng nhập."
-            android:textSize="24sp" />
+            android:text="Quý khách chưa đăng nhập"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <Button
+        <TextView
             android:id="@+id/btnLoginNow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Đăng nhập ngay" />
+            android:text="Đăng nhập ngay"
+            android:textColor="?attr/colorOnPrimary"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutMenu"
+    <!-- Main Content with Rounded Top -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/layoutHeader"
-        android:layout_marginTop="32dp">
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
+        android:background="@drawable/background_rounded_top"
+        android:fillViewport="true">
 
-        <!--
-          LỖI 1 ĐƯỢC SỬA Ở ĐÂY: Thêm 4 ID và thuộc tính Click
-        -->
-        <TextView
-            android:id="@+id/tvIntro"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Giới thiệu nhà tàu"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvRoutes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Lộ trình phổ biến"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true" />
+            <!-- Menu Item: Intro -->
+            <RelativeLayout
+                android:id="@+id/tvIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/account_menu_item_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
 
-        <TextView
-            android:id="@+id/tvOffice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Văn phòng nhà tàu"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true" />
+                <ImageView
+                    android:id="@+id/icon_intro"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_dialog_info"
+                    app:tint="?attr/colorPrimary" />
 
-        <TextView
-            android:id="@+id/tvSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Cài đặt"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/icon_intro"
+                    android:layout_marginStart="16dp"
+                    android:text="Giới thiệu nhà xe"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp" />
 
-    <LinearLayout
-        android:id="@+id/layoutFooter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_media_play"
+                    android:rotation="90"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </RelativeLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Công ty TNHH Đường sắt Việt Nam"
-            android:textSize="12sp" />
+            <!-- Menu Item: Routes -->
+            <RelativeLayout
+                android:id="@+id/tvRoutes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/account_menu_item_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hotline: 1900 xxxx"
-            android:textSize="12sp" />
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/icon_routes"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_menu_mapmode"
+                    app:tint="?attr/colorPrimary" />
 
-</RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/icon_routes"
+                    android:layout_marginStart="16dp"
+                    android:text="Lộ trình phổ biến"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_media_play"
+                    android:rotation="90"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </RelativeLayout>
+
+            <!-- Menu Item: Office -->
+            <RelativeLayout
+                android:id="@+id/tvOffice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/account_menu_item_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
+
+                <ImageView
+                    android:id="@+id/icon_office"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_menu_myplaces"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/icon_office"
+                    android:layout_marginStart="16dp"
+                    android:text="Văn phòng ga tàu"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_media_play"
+                    android:rotation="90"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </RelativeLayout>
+
+            <!-- Menu Item: Settings -->
+            <RelativeLayout
+                android:id="@+id/tvSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/account_menu_item_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
+
+                <ImageView
+                    android:id="@+id/icon_settings"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_menu_preferences"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/icon_settings"
+                    android:layout_marginStart="16dp"
+                    android:text="Cài đặt"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_media_play"
+                    android:rotation="90"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </RelativeLayout>
+
+            <!-- This Spacer will push the contact info to the bottom -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Contact Info Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Công ty TNHH Đường sắt Việt Nam"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Hotline: 1900 636 212"
+                    android:autoLink="phone"
+                    android:textColorLink="?attr/colorOnSurfaceVariant"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Email: support.dsvn@gmail.com"
+                    android:autoLink="email"
+                    android:textColorLink="?attr/colorOnSurfaceVariant"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

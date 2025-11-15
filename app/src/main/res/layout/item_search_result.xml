@@ -3,4 +3,6 @@
     android:id="@+id/result_text_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp" />
+    android:padding="16dp"
+    android:background="?attr/colorSurface"
+    android:textColor="?attr/colorOnSurface"/>

@@ -14,16 +14,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import com.example.apptauhoa.R
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 class HomeFragment : Fragment() {
 
-    // Data state
+    // Data state - Using Calendar for date to ensure compatibility
     private var originStation: Station? = null
     private var destinationStation: Station? = null
-    private var departureDate: LocalDate? = null
+    private var departureDate: Calendar? = null // CHANGED from LocalDate to Calendar
     private var adults = 1
     private var children = 0
     private var infants = 0
@@ -40,8 +40,6 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        // Listeners should be set up here as they don't depend on the view
         setupResultListeners()
     }
 
@@ -66,8 +64,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        // Setup view listeners and initial UI state here
         setupViewListeners(view)
         updateAllUI()
     }
@@ -88,11 +84,17 @@ class HomeFragment : Fragment() {
             destinationStation = bundle.getParcelable("station")
             updateAllUI()
         }
+
+        // Listen for the safe String result from DatePickerFragment
         parentFragmentManager.setFragmentResultListener("date_result", this) { _, bundle ->
             val dateString = bundle.getString("selected_date")
             if (dateString != null) {
-                departureDate = LocalDate.parse(dateString)
-                updateAllUI()
+                val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val date = formatter.parse(dateString)
+                if (date != null) {
+                    departureDate = Calendar.getInstance().apply { time = date }
+                    updateAllUI()
+                }
             }
         }
     }
@@ -119,10 +121,13 @@ class HomeFragment : Fragment() {
         }
         searchButton.setOnClickListener {
             if (validateForm(showErrors = true)) {
+                val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                val dateString = departureDate?.let { formatter.format(it.time) } ?: ""
+
                 val args = bundleOf(
                     "originName" to originStation!!.name,
                     "destinationName" to destinationStation!!.name,
-                    "departureDate" to departureDate!!.toString(),
+                    "departureDate" to dateString,
                     "adults" to adults,
                     "children" to children,
                     "infants" to infants
@@ -146,8 +151,8 @@ class HomeFragment : Fragment() {
 
     private fun updateDateUI() {
         if (departureDate != null) {
-            val formatter = DateTimeFormatter.ofPattern("EEE, dd/MM/yyyy", Locale("vi", "VN"))
-            departureDateValue.text = departureDate!!.format(formatter)
+            val formatter = SimpleDateFormat("EEE, dd/MM/yyyy", Locale("vi", "VN"))
+            departureDateValue.text = formatter.format(departureDate!!.time)
         } else {
             departureDateValue.text = "Chọn ngày"
         }

@@ -9,14 +9,3 @@ data class Coach(
     val name: String,
     val seats: List<Seat>
 ) : Parcelable
-
-@Parcelize
-data class Seat(
-    val number: String,
-    val status: SeatStatus,
-    val deck: Deck? = null,
-    val price: Int
-) : Parcelable
-
-enum class SeatStatus { AVAILABLE, SOLD, SELECTED, BLOCKED }
-enum class Deck { UPPER, LOWER }

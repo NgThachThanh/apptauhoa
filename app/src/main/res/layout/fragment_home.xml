@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="?attr/colorSurface"
     tools:context=".ui.home.HomeFragment">
 
     <!-- Background for the station selection area -->
@@ -33,6 +34,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             app:srcCompat="@drawable/ic_directions"
+            app:tint="?attr/colorOnSurfaceVariant"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -43,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="Nơi đi"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@id/origin_icon"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,6 +56,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
             tools:text="Nơi khởi hành"
             app:layout_constraintStart_toStartOf="@id/origin_label"
             app:layout_constraintTop_toBottomOf="@id/origin_label"
@@ -85,6 +89,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             app:srcCompat="@drawable/ic_my_location"
+            app:tint="?attr/colorOnSurfaceVariant"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -95,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="Nơi đến"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@id/destination_icon"
             app:layout_constraintTop_toTopOf="parent" />
@@ -105,6 +111,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
             tools:text="Quý khách muốn đi đâu?"
             app:layout_constraintStart_toStartOf="@id/destination_label"
             app:layout_constraintTop_toBottomOf="@id/destination_label"
@@ -116,6 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_swap_vertical"
+        android:background="?attr/colorSurface"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="@id/station_panel_background"
         app:layout_constraintTop_toTopOf="@id/station_panel_background"
@@ -145,16 +153,16 @@
         app:layout_constraintTop_toBottomOf="@id/station_error_message"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        <!-- Content as before -->
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <TextView android:id="@+id/txt_departure_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ngày khởi hành" android:textSize="12sp" />
-            <TextView android:id="@+id/txt_departure_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Chọn ngày" android:textSize="16sp" android:textStyle="bold" />
+            <TextView android:id="@+id/txt_departure_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ngày khởi hành" android:textColor="?attr/colorOnSurfaceVariant" android:textSize="12sp" />
+            <TextView android:id="@+id/txt_departure_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Chọn ngày" android:textColor="?attr/colorOnSurface" android:textSize="16sp" android:textStyle="bold" />
         </LinearLayout>
-        <ImageView android:id="@+id/btn_calendar" android:layout_width="48dp" android:layout_height="48dp" app:srcCompat="@drawable/ic_calendar"/>
+        <ImageView android:id="@+id/btn_calendar" android:layout_width="48dp" android:layout_height="48dp" app:srcCompat="@drawable/ic_calendar" app:tint="?attr/colorOnSurfaceVariant"/>
     </LinearLayout>
 
     <TextView
@@ -180,16 +188,16 @@
         app:layout_constraintTop_toBottomOf="@id/txt_departure_error"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        <!-- Content as before -->
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
-            <TextView android:id="@+id/txt_passengers_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hành khách" android:textSize="12sp" />
-            <TextView android:id="@+id/txt_passengers_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1 người lớn" android:textSize="16sp" android:textStyle="bold" />
+            <TextView android:id="@+id/txt_passengers_label" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hành khách" android:textColor="?attr/colorOnSurfaceVariant" android:textSize="12sp" />
+            <TextView android:id="@+id/txt_passengers_value" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1 người lớn" android:textColor="?attr/colorOnSurface" android:textSize="16sp" android:textStyle="bold" />
         </LinearLayout>
-        <ImageView android:id="@+id/btn_passengers_icon" android:layout_width="48dp" android:layout_height="48dp" app:srcCompat="@drawable/ic_passengers"/>
+        <ImageView android:id="@+id/btn_passengers_icon" android:layout_width="48dp" android:layout_height="48dp" app:srcCompat="@drawable/ic_passengers" app:tint="?attr/colorOnSurfaceVariant"/>
     </LinearLayout>
         
     <Button

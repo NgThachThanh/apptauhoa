@@ -1,89 +1,811 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/colorSurface"
     tools:context=".ui.account.RoutesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingHorizontal="8dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Lộ trình phổ biến"
-            android:textColor="@android:color/black"
-            android:textSize="24sp"
+            android:textAppearance="?attr/textAppearanceHeadline5"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:paddingHorizontal="8dp"
+            android:layout_marginBottom="8dp"/>
 
-        <!-- Một lộ trình mẫu -->
-        <LinearLayout
-            android:id="@+id/route_hanoi_saigon"
+        <!-- Route Card 1: HCM -> Hanoi -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/route_hcm_hanoi_card"
+            style="?attr/materialCardViewOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="?android:attr/selectableItemBackground"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="6dp"
             android:clickable="true"
             android:focusable="true">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tuyến Sài Gòn - Hà Nội"
-                android:textColor="@color/purple_700"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thời gian: 32 - 34 giờ"
-                android:textSize="14sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Giá vé từ: 850.000 VNĐ"
-                android:textSize="14sp"/>
-        </LinearLayout>
+                android:padding="12dp">
 
-        <!-- Lộ trình mẫu 2 -->
-        <LinearLayout
-            android:id="@+id/route_saigon_danang"
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_route_image_1"
+                    android:layout_width="90dp"
+                    android:layout_height="65dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hinh_1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+                    tools:src="@tools:sample/backgrounds/scenic" />
+
+                <ImageView
+                    android:id="@+id/iv_origin_icon_1"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/baseline_circle_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_origin_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Hồ Chí Minh"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_origin_icon_1"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_1"
+                    app:layout_constraintStart_toEndOf="@+id/iv_origin_icon_1"
+                    app:layout_constraintTop_toTopOf="@+id/iv_origin_icon_1" />
+
+                <View
+                    android:id="@+id/line_vertical_1"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_destination_icon_1"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_origin_icon_1"
+                    app:layout_constraintStart_toStartOf="@+id/iv_origin_icon_1"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_1" />
+
+                <ImageView
+                    android:id="@+id/iv_destination_icon_1"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/outline_add_location_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_1"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_destination_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Hà Nội"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_destination_icon_1"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_1"
+                    app:layout_constraintStart_toEndOf="@+id/iv_destination_icon_1"
+                    app:layout_constraintTop_toTopOf="@+id/iv_destination_icon_1" />
+
+                <TextView
+                    android:id="@+id/tv_train_info_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Tàu Thống Nhất (SE2)"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_1"
+                    app:layout_constraintStart_toStartOf="@+id/tv_destination_1"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_destination_1" />
+
+                <View
+                    android:id="@+id/divider_1"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_train_info_1" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~1726 km"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_dialog_map"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~34 giờ"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_menu_recent_history"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="850.000đ"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/baseline_attach_money_24"
+                        app:drawableTint="?attr/colorPrimary" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Route Card 2: HCM -> Da Nang -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/route_hcm_danang_card"
+            style="?attr/materialCardViewOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp"
-            android:layout_marginBottom="12dp"
-            android:background="?android:attr/selectableItemBackground"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="6dp"
             android:clickable="true"
             android:focusable="true">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tuyến Sài Gòn - Đà Nẵng"
-                android:textColor="@color/purple_700"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thời gian: 16 - 17 giờ"
-                android:textSize="14sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Giá vé từ: 550.000 VNĐ"
-                android:textSize="14sp"/>
-        </LinearLayout>
+                android:padding="12dp">
 
-        <!-- Thêm các lộ trình khác ở đây... -->
+                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_route_image_2"
+                    android:layout_width="90dp"
+                    android:layout_height="65dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hinh_2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+                    tools:src="@tools:sample/backgrounds/scenic" />
 
+                <ImageView
+                    android:id="@+id/iv_origin_icon_2"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/baseline_circle_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_origin_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Hồ Chí Minh"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_origin_icon_2"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_2"
+                    app:layout_constraintStart_toEndOf="@+id/iv_origin_icon_2"
+                    app:layout_constraintTop_toTopOf="@+id/iv_origin_icon_2" />
+
+                <View
+                    android:id="@+id/line_vertical_2"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_destination_icon_2"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_origin_icon_2"
+                    app:layout_constraintStart_toStartOf="@+id/iv_origin_icon_2"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_2" />
+
+                <ImageView
+                    android:id="@+id/iv_destination_icon_2"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/outline_add_location_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_2"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_destination_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Đà Nẵng"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_destination_icon_2"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_2"
+                    app:layout_constraintStart_toEndOf="@+id/iv_destination_icon_2"
+                    app:layout_constraintTop_toTopOf="@+id/iv_destination_icon_2" />
+
+                <TextView
+                    android:id="@+id/tv_train_info_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Tàu SE4"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_2"
+                    app:layout_constraintStart_toStartOf="@+id/tv_destination_2"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_destination_2" />
+
+                <View
+                    android:id="@+id/divider_2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_train_info_2" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~960 km"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_dialog_map"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~17 giờ"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_menu_recent_history"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="550.000đ"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/baseline_attach_money_24"
+                        app:drawableTint="?attr/colorPrimary" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Route Card 3: Hanoi -> Lao Cai -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/route_hanoi_laocai_card"
+            style="?attr/materialCardViewOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="6dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_route_image_3"
+                    android:layout_width="90dp"
+                    android:layout_height="65dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hinh_3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+                    tools:src="@tools:sample/backgrounds/scenic" />
+
+                <ImageView
+                    android:id="@+id/iv_origin_icon_3"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/baseline_circle_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_origin_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Hà Nội"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_origin_icon_3"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_3"
+                    app:layout_constraintStart_toEndOf="@+id/iv_origin_icon_3"
+                    app:layout_constraintTop_toTopOf="@+id/iv_origin_icon_3" />
+
+                <View
+                    android:id="@+id/line_vertical_3"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_destination_icon_3"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_origin_icon_3"
+                    app:layout_constraintStart_toStartOf="@+id/iv_origin_icon_3"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_3" />
+
+                <ImageView
+                    android:id="@+id/iv_destination_icon_3"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/outline_add_location_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_3"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_destination_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Lào Cai (Sapa)"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_destination_icon_3"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_3"
+                    app:layout_constraintStart_toEndOf="@+id/iv_destination_icon_3"
+                    app:layout_constraintTop_toTopOf="@+id/iv_destination_icon_3" />
+
+                <TextView
+                    android:id="@+id/tv_train_info_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Tàu SP3"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_3"
+                    app:layout_constraintStart_toStartOf="@+id/tv_destination_3"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_destination_3" />
+
+                <View
+                    android:id="@+id/divider_3"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_train_info_3" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_3">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~294 km"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_dialog_map"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~8 giờ"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_menu_recent_history"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="450.000đ"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/baseline_attach_money_24"
+                        app:drawableTint="?attr/colorPrimary" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Route Card 4: Da Nang -> Nha Trang -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/route_danang_nhatrang_card"
+            style="?attr/materialCardViewOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="6dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_route_image_4"
+                    android:layout_width="90dp"
+                    android:layout_height="65dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hinh_4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+                    tools:src="@tools:sample/backgrounds/scenic" />
+
+                <ImageView
+                    android:id="@+id/iv_origin_icon_4"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/baseline_circle_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_origin_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Đà Nẵng"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_origin_icon_4"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_4"
+                    app:layout_constraintStart_toEndOf="@+id/iv_origin_icon_4"
+                    app:layout_constraintTop_toTopOf="@+id/iv_origin_icon_4" />
+
+                <View
+                    android:id="@+id/line_vertical_4"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_destination_icon_4"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_origin_icon_4"
+                    app:layout_constraintStart_toStartOf="@+id/iv_origin_icon_4"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_4" />
+
+                <ImageView
+                    android:id="@+id/iv_destination_icon_4"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/outline_add_location_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_4"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_destination_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Nha Trang"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_destination_icon_4"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_4"
+                    app:layout_constraintStart_toEndOf="@+id/iv_destination_icon_4"
+                    app:layout_constraintTop_toTopOf="@+id/iv_destination_icon_4" />
+
+                <TextView
+                    android:id="@+id/tv_train_info_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Tàu SE9"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_4"
+                    app:layout_constraintStart_toStartOf="@+id/tv_destination_4"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_destination_4" />
+
+                <View
+                    android:id="@+id/divider_4"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_train_info_4" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_4">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~524 km"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_dialog_map"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~10 giờ"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_menu_recent_history"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="400.000đ"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/baseline_attach_money_24"
+                        app:drawableTint="?attr/colorPrimary" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Route Card 5: Hanoi -> Hai Phong -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/route_hanoi_haiphong_card"
+            style="?attr/materialCardViewOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginVertical="6dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_route_image_5"
+                    android:layout_width="90dp"
+                    android:layout_height="65dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/hinh_5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+                    tools:src="@tools:sample/backgrounds/scenic" />
+
+                <ImageView
+                    android:id="@+id/iv_origin_icon_5"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/baseline_circle_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_origin_5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Hà Nội"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_origin_icon_5"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_5"
+                    app:layout_constraintStart_toEndOf="@+id/iv_origin_icon_5"
+                    app:layout_constraintTop_toTopOf="@+id/iv_origin_icon_5" />
+
+                <View
+                    android:id="@+id/line_vertical_5"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintBottom_toTopOf="@+id/iv_destination_icon_5"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_origin_icon_5"
+                    app:layout_constraintStart_toStartOf="@+id/iv_origin_icon_5"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_5" />
+
+                <ImageView
+                    android:id="@+id/iv_destination_icon_5"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/outline_add_location_24"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_origin_icon_5"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_destination_5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Hải Phòng"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_destination_icon_5"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_5"
+                    app:layout_constraintStart_toEndOf="@+id/iv_destination_icon_5"
+                    app:layout_constraintTop_toTopOf="@+id/iv_destination_icon_5" />
+
+                <TextView
+                    android:id="@+id/tv_train_info_5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Tàu LP5"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_route_image_5"
+                    app:layout_constraintStart_toStartOf="@+id/tv_destination_5"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_destination_5" />
+
+                <View
+                    android:id="@+id/divider_5"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?attr/colorOutline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_train_info_5" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider_5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~102 km"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_dialog_map"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="~2.5 giờ"
+                        android:textAppearance="?attr/textAppearanceCaption"
+                        app:drawableStartCompat="@android:drawable/ic_menu_recent_history"
+                        app:drawableTint="?attr/colorOnSurfaceVariant" />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="85.000đ"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/baseline_attach_money_24"
+                        app:drawableTint="?attr/colorPrimary" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+        
     </LinearLayout>
 </ScrollView>

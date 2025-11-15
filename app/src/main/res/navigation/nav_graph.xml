@@ -154,11 +154,11 @@
         <action android:id="@+id/action_accountFragment_to_settingsFragment" app:destination="@id/settingsFragment" />
     </fragment>
     
-    <!-- Placeholder fragments for Account actions -->
-    <fragment android:id="@+id/introFragment" android:name="androidx.fragment.app.Fragment" android:label="Intro"/>
-    <fragment android:id="@+id/routesFragment" android:name="androidx.fragment.app.Fragment" android:label="Routes"/>
-    <fragment android:id="@+id/officeFragment" android:name="androidx.fragment.app.Fragment" android:label="Office"/>
-    <fragment android:id="@+id/settingsFragment" android:name="androidx.fragment.app.Fragment" android:label="Settings"/>
+    <!-- Fragments for Account actions -->
+    <fragment android:id="@+id/introFragment" android:name="com.example.apptauhoa.ui.account.IntroFragment" android:label="Intro" tools:layout="@layout/fragment_intro"/>
+    <fragment android:id="@+id/routesFragment" android:name="com.example.apptauhoa.ui.account.RoutesFragment" android:label="Routes" tools:layout="@layout/fragment_routes"/>
+    <fragment android:id="@+id/officeFragment" android:name="com.example.apptauhoa.ui.account.OfficeFragment" android:label="Office" tools:layout="@layout/fragment_office"/>
+    <fragment android:id="@+id/settingsFragment" android:name="com.example.apptauhoa.ui.account.SettingsFragment" android:label="Settings" tools:layout="@layout/fragment_settings"/>
 
 
     <fragment

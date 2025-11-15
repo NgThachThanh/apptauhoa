@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="?attr/colorSurface"
     android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chọn số hành khách"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textColor="?attr/colorOnSurface"
+        android:textAppearance="?attr/textAppearanceHeadline6" />
 
     <!-- Adults -->
     <LinearLayout
@@ -29,11 +31,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Người lớn" />
+                android:text="Người lớn"
+                android:textColor="?attr/colorOnSurface" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Từ 12 tuổi"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"/>
         </LinearLayout>
 
@@ -41,8 +45,10 @@
             android:id="@+id/adults_minus_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Giảm người lớn"
-            android:src="@drawable/ic_remove" />
+            app:srcCompat="@drawable/ic_remove"
+            app:tint="?attr/colorPrimary" />
 
         <TextView
             android:id="@+id/adults_count_text_view"
@@ -51,14 +57,17 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:text="1"
-            android:textSize="16sp" />
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceBody1" />
 
         <ImageButton
             android:id="@+id/adults_plus_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Tăng người lớn"
-            android:src="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_add"
+            app:tint="?attr/colorPrimary" />
     </LinearLayout>
 
     <!-- Children -->
@@ -77,11 +86,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Trẻ em" />
+                android:text="Trẻ em"
+                android:textColor="?attr/colorOnSurface" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2–11 tuổi"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"/>
         </LinearLayout>
 
@@ -89,8 +100,10 @@
             android:id="@+id/children_minus_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Giảm trẻ em"
-            android:src="@drawable/ic_remove" />
+            app:srcCompat="@drawable/ic_remove"
+            app:tint="?attr/colorPrimary" />
 
         <TextView
             android:id="@+id/children_count_text_view"
@@ -99,14 +112,17 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:text="0"
-            android:textSize="16sp" />
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceBody1" />
 
         <ImageButton
             android:id="@+id/children_plus_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Tăng trẻ em"
-            android:src="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_add"
+            app:tint="?attr/colorPrimary" />
     </LinearLayout>
 
     <!-- Infants -->
@@ -126,11 +142,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sơ sinh" />
+                android:text="Sơ sinh"
+                android:textColor="?attr/colorOnSurface" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Dưới 2 tuổi"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="12sp"/>
         </LinearLayout>
 
@@ -138,8 +156,10 @@
             android:id="@+id/infants_minus_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Giảm sơ sinh"
-            android:src="@drawable/ic_remove" />
+            app:srcCompat="@drawable/ic_remove"
+            app:tint="?attr/colorPrimary" />
 
         <TextView
             android:id="@+id/infants_count_text_view"
@@ -148,14 +168,17 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:text="0"
-            android:textSize="16sp" />
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceBody1" />
 
         <ImageButton
             android:id="@+id/infants_plus_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Tăng sơ sinh"
-            android:src="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_add"
+            app:tint="?attr/colorPrimary" />
     </LinearLayout>
 
     <TextView
@@ -175,18 +198,20 @@
 
         <Button
             android:id="@+id/cancel_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginEnd="8dp"
             android:text="Hủy" />
 
         <Button
             android:id="@+id/confirm_button"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginStart="8dp"
             android:text="Xác nhận" />
     </LinearLayout>
 

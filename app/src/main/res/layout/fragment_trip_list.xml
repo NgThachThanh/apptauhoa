@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
+    android:background="?attr/colorSurface"
     tools:context=".ui.journey.TripListFragment">
 
-    <!-- This is a placeholder for the content of each tab. -->
-    <TextView
-        android:id="@+id/placeholder_text"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trip_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="8dp"
+        tools:listitem="@layout/item_trip" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loading content..."
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:layout_gravity="center"
+        android:visibility="gone" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Không có chuyến đi nào."
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:visibility="gone" />
+
+</FrameLayout>

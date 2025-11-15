@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?attr/colorSurface"
     tools:context=".MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -22,6 +22,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="?attr/colorSurface"
+        app:itemIconTint="@drawable/bottom_nav_color_selector"
+        app:itemTextColor="@drawable/bottom_nav_color_selector"
         app:menu="@menu/bottom_nav_menu" />
 
 </RelativeLayout>

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.apptauhoa.R
 
 class SeatmapAdapter(
-    private var seats: MutableList<Seat>, // Now requires a mutable list
+    private var seats: MutableList<Seat>,
     private val onSeatClick: (Seat, Int) -> Unit
 ) : RecyclerView.Adapter<SeatmapAdapter.SeatViewHolder>() {
 
@@ -34,16 +34,17 @@ class SeatmapAdapter(
     }
 
     class SeatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val seatNumber: TextView = itemView.findViewById(R.id.txt_seat_number)
+        // FIX 1: Use the correct ID from the XML
+        private val seatNumber: TextView = itemView.findViewById(R.id.seat_number) 
 
         fun bind(seat: Seat, position: Int, onSeatClick: (Seat, Int) -> Unit) {
             seatNumber.text = seat.number
             
-            val backgroundRes = when (seat.status) {
+            // FIX 2: Use the correct SeatStatus enums and drawables
+            val backgroundRes = when (seat.status) { 
                 SeatStatus.AVAILABLE -> R.drawable.bg_seat_available
-                SeatStatus.SOLD -> R.drawable.bg_seat_sold
+                SeatStatus.BOOKED -> R.drawable.bg_seat_booked
                 SeatStatus.SELECTED -> R.drawable.bg_seat_selected
-                SeatStatus.BLOCKED -> R.drawable.bg_seat_sold
             }
             itemView.setBackgroundResource(backgroundRes)
             

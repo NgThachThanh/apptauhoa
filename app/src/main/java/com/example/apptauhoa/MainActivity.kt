@@ -1,8 +1,11 @@
 package com.example.apptauhoa
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -12,6 +15,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // --- Apply Theme on Startup ---
+        applyTheme()
+
         setContentView(R.layout.activity_main)
 
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation)
@@ -46,6 +53,16 @@ class MainActivity : AppCompatActivity() {
                     navView.menu.findItem(destination.id)?.isChecked = true
                 }
             }
+        }
+    }
+
+    private fun applyTheme() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
+        val isDarkMode = sharedPreferences.getBoolean("isDarkMode", false)
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 }

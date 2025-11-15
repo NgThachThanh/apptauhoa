@@ -13,5 +13,5 @@ data class SeatRef(
 @Parcelize
 data class SeatSelectionResult(
     val selectedSeats: List<SeatRef>,
-    val totalPrice: Int
+    val totalPrice: Long // FIX: Ensure this is Long
 ) : Parcelable

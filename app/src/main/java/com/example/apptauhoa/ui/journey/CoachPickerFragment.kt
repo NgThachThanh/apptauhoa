@@ -11,6 +11,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptauhoa.R
+import com.google.android.material.appbar.MaterialToolbar
 
 class CoachPickerFragment : Fragment() {
 
@@ -20,35 +21,42 @@ class CoachPickerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_coach_picker, container, false)
+        return inflater.inflate(R.layout.fragment_coach_picker, container, false)
+    }
 
-        // Setup Header
-        view.findViewById<TextView>(R.id.txt_subtitle).text = 
-            "${args.trainCode} • ${args.departureTime} → ${args.arrivalTime}"
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<View>(R.id.btn_back).setOnClickListener {
+        // Setup Toolbar
+        view.findViewById<MaterialToolbar>(R.id.toolbar).setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+        view.findViewById<TextView>(R.id.txt_route_title).text = "${args.originStation} – ${args.destinationStation}"
+        view.findViewById<TextView>(R.id.txt_route_subtitle).text = "${args.trainCode} • ${args.tripDate}"
 
         // Setup RecyclerView
-        val coachListRv = view.findViewById<RecyclerView>(R.id.rv_coach_list)
-        coachListRv.layoutManager = LinearLayoutManager(context)
-        coachListRv.adapter = CoachAdapter(args.coachList.toList()) { selectedCoach ->
+        val coachRecyclerView = view.findViewById<RecyclerView>(R.id.rv_coach_list)
+        coachRecyclerView.layoutManager = LinearLayoutManager(context)
+        
+        val coachAdapter = CoachAdapter(args.coachList.toList()) { selectedCoach ->
+            // FIX: Pass the correct arguments as defined in the navigation graph
             val action = CoachPickerFragmentDirections.actionCoachPickerToSeatSelection(
+                // Trip details from the fragment's arguments
                 tripId = args.tripId,
                 trainCode = args.trainCode,
                 departureTime = args.departureTime,
                 arrivalTime = args.arrivalTime,
-                coachClass = selectedCoach.coachType,
-                price = selectedCoach.price,
-                availableSeats = selectedCoach.availableSeats,
                 originStation = args.originStation,
                 destinationStation = args.destinationStation,
-                tripDate = args.tripDate
+                tripDate = args.tripDate,
+
+                // Details from the specific coach that was clicked
+                coachClass = selectedCoach.coachType,
+                price = selectedCoach.price,
+                availableSeats = selectedCoach.availableSeats
             )
             findNavController().navigate(action)
         }
-
-        return view
+        coachRecyclerView.adapter = coachAdapter
     }
 }

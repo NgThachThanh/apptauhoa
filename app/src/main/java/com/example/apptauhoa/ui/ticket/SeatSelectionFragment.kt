@@ -35,8 +35,10 @@ class SeatSelectionFragment : Fragment() {
         arguments?.let {
             adults = it.getInt("adults", 0)
             children = it.getInt("children", 0)
-            // Correct, type-safe way to retrieve a Parcelable ArrayList
-            coaches = it.getParcelableArrayList<Coach>("coaches")?.toList() ?: emptyList()
+            
+            
+            val coachesArray = it.getParcelableArray("coaches")
+            coaches = coachesArray?.mapNotNull { it as? Coach } ?: emptyList()
         }
     }
 
@@ -112,7 +114,10 @@ class SeatSelectionFragment : Fragment() {
         
         view.findViewById<Button>(R.id.btn_confirm_seats).setOnClickListener {
              val result = SeatSelectionResult(
-                selectedSeats = selectedSeats.map { SeatRef("C1", it.number, it.deck) }, // Mocked coachId
+                selectedSeats = selectedSeats.map { 
+                    val deck = if (it.deck == 2) Deck.UPPER else Deck.LOWER
+                    SeatRef("C1", it.number, deck) 
+                }, // Mocked coachId
                 totalPrice = selectedSeats.sumOf { it.price }
              )
              val args = bundleOf("selectionResult" to result)

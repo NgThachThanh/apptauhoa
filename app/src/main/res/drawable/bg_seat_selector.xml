@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true" android:drawable="@drawable/bg_seat_selected" />
+    <item android:state_enabled="false" android:drawable="@drawable/bg_seat_booked" />
+    <item android:drawable="@drawable/bg_seat_available" />
+</selector>

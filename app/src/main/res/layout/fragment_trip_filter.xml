@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     tools:context=".ui.journey.TripFilterFragment">
 
     <LinearLayout
@@ -16,7 +17,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Giờ khởi hành"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
 
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/slider_departure_time"
@@ -32,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textColor="?attr/colorOnSurfaceVariant"
             tools:text="00:00 – 24:00" />
 
         <TextView
@@ -39,17 +42,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Loại toa"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_coach_class"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_sitting" android:text="Ngồi mềm" style="@style/Widget.MaterialComponents.Chip.Filter"/>
-            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_sleeper" android:text="Giường nằm" style="@style/Widget.MaterialComponents.Chip.Filter"/>
-            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_berth4" android:text="Khoang 4" style="@style/Widget.MaterialComponents.Chip.Filter"/>
-            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_berth6" android:text="Khoang 6" style="@style/Widget.MaterialComponents.Chip.Filter"/>
-            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_ac" android:text="Điều hòa" style="@style/Widget.MaterialComponents.Chip.Filter"/>
+            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_sitting" android:text="Ngồi mềm" style="@style/Widget.Material3.Chip.Filter"/>
+            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_sleeper" android:text="Giường nằm" style="@style/Widget.Material3.Chip.Filter"/>
+            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_berth4" android:text="Khoang 4" style="@style/Widget.Material3.Chip.Filter"/>
+            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_berth6" android:text="Khoang 6" style="@style/Widget.Material3.Chip.Filter"/>
+            <com.google.android.material.chip.Chip android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chip_ac" android:text="Điều hòa" style="@style/Widget.Material3.Chip.Filter"/>
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
@@ -57,7 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Giá vé"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
 
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/slider_price"
@@ -73,6 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textColor="?attr/colorOnSurfaceVariant"
             tools:text="100.000đ – 1.000.000đ" />
 
         <TextView
@@ -80,16 +86,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Tình trạng ghế"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+            android:textColor="?attr/colorOnSurface"
+            android:textAppearance="?attr/textAppearanceSubtitle1" />
 
         <RadioGroup
             android:id="@+id/radio_availability"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <RadioButton android:id="@+id/radio_all" android:text="Tất cả" android:checked="true"/>
-            <RadioButton android:id="@+id/radio_available" android:text="Còn chỗ" />
-            <RadioButton android:id="@+id/radio_few_left" android:text="Sắp hết chỗ" />
-            <RadioButton android:id="@+id/radio_sold_out" android:text="Hết chỗ" />
+            <RadioButton android:id="@+id/radio_all" android:text="Tất cả" android:textColor="?attr/colorOnSurfaceVariant" android:checked="true"/>
+            <RadioButton android:id="@+id/radio_available" android:text="Còn chỗ" android:textColor="?attr/colorOnSurfaceVariant" />
+            <RadioButton android:id="@+id/radio_few_left" android:text="Sắp hết chỗ" android:textColor="?attr/colorOnSurfaceVariant" />
+            <RadioButton android:id="@+id/radio_sold_out" android:text="Hết chỗ" android:textColor="?attr/colorOnSurfaceVariant" />
         </RadioGroup>
 
         <LinearLayout
