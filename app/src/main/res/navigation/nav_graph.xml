@@ -34,7 +34,7 @@
         android:label="DatePickerFragment"
         tools:layout="@layout/fragment_date_picker" />
 
-    <!-- Search > Coach > Seat > Payment Flow -->
+    <!-- Search Results, from Home screen -->
     <fragment
         android:id="@+id/navigation_search_results"
         android:name="com.example.apptauhoa.ui.journey.SearchResultsFragment"
@@ -54,6 +54,25 @@
             android:id="@+id/action_search_results_to_trip_filter"
             app:destination="@id/tripFilterFragment" />
     </fragment>
+
+    <!-- Journey History, from Bottom Nav -->
+    <fragment
+        android:id="@+id/navigation_journey"
+        android:name="com.example.apptauhoa.ui.journey.JourneyFragment"
+        android:label="fragment_journey"
+        tools:layout="@layout/fragment_journey" />
+
+    <fragment
+        android:id="@+id/navigation_lookup"
+        android:name="com.example.apptauhoa.ui.lookup.LookupFragment"
+        android:label="fragment_lookup"
+        tools:layout="@layout/fragment_lookup" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.example.apptauhoa.ui.notifications.NotificationsFragment"
+        android:label="fragment_notifications"
+        tools:layout="@layout/fragment_notifications" />
     
     <dialog
         android:id="@+id/tripFilterFragment"

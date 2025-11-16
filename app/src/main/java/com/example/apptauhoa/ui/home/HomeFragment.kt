@@ -1,5 +1,3 @@
-// (The full, corrected code for HomeFragment.kt goes here, 
-// using HomeFragmentDirections for all navigation actions.)
 package com.example.apptauhoa.ui.home
 
 import android.os.Build
