@@ -24,10 +24,14 @@ class TripListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Just using a simple TextView for demonstration
         val view = inflater.inflate(R.layout.fragment_trip_list, container, false)
-        val textView = view.findViewById<TextView>(R.id.placeholder_text) // Assuming you have a TextView with this ID
         
+        // Find the TextView by its new ID from the updated layout
+        val textView = view.findViewById<TextView>(R.id.empty_view) 
+        
+        // Make sure the TextView is visible, as it might be hidden by default
+        textView.visibility = View.VISIBLE
+
         textView.text = when (tripType) {
             0 -> "Hiển thị danh sách các chuyến đi SẮP ĐI"
             1 -> "Hiển thị danh sách các chuyến đi ĐÃ ĐI"
@@ -35,6 +39,9 @@ class TripListFragment : Fragment() {
             else -> "Danh sách trống"
         }
         
+        // Since we are showing a placeholder text, hide the RecyclerView for now
+        view.findViewById<View>(R.id.trip_recycler_view).visibility = View.GONE
+
         return view
     }
 

@@ -22,6 +22,7 @@ class CoachPickerFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_coach_picker, container, false)
 
+        // Setup Header
         view.findViewById<TextView>(R.id.txt_subtitle).text = 
             "${args.trainCode} • ${args.departureTime} → ${args.arrivalTime}"
 
@@ -29,12 +30,21 @@ class CoachPickerFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        // Setup RecyclerView
         val coachListRv = view.findViewById<RecyclerView>(R.id.rv_coach_list)
         coachListRv.layoutManager = LinearLayoutManager(context)
         coachListRv.adapter = CoachAdapter(args.coachList.toList()) { selectedCoach ->
             val action = CoachPickerFragmentDirections.actionCoachPickerToSeatSelection(
-                coachId = selectedCoach.coachId,
-                totalPassengers = args.totalPassengers
+                tripId = args.tripId,
+                trainCode = args.trainCode,
+                departureTime = args.departureTime,
+                arrivalTime = args.arrivalTime,
+                coachClass = selectedCoach.coachType,
+                price = selectedCoach.price,
+                availableSeats = selectedCoach.availableSeats,
+                originStation = args.originStation,
+                destinationStation = args.destinationStation,
+                tripDate = args.tripDate
             )
             findNavController().navigate(action)
         }

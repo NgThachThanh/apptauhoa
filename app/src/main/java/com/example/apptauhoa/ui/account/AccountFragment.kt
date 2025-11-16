@@ -1,89 +1,74 @@
 package com.example.apptauhoa.ui.account
 
 import android.os.Bundle
-import android.util.Log // <-- Import thư viện Log để debug
+import android.util.Log
 import android.view.View
-import android.widget.Button
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.apptauhoa.R
 
-/**
- * File này điều khiển fragment_account.xml
- * Nó xử lý sự kiện click cho TẤT CẢ 5 mục có thể tương tác.
- */
 class AccountFragment : Fragment(R.layout.fragment_account) {
 
-    // Tag để lọc trong cửa sổ Logcat
     private val TAG = "AccountFragment"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated: AccountFragment đã được tạo.")
+        Log.d(TAG, "onViewCreated: AccountFragment has been created.")
 
-        // --- BƯỚC 1: Ánh xạ 5 view từ file XML ---
-        // (Điều này yêu cầu fragment_account.xml phải có 5 ID này)
-        val btnLoginNow: Button = view.findViewById(R.id.btnLoginNow)
-        val tvIntro: TextView = view.findViewById(R.id.tvIntro)
-        val tvRoutes: TextView = view.findViewById(R.id.tvRoutes)
-        val tvOffice: TextView = view.findViewById(R.id.tvOffice)
-        val tvSettings: TextView = view.findViewById(R.id.tvSettings)
+        // Find the views. Note that the menu items are now RelativeLayouts.
+        val btnLoginNow: TextView = view.findViewById(R.id.btnLoginNow)
+        val introLayout: RelativeLayout = view.findViewById(R.id.tvIntro)
+        val routesLayout: RelativeLayout = view.findViewById(R.id.tvRoutes)
+        val officeLayout: RelativeLayout = view.findViewById(R.id.tvOffice)
+        val settingsLayout: RelativeLayout = view.findViewById(R.id.tvSettings)
 
-        // --- BƯỚC 2: Gán sự kiện click cho 5 view ---
+        // --- Set OnClick Listeners ---
 
-        // 1. Nút Đăng nhập ngay
         btnLoginNow.setOnClickListener {
-            Log.d(TAG, "CLICK: Đã nhấn 'Đăng nhập ngay'")
+            Log.d(TAG, "CLICK: 'Login Now' button pressed")
             try {
-                // Sử dụng action ID từ nav_graph.xml
                 findNavController().navigate(R.id.action_accountFragment_to_loginFragment)
             } catch (e: Exception) {
-                Log.e(TAG, "LỖI: không thể điều hướng đến loginFragment", e)
+                Log.e(TAG, "ERROR: Could not navigate to loginFragment", e)
             }
         }
 
-        // 2. Option: Giới thiệu nhà tàu
-        tvIntro.setOnClickListener {
-            Log.d(TAG, "CLICK: Đã nhấn 'Giới thiệu nhà tàu'")
+        introLayout.setOnClickListener {
+            Log.d(TAG, "CLICK: 'Intro' menu item pressed")
             try {
-                // Sử dụng action ID từ nav_graph.xml
                 findNavController().navigate(R.id.action_accountFragment_to_introFragment)
             } catch (e: Exception) {
-                Log.e(TAG, "LỖI: không thể điều hướng đến introFragment", e)
+                Log.e(TAG, "ERROR: Could not navigate to introFragment", e)
             }
         }
 
-        // 3. Option: Lộ trình phổ biến
-        tvRoutes.setOnClickListener {
-            Log.d(TAG, "CLICK: Đã nhấn 'Lộ trình phổ biến'")
+        routesLayout.setOnClickListener {
+            Log.d(TAG, "CLICK: 'Routes' menu item pressed")
             try {
-                // Sử dụng action ID từ nav_graph.xml
                 findNavController().navigate(R.id.action_accountFragment_to_routesFragment)
             } catch (e: Exception) {
-                Log.e(TAG, "LỖI: không thể điều hướng đến routesFragment", e)
+                Log.e(TAG, "ERROR: Could not navigate to routesFragment", e)
             }
         }
 
-        // 4. Option: Văn phòng nhà tàu
-        tvOffice.setOnClickListener {
-            Log.d(TAG, "CLICK: Đã nhấn 'Văn phòng nhà tàu'")
+        officeLayout.setOnClickListener {
+            Log.d(TAG, "CLICK: 'Office' menu item pressed")
             try {
-                // Sử dụng action ID từ nav_graph.xml
                 findNavController().navigate(R.id.action_accountFragment_to_officeFragment)
             } catch (e: Exception) {
-                Log.e(TAG, "LỖI: không thể điều hướng đến officeFragment", e)
+                Log.e(TAG, "ERROR: Could not navigate to officeFragment", e)
             }
         }
 
-        // 5. Option: Cài đặt
-        tvSettings.setOnClickListener {
-            Log.d(TAG, "CLICK: Đã nhấn 'Cài đặt'")
+        settingsLayout.setOnClickListener {
+            Log.d(TAG, "CLICK: 'Settings' menu item pressed")
             try {
-                // Sử dụng action ID từ nav_graph.xml
+                // Ensure you have this action in your nav_graph.xml
                 findNavController().navigate(R.id.action_accountFragment_to_settingsFragment)
             } catch (e: Exception) {
-                Log.e(TAG, "LỖI: không thể điều hướng đến settingsFragment", e)
+                Log.e(TAG, "ERROR: Could not navigate to settingsFragment", e)
             }
         }
     }
