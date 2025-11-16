@@ -40,7 +40,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     app:layout_constraintStart_toEndOf="@id/btn_back"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_change_date"
+                    app:layout_constraintEnd_toStartOf="@+id/button_reselect_trip"
                     tools:text="Sài Gòn – Nha Trang" />
 
                 <TextView
@@ -51,7 +51,7 @@
                     app:layout_constraintTop_toBottomOf="@id/txt_route_title"
                     app:layout_constraintEnd_toEndOf="@id/txt_route_title"
                     tools:text="Khởi hành T4, 13/11/2024 • 1 khách" />
-
+                
                 <ImageButton
                     android:id="@+id/btn_filter"
                     android:layout_width="wrap_content"
@@ -71,6 +71,17 @@
                     android:src="@drawable/ic_calendar"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     app:layout_constraintEnd_toStartOf="@id/btn_filter"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+                
+                <ImageButton
+                    android:id="@+id/button_reselect_trip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_reverse"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_change_date"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
