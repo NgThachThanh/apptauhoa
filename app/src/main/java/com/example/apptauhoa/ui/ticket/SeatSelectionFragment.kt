@@ -84,7 +84,7 @@ class SeatSelectionFragment : Fragment() {
         // Hide controls
         view.findViewById<View>(R.id.controls_container).isVisible = false
         view.findViewById<TabLayout>(R.id.tabs_coach).isVisible = false
-        view.findViewById<View>(R.id.footer_card).isVisible = false
+        view.findViewById<View>(R.id.footer_selected).isVisible = false
     }
 
     private fun showContent(view: View) {
@@ -92,7 +92,7 @@ class SeatSelectionFragment : Fragment() {
         view.findViewById<RecyclerView>(R.id.rv_seatmap).isVisible = true
         view.findViewById<View>(R.id.controls_container).isVisible = true
         view.findViewById<TabLayout>(R.id.tabs_coach).isVisible = true
-        view.findViewById<View>(R.id.footer_card).isVisible = true
+        view.findViewById<View>(R.id.footer_selected).isVisible = true
     }
 
     private fun setupCoachAndDeckControls(view: View) {
@@ -178,6 +178,8 @@ class SeatSelectionFragment : Fragment() {
         val seatsForDeck = currentCoach.seats.filter { it.deck == currentDeck }
         seatmapAdapter.updateSeats(seatsForDeck)
     }
+
+
 
     private fun setupFooter(view: View) {
         updateFooter(view)
