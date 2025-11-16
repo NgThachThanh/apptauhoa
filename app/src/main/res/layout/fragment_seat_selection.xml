@@ -23,129 +23,138 @@
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:title="Chọn ghế"/>
+
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Subtitle - Made bigger and bold as requested -->
     <TextView
         android:id="@+id/txt_subtitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="?attr/colorOnSurfaceVariant"
+        android:gravity="center"
+        android:padding="8dp"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
         app:layout_constraintTop_toBottomOf="@id/appbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Sài Gòn → Nha Trang • 21/10/2025"/>
+        tools:text="Sài Gòn → Nha Trang"/>
 
-    <!-- Legend -->
-    <LinearLayout
-        android:id="@+id/legend"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/txt_subtitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/legend_available"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_seat_available"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:text="Còn trống" />
-
-        <Space
-            android:layout_width="16dp"
-            android:layout_height="1dp" />
-
-        <TextView
-            android:id="@+id/legend_booked"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_seat_booked"
-            android:drawablePadding="4dp"
-            android:gravity="center_vertical"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:text="Đã đặt" />
-    </LinearLayout>
-
-    <!-- Coach/Deck Selectors -->
+    <!-- Coach Tabs -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs_coach"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
-        app:layout_constraintTop_toBottomOf="@id/legend"
+        app:layout_constraintTop_toBottomOf="@id/txt_subtitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Deck chips -->
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chip_deck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        app:chipSpacingHorizontal="8dp"
-        app:chipSpacingVertical="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tabs_coach"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:singleSelection="true">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_lower"
-            style="@style/Widget.Material3.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="Tầng dưới" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_upper"
-            style="@style/Widget.Material3.Chip.Filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:text="Tầng trên" />
-    </com.google.android.material.chip.ChipGroup>
-
-    <!-- Seat Map -->
-    <FrameLayout
-        android:id="@+id/seatmap_container"
+    <!-- Deck & Legend Controls -->
+    <LinearLayout
+        android:id="@+id/controls_container"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/chip_deck"
-        app:layout_constraintBottom_toTopOf="@id/footer_selected"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@+id/tabs_coach"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_seatmap"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        <LinearLayout
+            android:id="@+id/legend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-        <ProgressBar
-            android:id="@+id/progress_loading"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text="Còn trống"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                app:drawableStartCompat="@drawable/ic_seat_available" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:text="Đã đặt"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                app:drawableStartCompat="@drawable/ic_seat_booked" />
+        </LinearLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_deck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
-    </FrameLayout>
+            app:chipSpacingHorizontal="4dp"
+            app:singleLine="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_lower"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tầng dưới" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_upper"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tầng trên" />
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+    <!-- SEAT MAP (Main Content) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_seatmap"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@+id/controls_container"
+        app:layout_constraintBottom_toTopOf="@+id/footer_selected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_seat" />
+
+    <TextView
+        android:id="@+id/txt_empty_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không có dữ liệu về chuyến đi hoặc toa xe."
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/rv_seatmap"
+        app:layout_constraintBottom_toBottomOf="@id/rv_seatmap"
+        app:layout_constraintStart_toStartOf="@id/rv_seatmap"
+        app:layout_constraintEnd_toEndOf="@id/rv_seatmap"
+        tools:visibility="visible" />
+
 
     <!-- Footer -->
     <LinearLayout
         android:id="@+id/footer_selected"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
         android:gravity="center_vertical"
-        android:background="?attr/colorSurface"
+        android:background="#F0F4F8" 
         app:layout_constraintBottom_toTopOf="@id/seat_bottom_nav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -160,24 +169,23 @@
                 android:id="@+id/txt_selected_summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorOnSurface"
-                android:text="Đã chọn 0/2 chỗ"/>
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                tools:text="Đã chọn 0/0 chỗ"/>
 
             <TextView
                 android:id="@+id/txt_total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0đ"
-                android:textColor="?attr/colorOnSurface"
-                android:textAppearance="?attr/textAppearanceHeadline6"/>
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                android:textStyle="bold"
+                tools:text="0đ"/>
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_confirm_seats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Xác nhận"
-            android:enabled="false"/>
+            android:text="Xác nhận" />
     </LinearLayout>
 
     <!-- Secondary Bottom Nav -->
@@ -185,12 +193,9 @@
         android:id="@+id/seat_bottom_nav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
-        app:itemIconTint="@drawable/bottom_nav_color_selector"
-        app:itemTextColor="@drawable/bottom_nav_color_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/seat_selection_bottom_nav" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

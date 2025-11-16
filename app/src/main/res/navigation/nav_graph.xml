@@ -106,6 +106,7 @@
         <argument android:name="originStation" app:argType="string"/>
         <argument android:name="destinationStation" app:argType="string"/>
         <argument android:name="tripDate" app:argType="string"/>
+        <argument android:name="coaches" app:argType="com.example.apptauhoa.ui.ticket.Coach[]" />
     </fragment>
 
     <dialog android:id="@+id/dialog_route_info" android:name="com.example.apptauhoa.ui.ticket.info.RouteInfoFragment" />
