@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_activated="true" android:drawable="@drawable/bg_seat_selected" />
-    <item android:state_enabled="false" android:drawable="@drawable/bg_seat_booked" />
-    <item android:drawable="@drawable/bg_seat_available" />
+    <!-- State: Selected (when the user clicks on it) -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#4CAF50"/>
+            <corners android:radius="6dp"/>
+        </shape>
+    </item>
+    
+    <!-- State: Booked/Disabled (not clickable) -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="#E0E0E0"/>
+            <corners android:radius="6dp"/>
+        </shape>
+    </item>
+    
+    <!-- Default State: Available -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent"/>
+            <stroke android:width="1dp" android:color="#4CAF50"/>
+            <corners android:radius="6dp"/>
+        </shape>
+    </item>
 </selector>
