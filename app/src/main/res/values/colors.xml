@@ -22,4 +22,12 @@
     <!-- Default Colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <!-- Seat Status Colors -->
+    <color name="seat_color_available">@color/white</color>
+    <color name="seat_color_selected">@color/black</color>
+    <color name="seat_color_sold_pending">#AAAAAA</color>
+    <color name="seat_text_available">@color/black</color>
+    <color name="seat_text_selected">@color/white</color>
+    <color name="seat_text_sold_pending">@color/white</color>
 </resources>

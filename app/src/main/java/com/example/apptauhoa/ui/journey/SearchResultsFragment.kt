@@ -1,3 +1,4 @@
+// Corrected SearchResultsFragment.kt
 package com.example.apptauhoa.ui.journey
 
 import android.os.Bundle
@@ -6,34 +7,24 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.apptauhoa.R
+import com.example.apptauhoa.databinding.FragmentSearchResultsBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class SearchResultsFragment : Fragment() {
 
-    // --- Data Properties ---
-    private val originName = "Sài Gòn"
-    private val destinationName = "Nha Trang"
-    private val departureDate: LocalDate = LocalDate.now()
-    private val totalPassengers = 1
-    
-    private val allTrips = createMockTrainTrips()
-    private lateinit var trainScheduleAdapter: TrainScheduleAdapter
+    private var _binding: FragmentSearchResultsBinding? = null
+    private val binding get() = _binding!!
 
-    // --- View Properties ---
-    private lateinit var routeTitle: TextView
-    private lateinit var routeSubtitle: TextView
-    private lateinit var trainListRv: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var statusText: TextView
+    private val args: SearchResultsFragmentArgs by navArgs()
+    
+    private lateinit var allTrips: List<TrainTrip>
+    private lateinit var trainScheduleAdapter: TrainScheduleAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,42 +33,39 @@ class SearchResultsFragment : Fragment() {
             val minPrice = bundle.getFloat("minPrice")
             val maxPrice = bundle.getFloat("maxPrice")
             
-            val filteredTrips = allTrips.filter { it.price >= minPrice && it.price <= maxPrice }
-            showResults(filteredTrips)
+            if (::allTrips.isInitialized) {
+                val filteredTrips = allTrips.filter { it.price >= minPrice && it.price <= maxPrice }
+                showResults(filteredTrips)
+            }
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_search_results, container, false)
-        
-        routeTitle = view.findViewById(R.id.txt_route_title)
-        routeSubtitle = view.findViewById(R.id.txt_route_subtitle)
-        trainListRv = view.findViewById(R.id.rv_train_list)
-        progressBar = view.findViewById(R.id.progress_bar)
-        statusText = view.findViewById(R.id.txt_status)
-
-        setupRecyclerView()
-        
-        return view
+    ): View {
+        _binding = FragmentSearchResultsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        allTrips = createMockTrainTrips()
+
+        setupRecyclerView()
         setupHeader()
         loadData()
     }
 
     private fun setupHeader() {
-        routeTitle.text = "$originName – $destinationName"
+        binding.txtRouteTitle.text = "${args.originName} – ${args.destinationName}"
         val formatter = DateTimeFormatter.ofPattern("'Khởi hành' E, dd/MM/yyyy", Locale("vi", "VN"))
-        routeSubtitle.text = "${departureDate.format(formatter)} • $totalPassengers khách"
+        val date = LocalDate.parse(args.departureDate)
+        binding.txtRouteSubtitle.text = "${date.format(formatter)} • ${args.ticketCount} khách"
         
-        view?.findViewById<View>(R.id.btn_back)?.setOnClickListener { findNavController().popBackStack() }
-        view?.findViewById<View>(R.id.btn_filter)?.setOnClickListener {
-            findNavController().navigate(R.id.action_search_results_to_trip_filter)
+        binding.btnBack.setOnClickListener { findNavController().popBackStack() }
+        binding.btnFilter.setOnClickListener {
+            findNavController().navigate(SearchResultsFragmentDirections.actionSearchResultsToTripFilter())
         }
     }
 
@@ -92,12 +80,13 @@ class SearchResultsFragment : Fragment() {
                 coachList = mockCoaches.toTypedArray(),
                 originStation = trainTrip.originStation,
                 destinationStation = trainTrip.destinationStation,
-                tripDate = trainTrip.tripDate
+                tripDate = trainTrip.tripDate,
+                ticketCount = args.ticketCount
             )
             findNavController().navigate(action)
         }
-        trainListRv.layoutManager = LinearLayoutManager(context)
-        trainListRv.adapter = trainScheduleAdapter
+        binding.rvTrainList.layoutManager = LinearLayoutManager(context)
+        binding.rvTrainList.adapter = trainScheduleAdapter
     }
     
     private fun loadData() {
@@ -106,28 +95,29 @@ class SearchResultsFragment : Fragment() {
     }
 
     private fun showLoading() {
-        progressBar.visibility = View.VISIBLE
-        statusText.visibility = View.GONE
-        trainListRv.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+        binding.txtStatus.visibility = View.GONE
+        binding.rvTrainList.visibility = View.GONE
     }
 
     private fun showResults(trips: List<TrainTrip>) {
-        progressBar.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
         if (trips.isEmpty()) {
-            statusText.text = "Không tìm thấy chuyến tàu nào phù hợp."
-            statusText.visibility = View.VISIBLE
+            binding.txtStatus.text = "Không tìm thấy chuyến tàu nào phù hợp."
+            binding.txtStatus.visibility = View.VISIBLE
         } else {
-            statusText.visibility = View.GONE
+            binding.txtStatus.visibility = View.GONE
             trainScheduleAdapter.updateData(trips)
         }
-        trainListRv.visibility = if (trips.isEmpty()) View.GONE else View.VISIBLE
+        binding.rvTrainList.visibility = if (trips.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun createMockTrainTrips(): List<TrainTrip> {
+         val date = LocalDate.parse(args.departureDate)
         return listOf(
-            TrainTrip("ID01", "SE8", "Ngồi mềm điều hòa", 15, "19:30", "04:10", "8h 40m", "Sài Gòn", "Nha Trang", 350000L, departureDate.toString()),
-            TrainTrip("ID02", "SNT2", "Giường nằm khoang 4", 8, "20:00", "05:00", "9h 0m", "Sài Gòn", "Nha Trang", 620000L, departureDate.toString()),
-            TrainTrip("ID03", "SE6", "Ngồi cứng", 0, "21:05", "06:30", "9h 25m", "Sài Gòn", "Nha Trang", 280000L, departureDate.toString())
+            TrainTrip("ID01", "SE8", "Ngồi mềm điều hòa", 15, "19:30", "04:10", "8h 40m", args.originName, args.destinationName, 350000L, date.toString()),
+            TrainTrip("ID02", "SNT2", "Giường nằm khoang 4", 8, "20:00", "05:00", "9h 0m", args.originName, args.destinationName, 620000L, date.toString()),
+            TrainTrip("ID03", "SE6", "Ngồi cứng", 0, "21:05", "06:30", "9h 25m", args.originName, args.destinationName, 280000L, date.toString())
         )
     }
 
@@ -143,5 +133,10 @@ class SearchResultsFragment : Fragment() {
             )
             else -> emptyList()
         }
+    }
+    
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

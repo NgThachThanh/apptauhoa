@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 enum class SeatStatus : Parcelable {
     AVAILABLE,
-    BOOKED,
-    SELECTED
+    SELECTED,
+    BOOKED, // Note: The prompt uses SOLD, but the codebase uses BOOKED. Sticking to BOOKED for consistency.
+    PENDING
 }

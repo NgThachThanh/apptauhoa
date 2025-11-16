@@ -1,61 +1,41 @@
-package com.example.apptauhoa.ui.account   // sửa cho đúng package
+package com.example.apptauhoa.ui.account
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.apptauhoa.R
-import com.google.android.material.textfield.TextInputEditText
 import androidx.navigation.fragment.findNavController
+import com.example.apptauhoa.databinding.FragmentRegisterBinding
 
-class RegisterFragment : Fragment(R.layout.fragment_register) {
+class RegisterFragment : Fragment() {
 
-    private lateinit var edtName: TextInputEditText
-    private lateinit var edtEmail: TextInputEditText
-    private lateinit var edtPassword: TextInputEditText
-    private lateinit var edtConfirm: TextInputEditText
-    private lateinit var btnRegister: Button
-    private lateinit var tvGoToLogin: TextView
+    private var _binding: FragmentRegisterBinding? = null
+    private val binding get() = _binding!!
+    
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        edtName = view.findViewById(R.id.edtName)
-        edtEmail = view.findViewById(R.id.edtEmail)
-        edtPassword = view.findViewById(R.id.edtPassword)
-        edtConfirm = view.findViewById(R.id.edtConfirm)
-        btnRegister = view.findViewById(R.id.btnRegister)
-        tvGoToLogin = view.findViewById(R.id.tvGoToLogin)
-
-        btnRegister.setOnClickListener {
-            val name = edtName.text.toString().trim()
-            val email = edtEmail.text.toString().trim()
-            val pass = edtPassword.text.toString().trim()
-            val confirm = edtConfirm.text.toString().trim()
-
-            if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
-                Toast.makeText(requireContext(),
-                    "Vui lòng nhập đầy đủ thông tin",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else if (pass != confirm) {
-                Toast.makeText(requireContext(),
-                    "Mật khẩu không khớp",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(requireContext(),
-                    "Đăng ký thành công (demo)",
-                    Toast.LENGTH_SHORT
-                ).show()
-                // có thể tự chuyển về Login nếu muốn
-            }
+        
+        binding.btnRegister.setOnClickListener {
+            findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
         }
 
-        tvGoToLogin.setOnClickListener {
-            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        binding.tvGoToLogin.setOnClickListener {
+            findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
         }
+    }
+    
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

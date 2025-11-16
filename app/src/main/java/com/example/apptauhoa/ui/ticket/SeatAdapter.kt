@@ -3,53 +3,135 @@ package com.example.apptauhoa.ui.ticket
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.apptauhoa.R
+import com.example.apptauhoa.databinding.ItemSeatRowBinding
+import com.example.apptauhoa.databinding.ItemSleeperCompartmentBinding
+import com.example.apptauhoa.databinding.ItemUtilitySpaceBinding
+import com.google.android.material.button.MaterialButton
 
-class SeatAdapter(private val onSeatClick: (Seat) -> Unit) : 
-    ListAdapter<Seat, SeatAdapter.SeatViewHolder>(SeatDiffCallback()) {
+private const val TYPE_SEAT_ROW = 1
+private const val TYPE_SLEEPER_COMPARTMENT = 2
+private const val TYPE_UTILITY = 3
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeatViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_seat, parent, false)
-        return SeatViewHolder(view)
+class SeatAdapter(
+    private val onSeatClicked: (Seat) -> Unit
+) : ListAdapter<RailCarDisplayItem, RecyclerView.ViewHolder>(RailCarDiffCallback()) {
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is RailCarDisplayItem.SeatRow -> TYPE_SEAT_ROW
+            is RailCarDisplayItem.SleeperCompartment -> TYPE_SLEEPER_COMPARTMENT
+            is RailCarDisplayItem.UtilitySpace -> TYPE_UTILITY
+        }
     }
 
-    override fun onBindViewHolder(holder: SeatViewHolder, position: Int) {
-        val seat = getItem(position)
-        holder.bind(seat, onSeatClick)
-    }
-
-    class SeatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val seatNumber: TextView = itemView.findViewById(R.id.seat_number)
-
-        fun bind(seat: Seat, onSeatClick: (Seat) -> Unit) {
-            seatNumber.text = seat.number
-            
-            val backgroundRes = when (seat.status) {
-                SeatStatus.AVAILABLE -> R.drawable.bg_seat_available
-                SeatStatus.BOOKED -> R.drawable.bg_seat_booked
-                SeatStatus.SELECTED -> R.drawable.bg_seat_selected
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            TYPE_SEAT_ROW -> {
+                val binding = ItemSeatRowBinding.inflate(inflater, parent, false)
+                SeatRowViewHolder(binding, onSeatClicked)
             }
-            seatNumber.setBackgroundResource(backgroundRes)
+            TYPE_SLEEPER_COMPARTMENT -> {
+                val binding = ItemSleeperCompartmentBinding.inflate(inflater, parent, false)
+                SleeperViewHolder(binding, onSeatClicked)
+            }
+            else -> {
+                val binding = ItemUtilitySpaceBinding.inflate(inflater, parent, false)
+                UtilityViewHolder(binding)
+            }
+        }
+    }
 
-            itemView.setOnClickListener {
-                if (seat.status != SeatStatus.BOOKED) {
-                    onSeatClick(seat)
-                }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val item = getItem(position)) {
+            is RailCarDisplayItem.SeatRow -> (holder as SeatRowViewHolder).bind(item)
+            is RailCarDisplayItem.SleeperCompartment -> (holder as SleeperViewHolder).bind(item)
+            is RailCarDisplayItem.UtilitySpace -> (holder as UtilityViewHolder).bind(item)
+        }
+    }
+}
+
+// --- VIEW HOLDERS ---
+
+abstract class BaseSeatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    protected fun bindSeatButtonState(button: MaterialButton, seat: Seat?, onSeatClicked: (Seat) -> Unit) {
+        if (seat == null) {
+            button.visibility = View.INVISIBLE
+            return
+        }
+        button.visibility = View.VISIBLE
+        button.text = seat.number
+        button.setOnClickListener { onSeatClicked(seat) }
+
+        when (seat.status) {
+            SeatStatus.AVAILABLE -> {
+                button.isEnabled = true
+                button.isChecked = false
+            }
+            SeatStatus.SELECTED -> {
+                button.isEnabled = true
+                button.isChecked = true
+            }
+            SeatStatus.BOOKED, SeatStatus.PENDING -> {
+                button.isEnabled = false
+                button.isChecked = false
             }
         }
     }
 }
 
-class SeatDiffCallback : DiffUtil.ItemCallback<Seat>() {
-    override fun areItemsTheSame(oldItem: Seat, newItem: Seat): Boolean {
+
+class SeatRowViewHolder(
+    private val binding: ItemSeatRowBinding,
+    private val onSeatClicked: (Seat) -> Unit
+) : BaseSeatViewHolder(binding.root) {
+    fun bind(item: RailCarDisplayItem.SeatRow) {
+        binding.rowNumber.text = item.seats.firstOrNull()?.rowNumber.toString()
+        val seatMap = item.seats.associateBy { it.positionInRow }
+        
+        bindSeatButtonState(binding.seatA, seatMap["A"], onSeatClicked)
+        bindSeatButtonState(binding.seatB, seatMap["B"], onSeatClicked)
+        bindSeatButtonState(binding.seatC, seatMap["C"], onSeatClicked)
+        bindSeatButtonState(binding.seatD, seatMap["D"], onSeatClicked)
+    }
+}
+
+class SleeperViewHolder(
+    private val binding: ItemSleeperCompartmentBinding,
+    private val onSeatClicked: (Seat) -> Unit
+) : BaseSeatViewHolder(binding.root) {
+    fun bind(item: RailCarDisplayItem.SleeperCompartment) {
+        binding.compartmentLabel.text = "Khoang ${item.beds.firstOrNull()?.compartmentNumber}"
+        val bedMap = item.beds.associateBy { it.positionInRow }
+
+        bindSeatButtonState(binding.bedT1l, bedMap["T1L"], onSeatClicked)
+        bindSeatButtonState(binding.bedT2l, bedMap["T2L"], onSeatClicked)
+        bindSeatButtonState(binding.bedT3l, bedMap["T3L"], onSeatClicked)
+        bindSeatButtonState(binding.bedT1r, bedMap["T1R"], onSeatClicked)
+        bindSeatButtonState(binding.bedT2r, bedMap["T2R"], onSeatClicked)
+        bindSeatButtonState(binding.bedT3r, bedMap["T3R"], onSeatClicked)
+    }
+}
+
+class UtilityViewHolder(private val binding: ItemUtilitySpaceBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: RailCarDisplayItem.UtilitySpace) {
+        binding.utilityText.text = item.type
+    }
+}
+
+
+// --- DIFFUTIL ---
+
+class RailCarDiffCallback : DiffUtil.ItemCallback<RailCarDisplayItem>() {
+    override fun areItemsTheSame(oldItem: RailCarDisplayItem, newItem: RailCarDisplayItem): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Seat, newItem: Seat): Boolean {
+    override fun areContentsTheSame(oldItem: RailCarDisplayItem, newItem: RailCarDisplayItem): Boolean {
+        // Simple equality check is enough since data classes are used
         return oldItem == newItem
     }
 }
