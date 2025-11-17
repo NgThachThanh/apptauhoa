@@ -46,7 +46,6 @@ class SeatAdapter(
         fun bind(seat: Seat) {
             seatNumberText.text = seat.seatNumber
             
-            // The selector drawable handles the background color based on these states.
             itemView.isSelected = seat.status == SeatStatus.SELECTED
             itemView.isEnabled = seat.status != SeatStatus.SOLD
 

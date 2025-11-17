@@ -58,7 +58,6 @@ class PaymentFragment : Fragment() {
         }
 
         binding.buttonConfirmPayment.setOnClickListener {
-            // Mock navigation to the final ticket detail screen
             findNavController().navigate(R.id.action_payment_to_ticket_detail)
         }
     }
