@@ -1,35 +1,32 @@
 package com.example.apptauhoa.ui.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.apptauhoa.R
+import com.example.apptauhoa.data.model.Promotion
+import com.example.apptauhoa.databinding.ItemPromotionBinding
 
 class PromotionAdapter(
     private val onClick: (Promotion) -> Unit
 ) : ListAdapter<Promotion, PromotionAdapter.PromotionViewHolder>(PromotionDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PromotionViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_promotion, parent, false)
-        return PromotionViewHolder(view, onClick)
+        val binding = ItemPromotionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PromotionViewHolder(binding, onClick)
     }
 
     override fun onBindViewHolder(holder: PromotionViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val promotion = getItem(position)
+        holder.bind(promotion)
     }
 
     class PromotionViewHolder(
-        itemView: View,
-        val onClick: (Promotion) -> Unit
-    ) : RecyclerView.ViewHolder(itemView) {
-        private val titleView: TextView = itemView.findViewById(R.id.textView_promotion_title)
-        private val imageView: ImageView = itemView.findViewById(R.id.imageView_promotion_banner)
+        private val binding: ItemPromotionBinding,
+        private val onClick: (Promotion) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
         private var currentPromotion: Promotion? = null
 
         init {
@@ -42,9 +39,10 @@ class PromotionAdapter(
 
         fun bind(promotion: Promotion) {
             currentPromotion = promotion
-            titleView.text = promotion.title
-            // In a real app, you would load promotion.imageUrl here using Glide/Coil
-            // For now, the placeholder from the layout is sufficient.
+            binding.textViewPromotionTitle.text = promotion.title
+            // In a real app, you would load the image from promotion.imageUrl using Glide, Picasso, or Coil.
+            // For this example, we'll just set a placeholder.
+            // e.g. binding.imageViewPromotionBanner.load(promotion.imageUrl)
         }
     }
 }

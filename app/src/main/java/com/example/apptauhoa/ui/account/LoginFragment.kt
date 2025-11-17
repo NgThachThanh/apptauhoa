@@ -1,61 +1,40 @@
-package com.example.apptauhoa.ui.account   // sửa cho đúng package của bạn
+package com.example.apptauhoa.ui.account
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.apptauhoa.R
-import com.google.android.material.textfield.TextInputEditText
 import androidx.navigation.fragment.findNavController
+import com.example.apptauhoa.databinding.FragmentLoginBinding
 
-class LoginFragment : Fragment(R.layout.fragment_login) {
+class LoginFragment : Fragment() {
 
-    private lateinit var edtEmail: TextInputEditText
-    private lateinit var edtPassword: TextInputEditText
-    private lateinit var btnLogin: Button
-    private lateinit var btnLoginGoogle: Button
-    private lateinit var tvGoToRegister: TextView
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        edtEmail = view.findViewById(R.id.edtEmail)
-        edtPassword = view.findViewById(R.id.edtPassword)
-        btnLogin = view.findViewById(R.id.btnLogin)
-        btnLoginGoogle = view.findViewById(R.id.btnLoginGoogle)
-        tvGoToRegister = view.findViewById(R.id.tvGoToRegister)
-
-        btnLogin.setOnClickListener {
-            val email = edtEmail.text.toString().trim()
-            val pass = edtPassword.text.toString().trim()
-
-            if (email.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(requireContext(),
-                    "Vui lòng nhập đủ email và mật khẩu",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(requireContext(),
-                    "Đăng nhập thành công (demo)",
-                    Toast.LENGTH_SHORT
-                ).show()
-                findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            }
+        binding.btnLogin.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
         }
 
-        btnLoginGoogle.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                "Đây chỉ là nút UI Google, chưa gắn SDK",
-                Toast.LENGTH_SHORT
-            ).show()
+        binding.tvGoToRegister.setOnClickListener {
+            findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
         }
+    }
 
-        tvGoToRegister.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-        }
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

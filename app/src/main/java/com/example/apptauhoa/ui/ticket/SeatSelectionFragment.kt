@@ -4,209 +4,114 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apptauhoa.R
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
-import com.google.android.material.tabs.TabLayout
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+import com.example.apptauhoa.databinding.FragmentSeatSelectionBinding
+import kotlinx.coroutines.launch
 
 class SeatSelectionFragment : Fragment() {
 
-    // Args & State
-    private var adults: Int = 0
-    private var children: Int = 0
-    private var coaches: List<Coach> = emptyList()
-    private lateinit var seatmapAdapter: SeatmapAdapter
-    private var selectedSeats = mutableListOf<Seat>()
-    private var currentCoachIndex = 0
-    private var currentDeck = 1 // The 'Seat' model uses Int (1 for lower, 2 for upper)
+    private var _binding: FragmentSeatSelectionBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            adults = it.getInt("adults", 0)
-            children = it.getInt("children", 0)
-            val coachesArray = it.getParcelableArray("coaches")
-            coaches = coachesArray?.mapNotNull { it as? Coach } ?: emptyList()
+    private val viewModel: SeatSelectionViewModel by navGraphViewModels(R.id.navigation_seat_selection)
+    
+    private lateinit var seatAdapter: SeatAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSeatSelectionBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupToolbar()
+        setupRecyclerView()
+        setupConfirmationButton()
+        
+        collectUiState()
+        collectUiEvents()
+        collectNavigationEvents()
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
+    }
+
+    private fun setupRecyclerView() {
+        seatAdapter = SeatAdapter { seat -> viewModel.onSeatSelected(seat) }
+        binding.rvSeatmap.apply {
+            adapter = seatAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+    }
+    
+    private fun setupConfirmationButton() {
+        binding.btnConfirmSeats.setOnClickListener {
+            viewModel.processAndNavigate()
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_seat_selection, container, false)
-
-        // Always setup the basic header
-        setupHeader(view)
-
-        val hasAnySeats = coaches.any { it.seats.isNotEmpty() }
-        if (!hasAnySeats) {
-            showEmptyState(view)
-        } else {
-            // Setup the rest of the interactive UI only if we have data
-            showContent(view)
-            setupSeatmap(view)
-            setupCoachAndDeckControls(view)
-            setupFooter(view)
-            setupBottomNav(view)
-            updateUiForSelectedCoach()
-        }
-        return view
-    }
-
-    // Sets up elements that are always visible
-    private fun setupHeader(view: View) {
-        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-        toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
-
-        val subtitle: TextView = view.findViewById(R.id.txt_subtitle)
-        val originName = arguments?.getString("originName") ?: ""
-        val destinationName = arguments?.getString("destinationName") ?: ""
-        val dateString = arguments?.getString("departureDate")
-        val dateText = dateString?.let { LocalDate.parse(it).format(DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("vi", "VN"))) } ?: ""
-        subtitle.text = "$originName → $destinationName • $dateText"
-    }
-
-    private fun showEmptyState(view: View) {
-        view.findViewById<TextView>(R.id.txt_empty_state).isVisible = true
-        view.findViewById<RecyclerView>(R.id.rv_seatmap).isVisible = false
-
-        // Hide controls
-        view.findViewById<View>(R.id.controls_container).isVisible = false
-        view.findViewById<TabLayout>(R.id.tabs_coach).isVisible = false
-        view.findViewById<View>(R.id.footer_card).isVisible = false
-    }
-
-    private fun showContent(view: View) {
-        view.findViewById<TextView>(R.id.txt_empty_state).isVisible = false
-        view.findViewById<RecyclerView>(R.id.rv_seatmap).isVisible = true
-        view.findViewById<View>(R.id.controls_container).isVisible = true
-        view.findViewById<TabLayout>(R.id.tabs_coach).isVisible = true
-        view.findViewById<View>(R.id.footer_card).isVisible = true
-    }
-
-    private fun setupCoachAndDeckControls(view: View) {
-        val coachTabs: TabLayout = view.findViewById(R.id.tabs_coach)
-        coachTabs.clearOnTabSelectedListeners()
-        coachTabs.removeAllTabs()
-        coaches.forEach { coach -> coachTabs.addTab(coachTabs.newTab().setText(coach.name)) }
-        coachTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab != null && currentCoachIndex != tab.position) {
-                    currentCoachIndex = tab.position
-                    selectedSeats.clear()
-                    updateUiForSelectedCoach()
-                    updateFooter(view)
+    private fun collectUiState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Observe seat map
+                launch {
+                    viewModel.displayItems.collect { items ->
+                        seatAdapter.submitList(items)
+                    }
+                }
+                // Observe trip details to update toolbar title
+                launch {
+                    viewModel.tripDetails.collect { details ->
+                        if (details != null) {
+                            binding.toolbar.title = "Chọn ghế - ${details.trainCode}"
+                        }
+                    }
                 }
             }
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
-
-        val deckChipGroup: ChipGroup = view.findViewById(R.id.chip_deck)
-        deckChipGroup.setOnCheckedChangeListener { _, checkedId ->
-            val newDeck = if (checkedId == R.id.chip_upper) 2 else 1
-            if (currentDeck != newDeck) {
-                currentDeck = newDeck
-                updateSeatListForDeck()
+        }
+    }
+    
+     private fun collectNavigationEvents() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.navigationEvent.collect { navArgs ->
+                    val action = SeatSelectionFragmentDirections.actionSeatSelectionToPayment(
+                        tripSummary = navArgs.tripSummary,
+                        selectedSeatsInfo = navArgs.selectedSeatsInfo,
+                        originalPrice = navArgs.originalPrice,
+                        departureTime = navArgs.departureTime
+                    )
+                    findNavController().navigate(action)
+                }
             }
         }
     }
 
-    private fun setupSeatmap(view: View) {
-        val rvSeatmap: RecyclerView = view.findViewById(R.id.rv_seatmap)
-        val requiredSeats = adults + children
-
-        seatmapAdapter = SeatmapAdapter(mutableListOf()) { seat, _ ->
-            val index = seatmapAdapter.seats.indexOfFirst { it.id == seat.id }
-            if (index == -1) return@SeatmapAdapter
-
-            val currentSeatState = seatmapAdapter.seats[index]
-            if (currentSeatState.status == SeatStatus.SELECTED) {
-                seatmapAdapter.updateSeat(index, currentSeatState.copy(status = SeatStatus.AVAILABLE))
-                selectedSeats.removeAll { it.id == currentSeatState.id }
-            } else if (selectedSeats.size < requiredSeats) {
-                val newSeat = currentSeatState.copy(status = SeatStatus.SELECTED)
-                seatmapAdapter.updateSeat(index, newSeat)
-                selectedSeats.add(newSeat)
+    private fun collectUiEvents() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiEvent.collect { message ->
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                }
             }
-            updateFooter(view)
-        }
-        rvSeatmap.adapter = seatmapAdapter
-        rvSeatmap.layoutManager = GridLayoutManager(context, 5)
-    }
-
-    private fun updateUiForSelectedCoach() {
-        val view = this.view ?: return
-        val currentCoach = coaches.getOrNull(currentCoachIndex)
-        val deckChipGroup: ChipGroup = view.findViewById(R.id.chip_deck)
-
-        if (currentCoach == null || currentCoach.seats.isEmpty()) {
-            seatmapAdapter.updateSeats(emptyList())
-            deckChipGroup.isVisible = false
-            return
-        }
-
-        val hasLowerDeck = currentCoach.seats.any { it.deck == 1 }
-        val hasUpperDeck = currentCoach.seats.any { it.deck == 2 }
-
-        if (hasLowerDeck && hasUpperDeck) {
-            deckChipGroup.isVisible = true
-            if (deckChipGroup.checkedChipId != R.id.chip_lower) {
-                currentDeck = 1
-                deckChipGroup.check(R.id.chip_lower)
-            }
-        } else {
-            deckChipGroup.isVisible = false
-            currentDeck = if (hasUpperDeck) 2 else 1
-        }
-        updateSeatListForDeck()
-    }
-
-    private fun updateSeatListForDeck() {
-        val currentCoach = coaches.getOrNull(currentCoachIndex) ?: return
-        val seatsForDeck = currentCoach.seats.filter { it.deck == currentDeck }
-        seatmapAdapter.updateSeats(seatsForDeck)
-    }
-
-    private fun setupFooter(view: View) {
-        updateFooter(view)
-        view.findViewById<Button>(R.id.btn_confirm_seats).setOnClickListener {
-            val result = SeatSelectionResult(
-                selectedSeats = selectedSeats.map { seat ->
-                    val deckEnum = if (seat.deck == 2) Deck.UPPER else Deck.LOWER
-                    SeatRef("C1", seat.number, deckEnum)
-                },
-                totalPrice = selectedSeats.sumOf { it.price }
-            )
-            val args = bundleOf("selectionResult" to result)
-            findNavController().navigate(R.id.action_seat_selection_to_ticket_detail, args)
         }
     }
 
-    private fun updateFooter(view: View) {
-        val requiredSeats = adults + children
-        val summary: TextView = view.findViewById(R.id.txt_selected_summary)
-        val totalPrice: TextView = view.findViewById(R.id.txt_total_price)
-        val confirmButton: Button = view.findViewById(R.id.btn_confirm_seats)
-
-        summary.text = "Đã chọn ${selectedSeats.size}/$requiredSeats chỗ"
-        totalPrice.text = "${selectedSeats.sumOf { it.price }}đ"
-        confirmButton.isEnabled = selectedSeats.size == requiredSeats && requiredSeats > 0
-    }
-
-    private fun setupBottomNav(view: View) {
-        val bottomNav: BottomNavigationView = view.findViewById(R.id.seat_bottom_nav)
-        bottomNav.setOnItemSelectedListener { true }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -8,7 +8,16 @@
         <item name="colorOnSurface">@color/md_theme_dark_onSurface</item>
         <item name="colorOnSurfaceVariant">@color/md_theme_dark_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/md_theme_dark_background</item>
+
+        <!-- Shape Overrides -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.App.LargeComponent</item>
     </style>
 
+    <!--
+        Note: The ShapeAppearance styles are defined in the main `values/themes.xml` file.
+        We only need to reference them here.
+    -->
     <style name="Theme.Apptauhoa" parent="Base.Theme.Apptauhoa" />
 </resources>

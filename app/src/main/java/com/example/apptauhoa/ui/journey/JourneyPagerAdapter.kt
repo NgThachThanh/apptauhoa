@@ -8,7 +8,11 @@ class JourneyPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
-        // Return a NEW fragment instance for each position
-        return TripListFragment.newInstance(position)
+        return when (position) {
+            0 -> UpcomingTripsFragment()
+            1 -> PastTripsFragment()
+            2 -> CancelledTripsFragment()
+            else -> throw IllegalStateException("Invalid position: $position")
+        }
     }
 }
