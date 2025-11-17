@@ -1,118 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="8dp">
+    android:orientation="vertical"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/compartment_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/compartment" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
-
-        <TextView
-            android:id="@+id/compartment_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Khoang 3" />
-
-        <!-- Left Column -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bed_t3l"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:checkable="true"
-            android:textColor="@color/seat_text_color"
-            app:backgroundTint="@color/seat_background_tint"
-            app:strokeColor="@color/seat_stroke_color"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_center"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/compartment_label"
-            tools:text="Giường 3 Trái" />
+        android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/bed_t2l"
+            android:id="@+id/bed_left"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:textColor="@color/seat_text_color"
-            app:backgroundTint="@color/seat_background_tint"
-            app:strokeColor="@color/seat_stroke_color"
-            app:layout_constraintEnd_toEndOf="@id/bed_t3l"
-            app:layout_constraintStart_toStartOf="@id/bed_t3l"
-            app:layout_constraintTop_toBottomOf="@id/bed_t3l"
-            tools:text="Giường 2 Trái" />
+            android:layout_height="140dp"
+            android:layout_weight="1"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="1dp"
+            android:contentDescription="@string/bed_left" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/bed_t1l"
+            android:id="@+id/bed_right"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:textColor="@color/seat_text_color"
-            app:backgroundTint="@color/seat_background_tint"
-            app:strokeColor="@color/seat_stroke_color"
-            app:layout_constraintEnd_toEndOf="@id/bed_t2l"
-            app:layout_constraintStart_toStartOf="@id/bed_t2l"
-            app:layout_constraintTop_toBottomOf="@id/bed_t2l"
-            tools:text="Giường 1 Trái" />
+            android:layout_height="140dp"
+            android:layout_weight="1"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/bed_right" />
 
-        <!-- Right Column -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bed_t3r"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:textColor="@color/seat_text_color"
-            app:backgroundTint="@color/seat_background_tint"
-            app:strokeColor="@color/seat_stroke_color"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guideline_center"
-            app:layout_constraintTop_toTopOf="@id/bed_t3l"
-            tools:text="Giường 3 Phải" />
+    </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bed_t2r"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:textColor="@color/seat_text_color"
-            app:backgroundTint="@color/seat_background_tint"
-            app:strokeColor="@color/seat_stroke_color"
-            app:layout_constraintEnd_toEndOf="@id/bed_t3r"
-            app:layout_constraintStart_toStartOf="@id/bed_t3r"
-            app:layout_constraintTop_toBottomOf="@id/bed_t3r"
-            tools:text="Giường 2 Phải" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bed_t1r"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:checkable="true"
-            android:textColor="@color/seat_text_color"
-            app:backgroundTint="@color/seat_background_tint"
-            app:strokeColor="@color/seat_stroke_color"
-            app:layout_constraintEnd_toEndOf="@id/bed_t2r"
-            app:layout_constraintStart_toStartOf="@id/bed_t2r"
-            app:layout_constraintTop_toBottomOf="@id/bed_t2r"
-            tools:text="Giường 1 Phải" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

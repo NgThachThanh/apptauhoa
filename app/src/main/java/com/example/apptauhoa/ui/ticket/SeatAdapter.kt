@@ -90,8 +90,8 @@ class SeatRowViewHolder(
 ) : BaseSeatViewHolder(binding.root) {
     fun bind(item: RailCarDisplayItem.SeatRow) {
         binding.rowNumber.text = item.seats.firstOrNull()?.rowNumber.toString()
-        val seatMap = item.seats.associateBy { it.positionInRow }
-        
+        val seatMap: Map<String, Seat> = item.seats.associateBy { it.positionInRow }
+
         bindSeatButtonState(binding.seatA, seatMap["A"], onSeatClicked)
         bindSeatButtonState(binding.seatB, seatMap["B"], onSeatClicked)
         bindSeatButtonState(binding.seatC, seatMap["C"], onSeatClicked)
@@ -107,12 +107,8 @@ class SleeperViewHolder(
         binding.compartmentLabel.text = "Khoang ${item.beds.firstOrNull()?.compartmentNumber}"
         val bedMap = item.beds.associateBy { it.positionInRow }
 
-        bindSeatButtonState(binding.bedT1l, bedMap["T1L"], onSeatClicked)
-        bindSeatButtonState(binding.bedT2l, bedMap["T2L"], onSeatClicked)
-        bindSeatButtonState(binding.bedT3l, bedMap["T3L"], onSeatClicked)
-        bindSeatButtonState(binding.bedT1r, bedMap["T1R"], onSeatClicked)
-        bindSeatButtonState(binding.bedT2r, bedMap["T2R"], onSeatClicked)
-        bindSeatButtonState(binding.bedT3r, bedMap["T3R"], onSeatClicked)
+        bindSeatButtonState(binding.bedLeft, bedMap["1"], onSeatClicked)
+        bindSeatButtonState(binding.bedRight, bedMap["2"], onSeatClicked)
     }
 }
 

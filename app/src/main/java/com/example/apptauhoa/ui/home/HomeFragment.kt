@@ -36,6 +36,13 @@ class HomeFragment : Fragment() {
     private var children = 0
     private var infants = 0
 
+    private val welcomeMessages = listOf(
+        "Chào mừng bạn đến với nhà ga",
+        "Chúc bạn có một chuyến đi vui vẻ",
+        "Khám phá những vùng đất mới",
+        "Tận hưởng hành trình của bạn"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupResultListeners()
@@ -52,6 +59,8 @@ class HomeFragment : Fragment() {
         setupViewListeners()
         setupObservers()
         updateAllUI()
+
+        binding.textWelcome.text = welcomeMessages.random()
     }
 
     private fun setupRecyclerViews() {

@@ -49,7 +49,21 @@ class SeatSelectionFragment : Fragment() {
 
     private fun setupAdapter() {
         seatAdapter = SeatAdapter { seat ->
-            viewModel.onSeatSelected(seat)
+            val allItems = seatAdapter.currentList
+            val allSeatsInCoach = allItems.flatMap {
+                when (it) {
+                    is RailCarDisplayItem.SeatRow -> it.seats
+                    is RailCarDisplayItem.SleeperCompartment -> it.beds
+                    else -> emptyList()
+                }
+            }
+            val selectedSeats = allSeatsInCoach.filter { it.status == SeatStatus.SELECTED }
+
+            if (args.ticketCount == 1 && selectedSeats.isNotEmpty() && seat.status != SeatStatus.SELECTED) {
+                Toast.makeText(requireContext(), "Bạn chỉ được chọn 1 ghế", Toast.LENGTH_SHORT).show()
+            } else {
+                viewModel.onSeatSelected(seat)
+            }
         }
     }
 
@@ -109,7 +123,8 @@ class SeatSelectionFragment : Fragment() {
                             selectedSeatsInfo = navEvent.selectedSeatsInfo,
                             originalPrice = navEvent.originalPrice,
                             departureTime = navEvent.departureTime,
-                            tripId = navEvent.tripId // Pass the tripId to the next screen
+                            arrivalTime = navEvent.arrivalTime,
+                            tripId = navEvent.tripId
                         )
                         findNavController().navigate(action)
                     }
