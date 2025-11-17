@@ -1,6 +1,5 @@
 package com.example.apptauhoa.ui.home
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +13,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apptauhoa.R
 import com.example.apptauhoa.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 class HomeFragment : Fragment() {
@@ -32,7 +30,7 @@ class HomeFragment : Fragment() {
 
     private var originStation: Station? = null
     private var destinationStation: Station? = null
-    private var departureDate: Calendar? = null
+    private var departureDate: LocalDate? = LocalDate.now()
     private var adults = 1
     private var children = 0
     private var infants = 0
@@ -42,194 +40,89 @@ class HomeFragment : Fragment() {
         setupResultListeners()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupDefaultDate()
+        setupRecyclerViews()
         setupViewListeners()
-        setupSuggestionCard()
-        setupPromotions()
+        setupObservers()
+        updateAllUI()
     }
 
-    private fun setupDefaultDate() {
-        viewModel.defaultDepartureDate.observe(viewLifecycleOwner) { (date, formattedDate) ->
-            if (departureDate == null) {
-                departureDate = date
-                updateAllUI()
-            }
+    private fun setupRecyclerViews() {
+        promotionAdapter = PromotionAdapter { promotion ->
+            Toast.makeText(context, "Clicked on: ${promotion.title}", Toast.LENGTH_SHORT).show()
         }
+        binding.recyclerViewPromotions.adapter = promotionAdapter
     }
 
-    private fun setupPromotions() {
-        promotionAdapter = PromotionAdapter { }
-        binding.recyclerViewPromotions.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = promotionAdapter
-        }
-        viewModel.promotions.observe(viewLifecycleOwner) { promotions ->
-            promotionAdapter.submitList(promotions)
-        }
-    }
-
-    private fun setupSuggestionCard() {
-        viewModel.randomSuggestion.observe(viewLifecycleOwner) { suggestion ->
-            binding.textViewSuggestionTitle.text = suggestion.title
-        }
-        binding.buttonFindTicketSuggestion.setOnClickListener {
-            viewModel.onSuggestionCardClicked()
-        }
+    private fun setupObservers() {
+        viewModel.promotions.observe(viewLifecycleOwner) { promotionAdapter.submitList(it) }
+        viewModel.randomSuggestion.observe(viewLifecycleOwner) { binding.textViewSuggestionSubtitle.text = it.title }
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.suggestionEvent.collect { suggestion ->
-                    binding.destinationValue.text = suggestion.stationName
-                    binding.nestedScrollViewHome.smoothScrollTo(0, 0)
-                }
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun setupResultListeners() {
-        childFragmentManager.setFragmentResultListener("passengers_result", this) { _, bundle ->
-            adults = bundle.getInt("adults")
-            children = bundle.getInt("children")
-            infants = bundle.getInt("infants")
-            updateAllUI()
-        }
-        parentFragmentManager.setFragmentResultListener("ORIGIN", this) { _, bundle ->
-             originStation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle.getParcelable("station", Station::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                bundle.getParcelable("station")
-            }
-            updateAllUI()
-        }
-        parentFragmentManager.setFragmentResultListener("DESTINATION", this) { _, bundle ->
-             destinationStation = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle.getParcelable("station", Station::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                bundle.getParcelable("station")
-            }
-            updateAllUI()
-        }
-        parentFragmentManager.setFragmentResultListener("date_result", this) { _, bundle ->
-            val dateString = bundle.getString("selected_date")
-            if (dateString != null) {
-                val date = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dateString)
-                if (date != null) {
-                    departureDate = Calendar.getInstance().apply { time = date }
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.suggestionEvent.collect {
+                    destinationStation = Station(it.stationCode, it.stationName)
                     updateAllUI()
+                    binding.nestedScrollViewHome.smoothScrollTo(0, 0)
+                    binding.destinationValue.requestFocus()
                 }
             }
         }
     }
 
     private fun setupViewListeners() {
-        binding.originStationRow.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeToStationPicker("ORIGIN"))
-        }
-        binding.destinationStationRow.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeToStationPicker("DESTINATION"))
-        }
+        binding.buttonFindTicketSuggestion.setOnClickListener { viewModel.onSuggestionCardClicked() }
+        binding.textViewSeeAllPromotions.setOnClickListener { Toast.makeText(context, "Chức năng xem tất cả ưu đãi đang được phát triển!", Toast.LENGTH_SHORT).show() }
+        binding.originStationRow.setOnClickListener { findNavController().navigate(R.id.action_home_to_station_picker, bundleOf("purpose" to "ORIGIN")) }
+        binding.destinationStationRow.setOnClickListener { findNavController().navigate(R.id.action_home_to_station_picker, bundleOf("purpose" to "DESTINATION")) }
         binding.swapButton.setOnClickListener {
             val temp = originStation
             originStation = destinationStation
             destinationStation = temp
             updateAllUI()
         }
-        binding.panelDepartureDate.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.actionHomeToDatePicker())
-        }
+        binding.panelDepartureDate.setOnClickListener { findNavController().navigate(R.id.action_home_to_date_picker) }
         binding.panelPassengers.setOnClickListener {
             PassengersBottomSheetFragment.newInstance(adults, children, infants)
                 .show(childFragmentManager, PassengersBottomSheetFragment.TAG)
         }
         binding.btnSearchTrips.setOnClickListener {
             if (validateForm(showErrors = true)) {
-                val dateString = departureDate?.let {
-                    SimpleDateFormat("yyyy-MM-dd", Locale.US).format(it.time)
-                } ?: ""
-                val ticketCount = adults + children
-
+                val totalPassengers = adults + children
                 val action = HomeFragmentDirections.actionHomeToSearchResults(
                     originName = originStation!!.name,
                     destinationName = destinationStation!!.name,
-                    departureDate = dateString,
+                    departureDate = departureDate!!.toString(),
                     adults = adults,
                     children = children,
                     infants = infants,
-                    ticketCount = ticketCount
+                    totalPassengers = totalPassengers
                 )
                 findNavController().navigate(action)
             }
         }
     }
-
-    private fun updateAllUI() {
-        updateStationUI()
-        updateDateUI()
-        updatePassengersUI()
-        validateForm()
+    
+    private fun setupResultListeners() {
+        childFragmentManager.setFragmentResultListener("passengers_result", this) { _, bundle -> adults = bundle.getInt("adults"); children = bundle.getInt("children"); infants = bundle.getInt("infants"); updateAllUI() }
+        parentFragmentManager.setFragmentResultListener("ORIGIN", this) { _, bundle -> originStation = bundle.getParcelable("station"); updateAllUI() }
+        parentFragmentManager.setFragmentResultListener("DESTINATION", this) { _, bundle -> destinationStation = bundle.getParcelable("station"); updateAllUI() }
+        parentFragmentManager.setFragmentResultListener("date_result", this) { _, bundle -> val dateString = bundle.getString("selected_date"); if (dateString != null) { departureDate = LocalDate.parse(dateString); updateAllUI() } }
     }
     
-    // Other update UI and validation methods...
-    private fun updateStationUI() {
-        binding.originValue.text = originStation?.name ?: "Nơi khởi hành"
-        binding.destinationValue.text = destinationStation?.name ?: "Quý khách muốn đi đâu?"
-    }
+    private fun updateAllUI() { updateStationUI(); updateDateUI(); updatePassengersUI(); validateForm() }
+    private fun updateStationUI() { binding.originValue.text = originStation?.name ?: "Nơi khởi hành"; binding.destinationValue.text = destinationStation?.name ?: "Quý khách muốn đi đâu?" }
+    private fun updateDateUI() { if (departureDate != null) { val formatter = DateTimeFormatter.ofPattern("EEE, dd/MM/yyyy", Locale("vi", "VN")); binding.txtDepartureValue.text = departureDate!!.format(formatter) } else { binding.txtDepartureValue.text = "Chọn ngày" } }
+    private fun updatePassengersUI() { val parts = mutableListOf<String>(); if (adults > 0) parts.add("$adults người lớn"); if (children > 0) parts.add("$children trẻ em"); if (infants > 0) parts.add("$infants sơ sinh"); binding.txtPassengersValue.text = if (parts.isEmpty()) "Chưa chọn hành khách" else parts.joinToString(", "); }
+    private fun validateForm(showErrors: Boolean = false): Boolean { var isValid = true; val stationsSelected = originStation != null && destinationStation != null; val stationsNotSame = originStation != destinationStation; if (!stationsSelected || !stationsNotSame) { isValid = false; if (showErrors) { binding.stationErrorMessage.visibility = View.VISIBLE; binding.stationErrorMessage.text = if (!stationsSelected) "Vui lòng chọn ga đi và ga đến." else "Ga đi và ga đến không được trùng nhau." } } else { binding.stationErrorMessage.visibility = View.GONE }; if (departureDate == null) { isValid = false; if (showErrors) { binding.txtDepartureError.visibility = View.VISIBLE } } else { binding.txtDepartureError.visibility = View.GONE }; if (adults < 1 || infants > adults) { isValid = false }; binding.btnSearchTrips.isEnabled = isValid; return isValid }
 
-    private fun updateDateUI() {
-        binding.txtDepartureValue.text = departureDate?.let {
-            SimpleDateFormat("EEE, dd/MM/yyyy", Locale("vi", "VN")).format(it.time)
-        } ?: "Chọn ngày"
-    }
-
-    private fun updatePassengersUI() {
-        val parts = mutableListOf<String>()
-        if (adults > 0) parts.add("$adults người lớn")
-        if (children > 0) parts.add("$children trẻ em")
-        if (infants > 0) parts.add("$infants sơ sinh")
-        binding.txtPassengersValue.text = if (parts.isEmpty()) "Chọn hành khách" else parts.joinToString(", ")
-    }
-    
-    private fun validateForm(showErrors: Boolean = false): Boolean {
-        var isValid = true
-        val stationsSelected = originStation != null && destinationStation != null
-        val stationsNotSame = originStation != destinationStation
-        if (!stationsSelected || !stationsNotSame) {
-            isValid = false
-            if (showErrors) {
-                binding.stationErrorMessage.visibility = View.VISIBLE
-                binding.stationErrorMessage.text = if (!stationsSelected) "Vui lòng chọn ga đi và ga đến." else "Ga đi và ga đến không được trùng nhau."
-            }
-        } else {
-            binding.stationErrorMessage.visibility = View.GONE
-        }
-        if (departureDate == null) {
-            isValid = false
-            if (showErrors) {
-                binding.txtDepartureError.visibility = View.VISIBLE
-            }
-        } else {
-            binding.txtDepartureError.visibility = View.GONE
-        }
-        if (adults < 1) {
-            isValid = false
-        }
-        binding.btnSearchTrips.isEnabled = isValid
-        return isValid
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
