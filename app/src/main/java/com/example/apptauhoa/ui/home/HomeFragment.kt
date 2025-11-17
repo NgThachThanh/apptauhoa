@@ -1,5 +1,6 @@
 package com.example.apptauhoa.ui.home
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -62,7 +63,7 @@ class HomeFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.promotions.observe(viewLifecycleOwner) { promotionAdapter.submitList(it) }
-        viewModel.randomSuggestion.observe(viewLifecycleOwner) { binding.textViewSuggestionSubtitle.text = it.title }
+        viewModel.randomSuggestion.observe(viewLifecycleOwner) { binding.textViewSuggestionTitle.text = it.title }
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.suggestionEvent.collect {
@@ -101,7 +102,7 @@ class HomeFragment : Fragment() {
                     adults = adults,
                     children = children,
                     infants = infants,
-                    totalPassengers = totalPassengers
+                    ticketCount = totalPassengers
                 )
                 findNavController().navigate(action)
             }

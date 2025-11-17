@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/txt_seat_number"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="@drawable/selector_seat_background"
-    android:gravity="center"
-    android:textColor="@android:color/black"
-    android:textSize="12sp"
-    tools:text="1A" />
+    android:background="@drawable/seat_selector"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/seat_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="8dp"
+        android:textColor="@color/seat_text_color"
+        tools:text="A1" />
+
+</FrameLayout>

@@ -35,18 +35,15 @@ class CoachPickerFragment : Fragment() {
 
         // Initialize adapter with the simplified lambda
         coachAdapter = CoachAdapter(args.coachList.toList()) { selectedCoach ->
-            // 1. Get old data
-            val ticketCount = args.ticketCount
-            // 2. Get new data
-            val coachId = selectedCoach.coachId
-
-            // 3. Create the simplified action
+            // Create the action with all required arguments to fix the N/A bug
             val action = CoachPickerFragmentDirections.actionCoachPickerToSeatSelection(
-                coachId = coachId,
-                ticketCount = ticketCount
+                coachId = selectedCoach.coachId,
+                ticketCount = args.ticketCount,
+                originStation = args.originStation,      // Add this argument
+                destinationStation = args.destinationStation // Add this argument
             )
 
-            // 4. Navigate
+            // Navigate
             findNavController().navigate(action)
         }
         

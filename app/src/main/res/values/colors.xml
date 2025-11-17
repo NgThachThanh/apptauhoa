@@ -1,33 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Define a new Blue color -->
-    <color name="md_theme_primary_blue">#2196F3</color> <!-- A nice Material Blue -->
+    <color name="md_theme_light_primary">#3F51B5</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_surface">#FFFBFE</color>
+    <color name="md_theme_light_onSurface">#1C1B1F</color>
+    <color name="md_theme_light_onSurfaceVariant">#49454F</color>
+    <color name="md_theme_light_background">#FFFBFE</color>
+    <color name="md_theme_light_secondary">#625B71</color>
+    <color name="md_theme_light_error">#B3261E</color>
 
-    <!-- Light Theme Colors -->
-    <color name="md_theme_light_primary">@color/md_theme_primary_blue</color>
-    <color name="md_theme_light_onPrimary">#FFFFFF</color> <!-- White text on Blue -->
-    <color name="md_theme_light_surface">#FFFFFF</color> 
-    <color name="md_theme_light_onSurface">#000000</color>
-    <color name="md_theme_light_onSurfaceVariant">#424242</color>
-    <color name="md_theme_light_background">#F5F5F5</color>
+    <!-- Seat Colors from previous steps -->
+    <color name="available_seat_background">#E0E0E0</color>
+    <color name="selected_seat_background">#3F51B5</color>
+    <color name="seat_text_available">#000000</color>
+    <color name="seat_text_selected">#FFFFFF</color>
+    <color name="seat_text_sold_pending">#9E9E9E</color>
 
-    <!-- Dark Theme Colors -->
-    <color name="md_theme_dark_primary">@color/md_theme_primary_blue</color>
-    <color name="md_theme_dark_onPrimary">#FFFFFF</color> <!-- White text on Blue -->
-    <color name="md_theme_dark_surface">#121212</color>
-    <color name="md_theme_dark_onSurface">#FFFFFF</color>
-    <color name="md_theme_dark_onSurfaceVariant">#BDBDBD</color>
-    <color name="md_theme_dark_background">#000000</color>
-
-    <!-- Default Colors -->
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    
-    <!-- Seat Status Colors -->
-    <color name="seat_color_available">@color/white</color>
-    <color name="seat_color_selected">@color/black</color>
-    <color name="seat_color_sold_pending">#AAAAAA</color>
-    <color name="seat_text_available">@color/black</color>
-    <color name="seat_text_selected">@color/white</color>
-    <color name="seat_text_sold_pending">@color/white</color>
+    <!-- Fix for final build error -->
+    <color name="seat_color_selected">#3F51B5</color>
+    <color name="seat_color_sold_pending">#9E9E9E</color>
+    <color name="seat_color_available">#E0E0E0</color>
+    <color name="black">#000000</color>
 </resources>

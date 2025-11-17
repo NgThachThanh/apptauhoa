@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 data class NavigationEvent(
+    val tripId: String,
     val tripSummary: String,
     val selectedSeatsInfo: String,
     val originalPrice: Long,
@@ -21,17 +22,17 @@ data class NavigationEvent(
 class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
     private val ticketCount: Int
-    private val coachType: String 
-    
+    private val coachType: String
+
     private val _displayItems = MutableStateFlow<List<RailCarDisplayItem>>(emptyList())
     val displayItems = _displayItems.asStateFlow()
 
     private val _uiEvent = MutableSharedFlow<String>()
     val uiEvent = _uiEvent.asSharedFlow()
-    
+
     private val _navigationEvent = MutableSharedFlow<NavigationEvent>()
     val navigationEvent = _navigationEvent.asSharedFlow()
-    
+
     private val _tripDetails = MutableStateFlow<TripDetails?>(null)
     val tripDetails = _tripDetails.asStateFlow()
 
@@ -111,7 +112,7 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
             transformSeatsToDisplayItems()
         }
     }
-    
+
     fun processAndNavigate() {
         viewModelScope.launch {
             val selectedSeats = fullSeatList.filter { it.status == SeatStatus.SELECTED }
@@ -119,10 +120,11 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
                 _uiEvent.emit("Vui lòng chọn ít nhất 1 ghế.")
                 return@launch
             }
-            
+
             val details = _tripDetails.value ?: return@launch
 
             val navArgs = NavigationEvent(
+                tripId = details.tripId,
                 tripSummary = details.summary,
                 selectedSeatsInfo = "Toa ${savedStateHandle.get<String>("coachId")}: ${selectedSeats.joinToString { it.number }}",
                 originalPrice = selectedSeats.sumOf { it.price },
@@ -131,7 +133,7 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
             _navigationEvent.emit(navArgs)
         }
     }
-    
+
     private fun generateMockSeats(coachId: String, type: String) {
         // Dummy implementation to avoid further errors
         val seats = mutableListOf<Seat>()
@@ -151,17 +153,19 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
         }
         fullSeatList = seats
     }
-    
+
     private fun generateMockTripDetails(coachId: String): TripDetails {
         val now = System.currentTimeMillis()
+        val origin = savedStateHandle.get<String>("originStation") ?: "N/A"
+        val destination = savedStateHandle.get<String>("destinationStation") ?: "N/A"
         return TripDetails(
-            tripId = "TRIP123",
+            tripId = savedStateHandle.get<String>("tripId") ?: "TRIP123",
             trainCode = savedStateHandle.get<String>("trainCode") ?: "SE8",
             departureTime = now + 1000 * 60 * 180, // 3 hours from now
             arrivalTime = now + 1000 * 60 * 60 * 10, // 10 hours from now
-            originStation = savedStateHandle.get<String>("originStation") ?: "N/A",
-            destinationStation = savedStateHandle.get<String>("destinationStation") ?: "N/A",
-            summary = "${savedStateHandle.get<String>("originStation") ?: "N/A"} - ${savedStateHandle.get<String>("destinationStation") ?: "N/A"}"
+            originStation = origin,
+            destinationStation = destination,
+            summary = "$origin - $destination"
         )
     }
 }

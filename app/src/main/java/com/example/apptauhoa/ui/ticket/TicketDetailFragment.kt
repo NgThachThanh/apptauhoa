@@ -4,37 +4,50 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.navigation.navOptions
 import com.example.apptauhoa.R
+import com.example.apptauhoa.databinding.FragmentTicketDetailBinding
 
 class TicketDetailFragment : Fragment() {
 
-    private var tripId: String? = null
-    private var selectionResult: SeatSelectionResult? = null
+    private var _binding: FragmentTicketDetailBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            tripId = it.getString("tripId")
-            selectionResult = it.getParcelable("selectionResult")
-        }
-    }
+    private val args: TicketDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_ticket_detail, container, false)
-        val tripIdTextView = view.findViewById<TextView>(R.id.trip_id_text)
-        
-        if (selectionResult != null) {
-            tripIdTextView.text = "Selected ${selectionResult!!.selectedSeats.size} seats for a total of ${selectionResult!!.totalPrice}đ"
-        } else {
-            tripIdTextView.text = "Trip ID: $tripId"
+    ): View {
+        _binding = FragmentTicketDetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.buttonBackToHome.setOnClickListener {
+            // To resolve compiler ambiguity, we construct NavOptions separately.
+            val navOptions = navOptions {
+                popUpTo(R.id.nav_graph) { inclusive = true }
+            }
+            findNavController().navigate(R.id.navigation_home, null, navOptions)
         }
-        
-        return view
+
+        binding.buttonViewTicket.setOnClickListener {
+            val navOptions = navOptions {
+                popUpTo(R.id.navigation_home)
+            }
+            findNavController().navigate(R.id.navigation_journey, null, navOptions)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

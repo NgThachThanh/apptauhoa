@@ -46,7 +46,7 @@
         android:id="@+id/tabs_coach"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/txt_subtitle"
+        app:layout_constraintTop_toBottomOf="@+id/txt_subtitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -126,7 +126,7 @@
         android:padding="16dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@+id/controls_container"
-        app:layout_constraintBottom_toTopOf="@+id/footer_selected"
+        app:layout_constraintBottom_toTopOf="@id/footer_selected"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_seat" />
@@ -155,7 +155,7 @@
         android:padding="16dp"
         android:gravity="center_vertical"
         android:background="#F0F4F8" 
-        app:layout_constraintBottom_toTopOf="@id/seat_bottom_nav"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -187,15 +187,5 @@
             android:layout_height="wrap_content"
             android:text="Xác nhận" />
     </LinearLayout>
-
-    <!-- Secondary Bottom Nav -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/seat_bottom_nav"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/seat_selection_bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
