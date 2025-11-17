@@ -19,7 +19,7 @@ import java.util.Locale
 class SearchResultsFragment : Fragment() {
 
     private var _binding: FragmentSearchResultsBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private val args: SearchResultsFragmentArgs by navArgs()
     
@@ -30,6 +30,7 @@ class SearchResultsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         
         parentFragmentManager.setFragmentResultListener("filter_result", this) { _, bundle ->
+            if (_binding == null) return@setFragmentResultListener // Add this check
             val minPrice = bundle.getFloat("minPrice")
             val maxPrice = bundle.getFloat("maxPrice")
             
@@ -45,7 +46,7 @@ class SearchResultsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchResultsBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,13 +59,13 @@ class SearchResultsFragment : Fragment() {
     }
 
     private fun setupHeader() {
-        binding.txtRouteTitle.text = "${args.originName} – ${args.destinationName}"
+        binding?.txtRouteTitle?.text = "${args.originName} – ${args.destinationName}"
         val formatter = DateTimeFormatter.ofPattern("'Khởi hành' E, dd/MM/yyyy", Locale("vi", "VN"))
         val date = LocalDate.parse(args.departureDate)
-        binding.txtRouteSubtitle.text = "${date.format(formatter)} • ${args.ticketCount} khách"
+        binding?.txtRouteSubtitle?.text = "${date.format(formatter)} • ${args.ticketCount} khách"
         
-        binding.btnBack.setOnClickListener { findNavController().popBackStack() }
-        binding.btnFilter.setOnClickListener {
+        binding?.btnBack?.setOnClickListener { findNavController().popBackStack() }
+        binding?.btnFilter?.setOnClickListener {
             findNavController().navigate(SearchResultsFragmentDirections.actionSearchResultsToTripFilter())
         }
     }
@@ -85,8 +86,8 @@ class SearchResultsFragment : Fragment() {
             )
             findNavController().navigate(action)
         }
-        binding.rvTrainList.layoutManager = LinearLayoutManager(context)
-        binding.rvTrainList.adapter = trainScheduleAdapter
+        binding?.rvTrainList?.layoutManager = LinearLayoutManager(context)
+        binding?.rvTrainList?.adapter = trainScheduleAdapter
     }
     
     private fun loadData() {
@@ -95,21 +96,22 @@ class SearchResultsFragment : Fragment() {
     }
 
     private fun showLoading() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.txtStatus.visibility = View.GONE
-        binding.rvTrainList.visibility = View.GONE
+        binding?.progressBar?.visibility = View.VISIBLE
+        binding?.txtStatus?.visibility = View.GONE
+        binding?.rvTrainList?.visibility = View.GONE
     }
 
     private fun showResults(trips: List<TrainTrip>) {
-        binding.progressBar.visibility = View.GONE
+        if (_binding == null) return // Add this safety check
+        binding?.progressBar?.visibility = View.GONE
         if (trips.isEmpty()) {
-            binding.txtStatus.text = "Không tìm thấy chuyến tàu nào phù hợp."
-            binding.txtStatus.visibility = View.VISIBLE
+            binding?.txtStatus?.text = "Không tìm thấy chuyến tàu nào phù hợp."
+            binding?.txtStatus?.visibility = View.VISIBLE
         } else {
-            binding.txtStatus.visibility = View.GONE
+            binding?.txtStatus?.visibility = View.GONE
             trainScheduleAdapter.updateData(trips)
         }
-        binding.rvTrainList.visibility = if (trips.isEmpty()) View.GONE else View.VISIBLE
+        binding?.rvTrainList?.visibility = if (trips.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun createMockTrainTrips(): List<TrainTrip> {
