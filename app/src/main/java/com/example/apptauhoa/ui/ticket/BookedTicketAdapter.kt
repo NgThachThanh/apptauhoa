@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptauhoa.databinding.ItemBookedTicketBinding
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -28,17 +27,9 @@ class BookedTicketAdapter(private val tickets: List<BookedTicket>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(ticket: BookedTicket) {
-            val tripParts = ticket.tripSummary.split(" → ")
-            if (tripParts.size == 2) {
-                binding.textDepartureStation.text = tripParts[0]
-                binding.textArrivalStation.text = tripParts[1]
-            } else {
-                // Handle cases where the summary is not in the expected format
-                binding.textDepartureStation.text = ticket.tripSummary
-                binding.textArrivalStation.text = ""
-            }
+            // The binding logic has been updated to use the correct view IDs from the new layout.
+            binding.textDepartureDate.text = formatDate(ticket.departureTime)
 
-            binding.textTrainName.text = ticket.tripId // Assuming tripId is the train name
             binding.textBookingCode.text = ticket.bookingCode
 
             binding.textDepartureTime.text = formatTime(ticket.departureTime)
@@ -47,8 +38,13 @@ class BookedTicketAdapter(private val tickets: List<BookedTicket>) :
             val durationMillis = ticket.arrivalTime - ticket.departureTime
             binding.textDuration.text = formatDuration(durationMillis)
 
-            val currencyFormat = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
-            binding.textPrice.text = "Từ ${currencyFormat.format(ticket.originalPrice)}"
+            val route = ticket.tripSummary.replace(" → ", " - ")
+            binding.textRouteInfo.text = "${ticket.tripId} | $route"
+        }
+
+        private fun formatDate(timestamp: Long): String {
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            return sdf.format(Date(timestamp))
         }
 
         private fun formatTime(timestamp: Long): String {

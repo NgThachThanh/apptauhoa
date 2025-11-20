@@ -14,13 +14,13 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/text_train_name"
+            android:id="@+id/text_departure_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="SE8" />
+            tools:text="20/05/2024" />
 
         <TextView
             android:id="@+id/text_booking_code"
@@ -39,17 +39,17 @@
             android:layout_marginTop="16dp"
             android:textAppearance="?attr/textAppearanceHeadline5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_train_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_departure_date"
             tools:text="19:30" />
 
         <TextView
-            android:id="@+id/text_departure_station"
+            android:id="@+id/text_route_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             app:layout_constraintStart_toStartOf="@+id/text_departure_time"
             app:layout_constraintTop_toBottomOf="@+id/text_departure_time"
-            tools:text="Sài Gòn" />
+            tools:text="SE8 | Sài Gòn - Hà Nội" />
 
         <View
             android:id="@+id/divider_horizontal"
@@ -81,27 +81,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_departure_time"
             tools:text="04:10" />
-
-        <TextView
-            android:id="@+id/text_arrival_station"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            app:layout_constraintEnd_toEndOf="@+id/text_arrival_time"
-            app:layout_constraintTop_toBottomOf="@+id/text_arrival_time"
-            tools:text="Hà Nội" />
-
-        <TextView
-            android:id="@+id/text_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textAppearance="?attr/textAppearanceSubtitle1"
-            android:textColor="?attr/colorPrimary"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_arrival_station"
-            tools:text="Từ 350.000 đ" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

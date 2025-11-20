@@ -58,9 +58,17 @@ class SeatSelectionFragment : Fragment() {
                 }
             }
             val selectedSeats = allSeatsInCoach.filter { it.status == SeatStatus.SELECTED }
+            val seatSelectionLimit = args.passengerCount
 
-            if (args.ticketCount == 1 && selectedSeats.isNotEmpty() && seat.status != SeatStatus.SELECTED) {
-                Toast.makeText(requireContext(), "Bạn chỉ được chọn 1 ghế", Toast.LENGTH_SHORT).show()
+            if (seatSelectionLimit == 1 && selectedSeats.isNotEmpty()) {
+                Toast.makeText(requireContext(), "Bạn chỉ được chọn 1 ghế.", Toast.LENGTH_SHORT).show()
+                // Do nothing to prevent selecting another seat or deselecting the current one.
+            } else if (seat.status != SeatStatus.SELECTED && selectedSeats.size >= seatSelectionLimit) {
+                Toast.makeText(
+                    requireContext(),
+                    "Bạn chỉ được phép chọn tối đa $seatSelectionLimit ghế.",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 viewModel.onSeatSelected(seat)
             }
@@ -94,7 +102,7 @@ class SeatSelectionFragment : Fragment() {
                         }
                         val selectedSeats = allSeatsInCoach.filter { it.status == SeatStatus.SELECTED }
                         val totalPrice = selectedSeats.sumOf { it.price }
-                        val canProceed = selectedSeats.isNotEmpty() && selectedSeats.size <= args.ticketCount
+                        val canProceed = selectedSeats.isNotEmpty() && selectedSeats.size <= args.passengerCount
 
                         val currencyFormat = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
                         binding.txtTotalPrice.text = currencyFormat.format(totalPrice)

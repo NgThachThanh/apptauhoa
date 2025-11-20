@@ -26,16 +26,22 @@ class TripsAdapter(
 
     class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(trip: Trip, onItemClick: (Trip) -> Unit) {
-            itemView.findViewById<TextView>(R.id.txt_class_title).text = trip.classTitle
-            itemView.findViewById<TextView>(R.id.txt_seats_left).text = "Còn ${trip.seatsLeft} chỗ"
+            // Fix for the layout change in item_trip.xml
+            // Map Trip data to the new views.
+
+            // R.id.txt_class_title is removed. Using txt_booking_date for train code.
+            itemView.findViewById<TextView>(R.id.txt_booking_date).text = trip.trainCode
+
+            // Using txt_status for the price in search results.
+            itemView.findViewById<TextView>(R.id.txt_status).text = trip.price
+
             itemView.findViewById<TextView>(R.id.txt_departure_time).text = trip.departureTime
             itemView.findViewById<TextView>(R.id.txt_arrival_time).text = trip.arrivalTime
             itemView.findViewById<TextView>(R.id.txt_duration).text = trip.duration
-            itemView.findViewById<TextView>(R.id.txt_origin_station_line1).text = trip.originStation
-            itemView.findViewById<TextView>(R.id.txt_destination_station_line1).text = trip.destinationStation
-            itemView.findViewById<TextView>(R.id.txt_price).text = trip.price
-            itemView.findViewById<TextView>(R.id.txt_train_code).text = trip.trainCode
-            
+
+            // Combine origin and destination into one TextView
+            itemView.findViewById<TextView>(R.id.txt_origin_station_line1).text = "${trip.originStation} - ${trip.destinationStation}"
+
             itemView.findViewById<MaterialCardView>(R.id.card_trip).setOnClickListener {
                 onItemClick(trip)
             }

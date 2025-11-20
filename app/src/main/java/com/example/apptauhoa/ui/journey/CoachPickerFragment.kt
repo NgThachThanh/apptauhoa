@@ -40,7 +40,8 @@ class CoachPickerFragment : Fragment() {
                 coachId = selectedCoach.coachId,
                 ticketCount = args.ticketCount,
                 originStation = args.originStation,      // Add this argument
-                destinationStation = args.destinationStation // Add this argument
+                destinationStation = args.destinationStation, // Add this argument
+                passengerCount = args.ticketCount
             )
 
             // Navigate

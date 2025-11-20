@@ -29,6 +29,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.admin.AdminLoginActivity"
+            android:theme="@style/Theme.Apptauhoa.Admin"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.admin.AdminDashboardActivity"
+            android:theme="@style/Theme.Apptauhoa.Admin"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.admin.AddTrainActivity"
+            android:theme="@style/Theme.Apptauhoa.Admin"
+            android:exported="false" />
+        
+        <activity
+            android:name=".ui.admin.TrainListAdminActivity"
+            android:theme="@style/Theme.Apptauhoa.Admin"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.admin.ManagePromotionsActivity"
+            android:theme="@style/Theme.Apptauhoa.Admin"
+            android:exported="false" />
+
     </application>
 
 </manifest>

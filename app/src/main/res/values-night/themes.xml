@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme for Dark Mode. -->
+    <!-- Base application theme. -->
     <style name="Base.Theme.Apptauhoa" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Dark Theme Attributes -->
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
@@ -15,9 +15,5 @@
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.App.LargeComponent</item>
     </style>
 
-    <!--
-        Note: The ShapeAppearance styles are defined in the main `values/themes.xml` file.
-        We only need to reference them here.
-    -->
-    <style name="Theme.Apptauhoa" parent="Base.Theme.Apptauhoa" />
+    <style name="Theme.Apptauhoa.Admin" parent="Base.Theme.Apptauhoa" />
 </resources>

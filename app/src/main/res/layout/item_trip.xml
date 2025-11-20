@@ -18,16 +18,16 @@
         android:background="@android:color/transparent"
         android:padding="16dp">
 
-        <!-- Row 1: Class and Status -->
+        <!-- Row 1: Booking Date and Status -->
         <TextView
-            android:id="@+id/txt_class_title"
+            android:id="@+id/txt_booking_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceBody1"
             android:textColor="?attr/colorOnSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Giường nằm khoang 4" />
+            tools:text="20/05/2024" />
 
         <TextView
             android:id="@+id/txt_status"
@@ -37,7 +37,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Đã hoàn thành" />
+            tools:text="#3409" />
 
         <!-- Row 2: Time -->
         <TextView
@@ -49,19 +49,19 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_class_title"
-            tools:text="05:00" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_booking_date"
+            tools:text="15:58" />
 
         <TextView
             android:id="@+id/txt_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintBottom_toBottomOf="@id/txt_departure_time"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_departure_time"
             app:layout_constraintEnd_toStartOf="@id/txt_arrival_time"
             app:layout_constraintStart_toEndOf="@id/txt_departure_time"
             app:layout_constraintTop_toTopOf="@id/txt_departure_time"
-            tools:text="2h 40m" />
+            tools:text="7h 0m" />
 
         <View
             android:layout_width="0dp"
@@ -92,7 +92,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/txt_departure_time"
-            tools:text="07:40" />
+            tools:text="22:58" />
 
         <!-- Row 3: Stations -->
         <TextView
@@ -101,38 +101,19 @@
             android:layout_height="wrap_content"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_departure_time"
-            tools:text="Ga Sài Gòn" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_departure_time"
+            tools:text="Sài Gòn - Hà Nội" />
 
-        <TextView
-            android:id="@+id/txt_destination_station_line1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_arrival_time"
-            tools:text="Ga Nha Trang" />
-
-        <!-- Row 4: Train Code and Booking Date -->
         <TextView
             android:id="@+id/txt_train_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:textColor="?attr/colorOnSurfaceVariant"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_origin_station_line1"
-            tools:text="SE3" />
-
-        <TextView
-            android:id="@+id/txt_booking_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            app:layout_constraintBottom_toBottomOf="@id/txt_train_code"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/txt_train_code"
-            tools:text="Ngày đặt: 20/05/2024" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_origin_station_line1"
+            tools:text="TRIP123" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

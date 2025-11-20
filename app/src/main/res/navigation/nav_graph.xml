@@ -117,7 +117,10 @@
         <argument
             android:name="destinationStation"
             app:argType="string" />
-
+        <argument
+            android:name="passengerCount"
+            app:argType="integer"
+            android:defaultValue="1" />
         <action
             android:id="@+id/action_seat_selection_to_payment"
             app:destination="@id/paymentFragment" />
