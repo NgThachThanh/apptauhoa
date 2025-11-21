@@ -5,13 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.apptauhoa.R
+import com.google.android.material.appbar.MaterialToolbar
 
-/**
- * A simple [Fragment] subclass.
- * Use the [OfficeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class OfficeFragment : Fragment() {
 
     override fun onCreateView(
@@ -25,6 +22,10 @@ class OfficeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // You can add any view setup or logic here if needed in the future
+        
+        val toolbar = view.findViewById<MaterialToolbar>(R.id.toolbar)
+        toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 }

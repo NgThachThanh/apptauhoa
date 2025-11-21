@@ -1,4 +1,3 @@
-// Corrected SearchResultsFragment.kt
 package com.example.apptauhoa.ui.journey
 
 import android.os.Bundle
@@ -11,6 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.apptauhoa.data.DatabaseHelper
+import com.example.apptauhoa.data.model.Coach
+import com.example.apptauhoa.data.model.Trip
 import com.example.apptauhoa.databinding.FragmentSearchResultsBinding
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,14 +25,16 @@ class SearchResultsFragment : Fragment() {
 
     private val args: SearchResultsFragmentArgs by navArgs()
     
-    private lateinit var allTrips: List<TrainTrip>
+    private lateinit var allTrips: List<Trip>
     private lateinit var trainScheduleAdapter: TrainScheduleAdapter
+    private lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        dbHelper = DatabaseHelper(requireContext())
         
         parentFragmentManager.setFragmentResultListener("filter_result", this) { _, bundle ->
-            if (_binding == null) return@setFragmentResultListener // Add this check
+            if (_binding == null) return@setFragmentResultListener
             val minPrice = bundle.getFloat("minPrice")
             val maxPrice = bundle.getFloat("maxPrice")
             
@@ -51,18 +55,40 @@ class SearchResultsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        allTrips = createMockTrainTrips()
+        
+        loadDataFromDb()
 
         setupRecyclerView()
         setupHeader()
-        loadData()
+    }
+
+    private fun loadDataFromDb() {
+        showLoading()
+        
+        Handler(Looper.getMainLooper()).postDelayed({
+            val dateStr = args.departureDate
+            
+            var trips = dbHelper.searchTrips(args.originName, args.destinationName, dateStr)
+            
+            if (trips.isEmpty()) {
+                dbHelper.mockTripsForSearch(args.originName, args.destinationName, dateStr)
+                trips = dbHelper.searchTrips(args.originName, args.destinationName, dateStr)
+            }
+            
+            allTrips = trips
+            showResults(allTrips)
+        }, 1000)
     }
 
     private fun setupHeader() {
         binding?.txtRouteTitle?.text = "${args.originName} – ${args.destinationName}"
-        val formatter = DateTimeFormatter.ofPattern("'Khởi hành' E, dd/MM/yyyy", Locale("vi", "VN"))
-        val date = LocalDate.parse(args.departureDate)
-        binding?.txtRouteSubtitle?.text = "${date.format(formatter)} • ${args.ticketCount} khách"
+        try {
+            val date = LocalDate.parse(args.departureDate)
+            val formatter = DateTimeFormatter.ofPattern("'Khởi hành' E, dd/MM/yyyy", Locale("vi", "VN"))
+            binding?.txtRouteSubtitle?.text = "${date.format(formatter)} • ${args.ticketCount} khách"
+        } catch (e: Exception) {
+            binding?.txtRouteSubtitle?.text = "${args.departureDate} • ${args.ticketCount} khách"
+        }
         
         binding?.btnBack?.setOnClickListener { findNavController().popBackStack() }
         binding?.btnFilter?.setOnClickListener {
@@ -72,13 +98,22 @@ class SearchResultsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         trainScheduleAdapter = TrainScheduleAdapter(emptyList()) { trainTrip ->
-            val mockCoaches = createMockCoachesForTrip(trainTrip)
+            // Fetch real coaches from DB
+            val realCoaches = dbHelper.getCoachesByTripId(trainTrip.id)
+            
+            // Fallback to mock if DB has no coaches (for old data)
+            val coachesToPass = if (realCoaches.isNotEmpty()) {
+                realCoaches
+            } else {
+                createMockCoachesForTrip(trainTrip)
+            }
+
             val action = SearchResultsFragmentDirections.actionSearchResultsToCoachPicker(
-                tripId = trainTrip.tripId,
+                tripId = trainTrip.id,
                 trainCode = trainTrip.trainCode,
                 departureTime = trainTrip.departureTime,
                 arrivalTime = trainTrip.arrivalTime,
-                coachList = mockCoaches.toTypedArray(),
+                coachList = coachesToPass.toTypedArray(),
                 originStation = trainTrip.originStation,
                 destinationStation = trainTrip.destinationStation,
                 tripDate = trainTrip.tripDate,
@@ -89,11 +124,6 @@ class SearchResultsFragment : Fragment() {
         binding?.rvTrainList?.layoutManager = LinearLayoutManager(context)
         binding?.rvTrainList?.adapter = trainScheduleAdapter
     }
-    
-    private fun loadData() {
-        showLoading()
-        Handler(Looper.getMainLooper()).postDelayed({ showResults(allTrips) }, 1500)
-    }
 
     private fun showLoading() {
         binding?.progressBar?.visibility = View.VISIBLE
@@ -101,8 +131,8 @@ class SearchResultsFragment : Fragment() {
         binding?.rvTrainList?.visibility = View.GONE
     }
 
-    private fun showResults(trips: List<TrainTrip>) {
-        if (_binding == null) return // Add this safety check
+    private fun showResults(trips: List<Trip>) {
+        if (_binding == null) return
         binding?.progressBar?.visibility = View.GONE
         if (trips.isEmpty()) {
             binding?.txtStatus?.text = "Không tìm thấy chuyến tàu nào phù hợp."
@@ -114,17 +144,8 @@ class SearchResultsFragment : Fragment() {
         binding?.rvTrainList?.visibility = if (trips.isEmpty()) View.GONE else View.VISIBLE
     }
 
-    private fun createMockTrainTrips(): List<TrainTrip> {
-         val date = LocalDate.parse(args.departureDate)
-        return listOf(
-            TrainTrip("ID01", "SE8", "Ngồi mềm điều hòa", 15, "19:30", "04:10", "8h 40m", args.originName, args.destinationName, 350000L, date.toString()),
-            TrainTrip("ID02", "SNT2", "Giường nằm khoang 4", 8, "20:00", "05:00", "9h 0m", args.originName, args.destinationName, 620000L, date.toString()),
-            TrainTrip("ID03", "SE6", "Ngồi cứng", 0, "21:05", "06:30", "9h 25m", args.originName, args.destinationName, 280000L, date.toString())
-        )
-    }
-
-    private fun createMockCoachesForTrip(trip: TrainTrip): List<Coach> {
-         return when (trip.coachClass) {
+    private fun createMockCoachesForTrip(trip: Trip): List<Coach> {
+         return when (trip.classTitle) {
             "Ngồi mềm điều hòa" -> listOf(
                 Coach("C01", "Toa 1", "Ngồi mềm", 5, 56, 350000L),
                 Coach("C02", "Toa 2", "Ngồi mềm", 10, 56, 350000L)
@@ -133,7 +154,9 @@ class SearchResultsFragment : Fragment() {
                 Coach("C05", "Toa 5", "Giường nằm khoang 4", 2, 28, 620000L),
                 Coach("C06", "Toa 6", "Giường nằm khoang 4", 6, 28, 650000L)
             )
-            else -> emptyList()
+            else -> listOf(
+                 Coach("C01", "Toa 1", "Ghế ngồi", 20, 60, trip.price)
+            )
         }
     }
     

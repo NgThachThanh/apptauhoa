@@ -1,11 +1,15 @@
 package com.example.apptauhoa.ui.ticket
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.apptauhoa.data.model.Seat
+import com.example.apptauhoa.data.model.SeatStatus
 import com.example.apptauhoa.databinding.ItemSeatRowBinding
 import com.example.apptauhoa.databinding.ItemSleeperCompartmentBinding
 import com.example.apptauhoa.databinding.ItemUtilitySpaceBinding
@@ -54,8 +58,6 @@ class SeatAdapter(
     }
 }
 
-// --- VIEW HOLDERS ---
-
 abstract class BaseSeatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     protected fun bindSeatButtonState(button: MaterialButton, seat: Seat?, onSeatClicked: (Seat) -> Unit) {
         if (seat == null) {
@@ -66,18 +68,30 @@ abstract class BaseSeatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         button.text = seat.number
         button.setOnClickListener { onSeatClicked(seat) }
 
+        // DISABLE AUTO TOGGLE to fix the bug where visual state gets out of sync
+        button.isCheckable = false
+
         when (seat.status) {
             SeatStatus.AVAILABLE -> {
                 button.isEnabled = true
-                button.isChecked = false
+                button.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+                button.setTextColor(Color.BLACK)
+                button.strokeWidth = 2
+                button.strokeColor = ColorStateList.valueOf(Color.LTGRAY)
             }
             SeatStatus.SELECTED -> {
                 button.isEnabled = true
-                button.isChecked = true
+                // Selected Color (Primary Blue-ish)
+                button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#2196F3"))
+                button.setTextColor(Color.WHITE)
+                button.strokeWidth = 0
             }
             SeatStatus.BOOKED, SeatStatus.PENDING -> {
                 button.isEnabled = false
-                button.isChecked = false
+                // Disabled Color (Dark Gray)
+                button.backgroundTintList = ColorStateList.valueOf(Color.DKGRAY)
+                button.setTextColor(Color.WHITE)
+                button.strokeWidth = 0
             }
         }
     }
@@ -118,16 +132,12 @@ class UtilityViewHolder(private val binding: ItemUtilitySpaceBinding) : Recycler
     }
 }
 
-
-// --- DIFFUTIL ---
-
 class RailCarDiffCallback : DiffUtil.ItemCallback<RailCarDisplayItem>() {
     override fun areItemsTheSame(oldItem: RailCarDisplayItem, newItem: RailCarDisplayItem): Boolean {
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: RailCarDisplayItem, newItem: RailCarDisplayItem): Boolean {
-        // Simple equality check is enough since data classes are used
         return oldItem == newItem
     }
 }

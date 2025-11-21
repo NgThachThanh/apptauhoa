@@ -93,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="Nơi đi"
+                    android:text="@string/home_origin_label"
                     android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@id/origin_icon"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -144,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="Nơi đến"
+                    android:text="@string/home_destination_label"
                     android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@id/destination_icon"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -176,7 +176,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Ga đi và ga đến không được trùng nhau."
+                android:text="@string/home_station_error_same_station"
                 android:textColor="@android:color/holo_red_dark"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
@@ -205,14 +205,14 @@
                         android:id="@+id/txt_departure_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ngày khởi hành"
+                        android:text="@string/home_departure_date_label"
                         android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/txt_departure_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chọn ngày"
+                        android:text="@string/home_departure_date_placeholder"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -229,7 +229,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Vui lòng chọn ngày khởi hành."
+                android:text="@string/home_departure_date_error_empty"
                 android:textColor="@android:color/holo_red_dark"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
@@ -258,14 +258,14 @@
                         android:id="@+id/txt_passengers_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hành khách"
+                        android:text="@string/home_passengers_label"
                         android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/txt_passengers_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1 người lớn"
+                        android:text="@string/home_passengers_default_value"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -283,7 +283,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_rounded_button"
-                android:text="Tìm chuyến đi"
+                android:text="@string/home_search_trips_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/panel_passengers" />
@@ -301,7 +301,7 @@
                     android:id="@+id/textView_promotion_title_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ưu đãi &amp; Khuyến mãi"
+                    android:text="@string/home_promotions_title"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -313,7 +313,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:padding="8dp"
-                    android:text="Xem thêm"
+                    android:text="@string/home_see_all_promotions_button"
                     android:textColor="?attr/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -389,7 +389,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="24dp"
                         android:layout_marginBottom="24dp"
-                        android:text="Tìm vé ngay"
+                        android:text="@string/home_find_ticket_suggestion_button"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 

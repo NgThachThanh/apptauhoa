@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.example.apptauhoa.R
-import com.example.apptauhoa.databinding.FragmentTicketDetailBinding
+import com.example.apptauhoa.databinding.FragmentPaymentSuccessBinding
 
 class PaymentSuccessFragment : Fragment() {
 
-    private var _binding: FragmentTicketDetailBinding? = null
+    private var _binding: FragmentPaymentSuccessBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +20,7 @@ class PaymentSuccessFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTicketDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentPaymentSuccessBinding.inflate(inflater, container, false)
         return binding.root
     }
 

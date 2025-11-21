@@ -33,18 +33,15 @@ class CoachPickerFragment : Fragment() {
         binding.txtRouteTitle.text = "${args.originStation} – ${args.destinationStation}"
         binding.txtRouteSubtitle.text = "${args.trainCode} • ${args.tripDate}"
 
-        // Initialize adapter with the simplified lambda
         coachAdapter = CoachAdapter(args.coachList.toList()) { selectedCoach ->
-            // Create the action with all required arguments to fix the N/A bug
             val action = CoachPickerFragmentDirections.actionCoachPickerToSeatSelection(
-                coachId = selectedCoach.coachId,
+                coachId = selectedCoach.id,
                 ticketCount = args.ticketCount,
-                originStation = args.originStation,      // Add this argument
-                destinationStation = args.destinationStation, // Add this argument
+                originStation = args.originStation,
+                destinationStation = args.destinationStation,
                 passengerCount = args.ticketCount
             )
 
-            // Navigate
             findNavController().navigate(action)
         }
         

@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.apptauhoa.R
 import com.example.apptauhoa.data.model.Promotion
+import com.example.apptauhoa.data.model.Station
 import com.example.apptauhoa.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
 import java.time.LocalDate

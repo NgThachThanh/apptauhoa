@@ -50,24 +50,22 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <!-- Trip Info Cards (Existing) -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="2dp">
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="16dp">
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hành trình"
                             android:textAppearance="?attr/textAppearanceHeadline6" />
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/textInputLayoutDepartureStation"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -75,14 +73,17 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
                             app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+                            app:endIconDrawable="@android:drawable/arrow_down_float"
+                            app:endIconMode="custom"
                             android:hint="Ga đi">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editTextDepartureStation"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:cursorVisible="false" />
                         </com.google.android.material.textfield.TextInputLayout>
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/textInputLayoutArrivalStation"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -90,12 +91,16 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+                            app:endIconDrawable="@android:drawable/arrow_down_float"
+                            app:endIconMode="custom"
                             android:hint="Ga đến">
-
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editTextArrivalStation"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:cursorVisible="false" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -106,20 +111,17 @@
                     android:layout_marginTop="16dp"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="2dp">
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="16dp">
-
                          <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Thời gian"
                             android:textAppearance="?attr/textAppearanceHeadline6"
                             android:layout_marginBottom="8dp"/>
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/textInputLayoutDepartureTime"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -127,14 +129,15 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             app:startIconDrawable="@android:drawable/ic_menu_today"
-                            android:hint="Thời gian khởi hành (dd/MM/yyyy HH:mm)">
-
+                            android:hint="Thời gian khởi hành">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editTextDepartureTime"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:cursorVisible="false" />
                         </com.google.android.material.textfield.TextInputLayout>
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/textInputLayoutArrivalTime"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -142,16 +145,56 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             app:startIconDrawable="@android:drawable/ic_menu_today"
-                            android:hint="Thời gian đến (dd/MM/yyyy HH:mm)">
-
+                            android:hint="Thời gian đến">
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/editTextArrivalTime"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:clickable="true"
+                                android:cursorVisible="false" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thông tin chung"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:layout_marginBottom="8dp"/>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayoutTrainType"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            app:startIconDrawable="@android:drawable/ic_dialog_info"
+                            android:hint="Mã tàu (ví dụ: SE1)">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editTextTrainType"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionNext"
+                                android:inputType="textCapCharacters" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        
+                        <!-- Removed TicketPrice and SeatCount here as they are now per coach -->
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Coach Management Section -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -165,59 +208,42 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Danh sách Toa tàu"
+                                android:textAppearance="?attr/textAppearanceHeadline6" />
+                            <Button
+                                android:id="@+id/btnAddCoach"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Thêm toa"
+                                app:icon="@android:drawable/ic_input_add" />
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvCoaches"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:nestedScrollingEnabled="false" /> 
+                            
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Thông tin chi tiết"
-                            android:textAppearance="?attr/textAppearanceHeadline6"
-                            android:layout_marginBottom="8dp"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayoutTrainType"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:id="@+id/tvNoCoaches"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:startIconDrawable="@android:drawable/ic_dialog_info"
-                            android:hint="Loại tàu (ví dụ: SE1)">
+                            android:text="Chưa có toa tàu nào. Vui lòng thêm toa."
+                            android:gravity="center"
+                            android:padding="16dp"
+                            android:textColor="?attr/colorOnSurfaceVariant"/>
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editTextTrainType"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayoutTicketPrice"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:startIconDrawable="@android:drawable/ic_menu_edit"
-                            android:hint="Giá vé">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editTextTicketPrice"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberDecimal" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textInputLayoutSeatCount"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:startIconDrawable="@android:drawable/ic_menu_edit"
-                            android:hint="Số lượng ghế">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editTextSeatCount"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="number" />
-                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

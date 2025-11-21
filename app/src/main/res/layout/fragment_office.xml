@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,313 +7,326 @@
     android:background="?attr/colorSurface"
     tools:context=".ui.account.OfficeFragment">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:background="?attr/colorPrimary">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hệ thống văn phòng vé"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp"/>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Hệ thống văn phòng vé"
+            app:titleTextColor="?attr/colorOnPrimary"
+            app:navigationIcon="@android:drawable/ic_menu_close_clear_cancel"
+            app:navigationIconTint="?attr/colorOnPrimary" />
 
-        <!-- Hanoi Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hà Nội"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="120 Lê Duẩn, Hoàn Kiếm, Hà Nội"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@drawable/outline_add_location_24"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1900 636 212"
-                android:autoLink="phone"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_call"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- Hai Phong Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hải Phòng"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"/>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="75 Lương Khánh Thiện, Ngô Quyền, Hải Phòng"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@drawable/outline_add_location_24"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1900 636 212"
-                android:autoLink="phone"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_call"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
-        
-        <!-- Lao Cai Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lào Cai"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"/>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="337 Nguyễn Huệ, Phố Mới, Lào Cai"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@drawable/outline_add_location_24"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1900 636 212"
-                android:autoLink="phone"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_call"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Da Nang Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Đà Nẵng"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"/>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="791 Hải Phòng, Thanh Khê, Đà Nẵng"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@drawable/outline_add_location_24"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1900 636 212"
-                android:autoLink="phone"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_call"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <!-- Nha Trang Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nha Trang"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"/>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
+            <!-- Hanoi Section -->
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hà Nội"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="17 Thái Nguyên, Phước Tân, Nha Trang"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@drawable/outline_add_location_24"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="120 Lê Duẩn, Hoàn Kiếm, Hà Nội"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@drawable/outline_add_location_24"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1900 636 212"
-                android:autoLink="phone"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_call"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1900 636 212"
+                    android:autoLink="phone"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@android:drawable/ic_menu_call"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
 
-        <!-- Ho Chi Minh City Section -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hồ Chí Minh"
-            android:textColor="?attr/colorPrimary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"/>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
+            <!-- Hai Phong Section -->
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hải Phòng"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="01 Nguyễn Thông, Phường 9, Quận 3, TP.HCM"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@drawable/outline_add_location_24"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="?attr/colorSurface"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1dp"
-            app:cardCornerRadius="16dp">
-            <TextView
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="75 Lương Khánh Thiện, Ngô Quyền, Hải Phòng"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@drawable/outline_add_location_24"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1900 636 212"
-                android:autoLink="phone"
-                android:textColor="?attr/colorOnSurface"
-                android:padding="12dp"
-                android:drawablePadding="12dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_call"
-                app:drawableTint="?attr/colorPrimary"/>
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1900 636 212"
+                    android:autoLink="phone"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@android:drawable/ic_menu_call"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+            
+            <!-- Lao Cai Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lào Cai"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="337 Nguyễn Huệ, Phố Mới, Lào Cai"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@drawable/outline_add_location_24"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1900 636 212"
+                    android:autoLink="phone"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@android:drawable/ic_menu_call"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
-</ScrollView>
+            <!-- Da Nang Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đà Nẵng"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="791 Hải Phòng, Thanh Khê, Đà Nẵng"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@drawable/outline_add_location_24"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1900 636 212"
+                    android:autoLink="phone"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@android:drawable/ic_menu_call"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Nha Trang Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nha Trang"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="17 Thái Nguyên, Phước Tân, Nha Trang"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@drawable/outline_add_location_24"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1900 636 212"
+                    android:autoLink="phone"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@android:drawable/ic_menu_call"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Ho Chi Minh City Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hồ Chí Minh"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"/>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="01 Nguyễn Thông, Phường 9, Quận 3, TP.HCM"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@drawable/outline_add_location_24"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?attr/colorSurface"
+                app:strokeColor="?attr/colorPrimary"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1900 636 212"
+                    android:autoLink="phone"
+                    android:textColor="?attr/colorOnSurface"
+                    android:padding="12dp"
+                    android:drawablePadding="12dp"
+                    app:drawableStartCompat="@android:drawable/ic_menu_call"
+                    app:drawableTint="?attr/colorPrimary"/>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

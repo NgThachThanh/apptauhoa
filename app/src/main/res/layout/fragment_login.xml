@@ -11,7 +11,7 @@
         android:id="@+id/tvTitleLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập"
+        android:text="@string/login_title"
         android:textColor="?attr/colorOnSurface"
         android:textAppearance="?attr/textAppearanceHeadline5"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:hint="Email"
+        android:hint="Email hoặc Tên đăng nhập"
         app:layout_constraintTop_toBottomOf="@id/tvTitleLogin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -42,7 +42,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Mật khẩu"
+        android:hint="@string/login_password_hint"
         app:passwordToggleEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/tilEmail"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,8 @@
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:imeOptions="actionDone" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -60,7 +61,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Đăng nhập"
+        android:text="@string/login_button_label"
         app:layout_constraintTop_toBottomOf="@id/tilPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -71,7 +72,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Đăng nhập bằng Google"
+        android:text="@string/login_google_button_label"
         app:icon="@drawable/ic_google"
         app:layout_constraintTop_toBottomOf="@id/btnLogin"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Chưa có tài khoản? Đăng ký"
+        android:text="@string/login_register_prompt"
         android:textColor="?attr/colorPrimary"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"

@@ -3,6 +3,8 @@ package com.example.apptauhoa.ui.ticket
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.apptauhoa.data.model.Seat
+import com.example.apptauhoa.data.model.SeatStatus
 import com.example.apptauhoa.databinding.ItemBedBinding
 
 class BedAdapter(private val beds: List<Seat>, private val onBedSelected: (Seat) -> Unit) :

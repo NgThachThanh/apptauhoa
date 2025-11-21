@@ -3,4 +3,26 @@
     <string name="compartment">Khoang</string>
     <string name="bed_left">Giường bên trái</string>
     <string name="bed_right">Giường bên phải</string>
+
+    <!-- Home Screen -->
+    <string name="home_origin_label">Nơi đi</string>
+    <string name="home_destination_label">Nơi đến</string>
+    <string name="home_station_error_same_station">Ga đi và ga đến không được trùng nhau.</string>
+    <string name="home_departure_date_label">Ngày khởi hành</string>
+    <string name="home_departure_date_placeholder">Chọn ngày</string>
+    <string name="home_departure_date_error_empty">Vui lòng chọn ngày khởi hành.</string>
+    <string name="home_passengers_label">Hành khách</string>
+    <string name="home_passengers_default_value">1 người lớn</string>
+    <string name="home_search_trips_button">Tìm chuyến đi</string>
+    <string name="home_promotions_title">Ưu đãi &amp; Khuyến mãi</string>
+    <string name="home_see_all_promotions_button">Xem thêm</string>
+    <string name="home_find_ticket_suggestion_button">Tìm vé ngay</string>
+
+    <!-- Login Screen -->
+    <string name="login_title">Đăng nhập</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Mật khẩu</string>
+    <string name="login_button_label">Đăng nhập</string>
+    <string name="login_google_button_label">Đăng nhập bằng Google</string>
+    <string name="login_register_prompt">Chưa có tài khoản? Đăng ký</string>
 </resources>

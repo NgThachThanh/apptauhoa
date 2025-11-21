@@ -4,6 +4,9 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.apptauhoa.data.model.Seat
+import com.example.apptauhoa.data.model.SeatStatus
+import com.example.apptauhoa.data.model.TripDetails
 import com.example.apptauhoa.ui.ticket.RailCarDisplayItem.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +46,6 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
     init {
         val debugCoachId = savedStateHandle.get<String>("coachId")
         ticketCount = savedStateHandle.get<Int>("ticketCount") ?: 1
-        Log.d("SeatDebug", "ViewModel RECEIVED: coachId=$debugCoachId, ticketCount=$ticketCount")
 
         if (!debugCoachId.isNullOrEmpty()) {
             coachType = if (debugCoachId.contains("SLEEPER")) "SLEEPER" else "SEAT"
@@ -52,7 +54,6 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
             _tripDetails.value = generateMockTripDetails(debugCoachId)
         } else {
             coachType = "UNKNOWN"
-            Log.e("SeatDebug", "FATAL ERROR: coachId is null or empty!")
         }
     }
 
@@ -71,7 +72,7 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
                         .toSortedMap()
                         .forEach { (rowNum, seats) ->
                             items.add(SeatRow(seats.sortedBy { it.positionInRow }))
-                            if (rowNum % 4 == 0 && rowNum != 0) { // Add aisle space
+                            if (rowNum % 4 == 0 && rowNum != 0) {
                                 items.add(UtilitySpace("AISLE", rowNum))
                             }
                         }
@@ -91,8 +92,6 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
     fun onSeatSelected(seat: Seat) {
         val targetSeat = fullSeatList.find { it.id == seat.id } ?: return
 
-        // Case 1: The user clicked a seat that is already selected.
-        // Action: Deselect it. This is always allowed.
         if (targetSeat.status == SeatStatus.SELECTED) {
             val newList = fullSeatList.map {
                 if (it.id == targetSeat.id) it.copy(status = SeatStatus.AVAILABLE) else it
@@ -102,17 +101,15 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
             return
         }
 
-        // Case 2: The user clicked an available seat.
         if (targetSeat.status == SeatStatus.AVAILABLE) {
             val selectedCount = fullSeatList.count { it.status == SeatStatus.SELECTED }
 
-            // Subcase 2a: The selection limit has been reached.
-            // Action: Do nothing. The click is ignored.
             if (selectedCount >= ticketCount) {
+                viewModelScope.launch {
+                    _uiEvent.emit("Bạn chỉ được chọn tối đa $ticketCount ghế.")
+                }
                 return
             }
-            // Subcase 2b: The selection limit has NOT been reached.
-            // Action: Select the seat.
             else {
                 val newList = fullSeatList.map {
                     if (it.id == targetSeat.id) it.copy(status = SeatStatus.SELECTED) else it
@@ -122,9 +119,6 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
                 return
             }
         }
-
-        // Case 3: The user clicked a booked/pending seat.
-        // Action: Do nothing.
     }
 
     fun onDeckSelected(deck: Int) {
@@ -166,10 +160,9 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
                 }
             }
             "SLEEPER" -> {
-                (1..4).forEach { compartment -> // 4 compartments
-                    // 2 beds per deck per compartment
+                (1..4).forEach { compartment ->
                     listOf(1, 2).forEach { deck ->
-                        listOf("1", "2").forEach { pos -> // Position 1 (left), 2 (right)
+                        listOf("1", "2").forEach { pos ->
                             val randomStatus = when { Math.random() > 0.75 -> SeatStatus.BOOKED else -> SeatStatus.AVAILABLE }
                             val bedNumber = "${compartment}${if (deck == 1) "A" else "B"}${pos}"
                             seats.add(Seat(
@@ -179,8 +172,8 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
                                 price = 620000L,
                                 seatType = "SLEEPER",
                                 rowNumber = 0,
-                                positionInRow = pos, // "1" or "2"
-                                deck = deck, // 1 or 2
+                                positionInRow = pos,
+                                deck = deck,
                                 compartmentNumber = compartment)
                             )
                         }
@@ -198,8 +191,8 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
         return TripDetails(
             tripId = savedStateHandle.get<String>("tripId") ?: "TRIP123",
             trainCode = savedStateHandle.get<String>("trainCode") ?: "SE8",
-            departureTime = now + 1000 * 60 * 180, // 3 hours from now
-            arrivalTime = now + 1000 * 60 * 60 * 10, // 10 hours from now
+            departureTime = now + 1000 * 60 * 180,
+            arrivalTime = now + 1000 * 60 * 60 * 10,
             originStation = origin,
             destinationStation = destination,
             summary = "$origin - $destination"

@@ -3,6 +3,7 @@ package com.example.apptauhoa.ui.ticket
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.apptauhoa.data.model.BookedTicket
 import com.example.apptauhoa.databinding.ItemBookedTicketBinding
 import java.text.SimpleDateFormat
 import java.util.Date

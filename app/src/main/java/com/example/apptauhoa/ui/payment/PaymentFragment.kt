@@ -13,9 +13,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.apptauhoa.R
+import com.example.apptauhoa.data.DatabaseHelper
+import com.example.apptauhoa.data.model.BookedTicket
 import com.example.apptauhoa.databinding.FragmentPaymentBinding
-import com.example.apptauhoa.ui.ticket.BookedTicket
-import com.example.apptauhoa.ui.ticket.TicketRepository
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Locale
@@ -28,6 +28,12 @@ class PaymentFragment : Fragment() {
 
     private val viewModel: PaymentViewModel by viewModels()
     private val args: PaymentFragmentArgs by navArgs()
+    private lateinit var dbHelper: DatabaseHelper
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dbHelper = DatabaseHelper(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,7 +83,8 @@ class PaymentFragment : Fragment() {
                 tripId = args.tripId,
                 bookingCode = bookingCode
             )
-            TicketRepository.addTicket(bookedTicket)
+            // Use DatabaseHelper to save the ticket
+            dbHelper.addTicket(bookedTicket)
 
             findNavController().navigate(R.id.action_payment_to_payment_success)
         }

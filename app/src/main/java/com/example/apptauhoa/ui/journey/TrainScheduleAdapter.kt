@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptauhoa.R
+import com.example.apptauhoa.data.model.Trip
 import java.text.NumberFormat
 import java.util.Locale
 
 class TrainScheduleAdapter(
-    private var trips: List<TrainTrip>,
-    private val onItemClicked: (TrainTrip) -> Unit
+    private var trips: List<Trip>,
+    private val onItemClicked: (Trip) -> Unit
 ) : RecyclerView.Adapter<TrainScheduleAdapter.TrainViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrainViewHolder {
@@ -28,7 +29,7 @@ class TrainScheduleAdapter(
 
     override fun getItemCount(): Int = trips.size
     
-    fun updateData(newTrips: List<TrainTrip>) {
+    fun updateData(newTrips: List<Trip>) {
         trips = newTrips
         notifyDataSetChanged()
     }
@@ -44,9 +45,9 @@ class TrainScheduleAdapter(
         private val trainCode: TextView = itemView.findViewById(R.id.txt_train_code)
         private val ticketPrice: TextView = itemView.findViewById(R.id.txt_ticket_price)
 
-        fun bind(trip: TrainTrip) {
-            coachClass.text = trip.coachClass
-            seatsLeft.text = "Còn ${trip.availableSeats} chỗ"
+        fun bind(trip: Trip) {
+            coachClass.text = trip.classTitle
+            seatsLeft.text = "Còn ${trip.seatsLeft} chỗ"
             departureTime.text = trip.departureTime
             arrivalTime.text = trip.arrivalTime
             duration.text = trip.duration

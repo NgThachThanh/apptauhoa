@@ -1,5 +1,7 @@
 package com.example.apptauhoa.ui.ticket
 
+import com.example.apptauhoa.data.model.BookedTicket
+
 object TicketRepository {
 
     private val _bookedTickets = mutableListOf<BookedTicket>()

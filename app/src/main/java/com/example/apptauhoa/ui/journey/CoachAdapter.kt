@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptauhoa.R
+import com.example.apptauhoa.data.model.Coach
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -35,8 +36,8 @@ class CoachAdapter(
         private val price: TextView = itemView.findViewById(R.id.txt_price)
 
         fun bind(coach: Coach) {
-            name.text = coach.coachName
-            type.text = coach.coachType
+            name.text = coach.name
+            type.text = coach.type
             available.text = "Còn ${coach.availableSeats}/${coach.totalSeats} chỗ"
             
             val currencyFormat = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))

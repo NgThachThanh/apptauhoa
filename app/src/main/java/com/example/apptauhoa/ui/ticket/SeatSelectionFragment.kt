@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.apptauhoa.data.model.SeatStatus
 import com.example.apptauhoa.databinding.FragmentSeatSelectionBinding
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -38,6 +39,10 @@ class SeatSelectionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+
         setupAdapter()
         setupRecyclerView()
         setupObservers()
@@ -49,37 +54,14 @@ class SeatSelectionFragment : Fragment() {
 
     private fun setupAdapter() {
         seatAdapter = SeatAdapter { seat ->
-            val allItems = seatAdapter.currentList
-            val allSeatsInCoach = allItems.flatMap {
-                when (it) {
-                    is RailCarDisplayItem.SeatRow -> it.seats
-                    is RailCarDisplayItem.SleeperCompartment -> it.beds
-                    else -> emptyList()
-                }
-            }
-            val selectedSeats = allSeatsInCoach.filter { it.status == SeatStatus.SELECTED }
-            val seatSelectionLimit = args.passengerCount
-
-            if (seatSelectionLimit == 1 && selectedSeats.isNotEmpty()) {
-                Toast.makeText(requireContext(), "Bạn chỉ được chọn 1 ghế.", Toast.LENGTH_SHORT).show()
-                // Do nothing to prevent selecting another seat or deselecting the current one.
-            } else if (seat.status != SeatStatus.SELECTED && selectedSeats.size >= seatSelectionLimit) {
-                Toast.makeText(
-                    requireContext(),
-                    "Bạn chỉ được phép chọn tối đa $seatSelectionLimit ghế.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                viewModel.onSeatSelected(seat)
-            }
+            // Delegate logic to ViewModel directly to avoid sync issues
+            viewModel.onSeatSelected(seat)
         }
     }
 
     private fun setupRecyclerView() {
         binding.rvSeatmap.apply {
             adapter = seatAdapter
-            // Each item in the new adapter (SeatRow, SleeperCompartment) represents a full row.
-            // So a GridLayoutManager with a spanCount of 1 is correct.
             layoutManager = GridLayoutManager(requireContext(), 1)
         }
     }
@@ -92,7 +74,6 @@ class SeatSelectionFragment : Fragment() {
                     viewModel.displayItems.collect { items ->
                         seatAdapter.submitList(items)
 
-                        // --- Update UI based on the new list of items ---
                         val allSeatsInCoach = items.flatMap {
                             when (it) {
                                 is RailCarDisplayItem.SeatRow -> it.seats

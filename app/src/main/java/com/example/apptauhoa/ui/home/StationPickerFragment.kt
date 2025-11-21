@@ -16,24 +16,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptauhoa.R
+import com.example.apptauhoa.data.DatabaseHelper
+import com.example.apptauhoa.data.model.Station
 
 class StationPickerFragment : Fragment() {
 
     private lateinit var purpose: String
     private lateinit var stationAdapter: StationAdapter
-
-    private val allStations = listOf(
-        Station("SG", "Sài Gòn"),
-        Station("HN", "Hà Nội"),
-        Station("DD", "Dĩ An"),
-        Station("BH", "Biên Hòa"),
-        Station("NT", "Nha Trang"),
-        Station("DN", "Đà Nẵng")
-    )
+    private lateinit var dbHelper: DatabaseHelper
+    private var allStations: List<Station> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         purpose = requireArguments().getString("purpose") ?: ""
+        dbHelper = DatabaseHelper(requireContext()) // Initialize DB Helper
     }
 
     override fun onCreateView(
@@ -48,6 +44,9 @@ class StationPickerFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.stations_recycler_view)
         val searchEditText: EditText = view.findViewById(R.id.search_edit_text)
         val emptyView: TextView = view.findViewById(R.id.empty_view)
+
+        // Load stations from Database
+        allStations = dbHelper.getAllStations()
 
         stationAdapter = StationAdapter { station ->
             val result = bundleOf("station" to station)

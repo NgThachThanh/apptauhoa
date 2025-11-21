@@ -1,6 +1,6 @@
 package com.example.apptauhoa.ui.ticket
 
-import com.example.apptauhoa.ui.ticket.Seat
+import com.example.apptauhoa.data.model.Seat
 
 /**
  * Represents a displayable item in the seat selection RecyclerView.
