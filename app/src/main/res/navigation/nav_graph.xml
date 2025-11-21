@@ -60,7 +60,11 @@
         android:id="@+id/navigation_journey"
         android:name="com.example.apptauhoa.ui.journey.JourneyFragment"
         android:label="fragment_journey"
-        tools:layout="@layout/fragment_journey" />
+        tools:layout="@layout/fragment_journey">
+        <action
+            android:id="@+id/action_journey_to_ticket_details"
+            app:destination="@id/ticketDetailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_lookup"
@@ -138,15 +142,21 @@
         <argument android:name="arrivalTime" app:argType="long" />
         <argument android:name="tripId" app:argType="string" />
         <action
-            android:id="@+id/action_payment_to_ticket_detail"
-            app:destination="@id/navigation_ticket_detail" />
+            android:id="@+id/action_payment_to_payment_success"
+            app:destination="@id/paymentSuccessFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_ticket_detail"
-        android:name="com.example.apptauhoa.ui.ticket.TicketDetailFragment"
-        android:label="fragment_ticket_detail"
-        tools:layout="@layout/fragment_ticket_detail">
+        android:id="@+id/paymentSuccessFragment"
+        android:name="com.example.apptauhoa.ui.ticket.PaymentSuccessFragment"
+        android:label="PaymentSuccessFragment"
+        tools:layout="@layout/fragment_payment_success" />
+
+    <fragment
+        android:id="@+id/ticketDetailsFragment"
+        android:name="com.example.apptauhoa.ui.ticket.TicketDetailsFragment"
+        android:label="TicketDetailsFragment"
+        tools:layout="@layout/fragment_ticket_details">
         <argument android:name="tripId" app:argType="string" app:nullable="true"/>
         <argument android:name="selectionResult" app:argType="com.example.apptauhoa.ui.ticket.SeatSelectionResult" app:nullable="true"/>
     </fragment>

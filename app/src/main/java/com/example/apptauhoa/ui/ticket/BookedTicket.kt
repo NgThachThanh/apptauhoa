@@ -9,7 +9,8 @@ data class BookedTicket(
     val selectedSeatsInfo: String,
     val originalPrice: Long,
     val departureTime: Long,
-    val arrivalTime: Long, // Added this field
+    val arrivalTime: Long,
     val tripId: String,
-    val bookingCode: String
+    val bookingCode: String,
+    val status: String = "booked" // Can be "booked", "completed", "cancelled"
 ) : Parcelable

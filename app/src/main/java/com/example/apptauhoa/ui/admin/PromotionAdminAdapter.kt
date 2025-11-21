@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptauhoa.databinding.ItemPromotionAdminBinding
 
-// A simplified Promotion class for demonstration
-data class Promotion(val id: String, val title: String, val code: String, val discount: String, val imageUrl: String)
+// Updated Promotion class to hold an image resource ID
+data class Promotion(val id: String, val title: String, val code: String, val discount: String, val imageResId: Int)
 
 class PromotionAdminAdapter(
     private val onEditClick: (Promotion) -> Unit,
@@ -33,8 +33,9 @@ class PromotionAdminAdapter(
 
         fun bind(promotion: Promotion) {
             binding.textViewPromotionTitle.text = promotion.title
-            binding.textViewPromotionDetails.text = "Mã: ${promotion.code} - Giảm ${promotion.discount}"
-            // In a real app, you would load the image from promotion.imageUrl using a library like Glide or Coil
+            binding.textViewPromotionDetails.text = "Mã: ${promotion.code}"
+            // Set the image from the drawable resource
+            binding.imageViewPromotion.setImageResource(promotion.imageResId)
 
             binding.buttonEdit.setOnClickListener { onEditClick(promotion) }
             binding.buttonDelete.setOnClickListener { onDeleteClick(promotion) }

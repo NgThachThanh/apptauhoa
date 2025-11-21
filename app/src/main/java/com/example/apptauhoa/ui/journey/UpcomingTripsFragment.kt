@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apptauhoa.databinding.FragmentUpcomingTripsBinding
 import com.example.apptauhoa.ui.ticket.BookedTicketAdapter
@@ -27,7 +28,10 @@ class UpcomingTripsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val bookedTickets = TicketRepository.bookedTickets
-        val adapter = BookedTicketAdapter(bookedTickets)
+        val adapter = BookedTicketAdapter(bookedTickets) { ticket ->
+            val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.tripId, null)
+            findNavController().navigate(action)
+        }
 
         binding.recyclerViewUpcomingTrips.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewUpcomingTrips.adapter = adapter

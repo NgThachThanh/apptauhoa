@@ -7,34 +7,35 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.apptauhoa.databinding.FragmentBookedTicketsBinding
+import com.example.apptauhoa.databinding.FragmentCompletedTripsBinding
 import com.example.apptauhoa.ui.ticket.BookedTicketAdapter
 import com.example.apptauhoa.ui.ticket.TicketRepository
 
-class BookedTicketsFragment : Fragment() {
+class CompletedTripsFragment : Fragment() {
 
-    private var _binding: FragmentBookedTicketsBinding? = null
+    private var _binding: FragmentCompletedTripsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBookedTicketsBinding.inflate(inflater, container, false)
+        _binding = FragmentCompletedTripsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bookedTickets = TicketRepository.bookedTickets
-        val adapter = BookedTicketAdapter(bookedTickets) { ticket ->
+        // Assume we have a method in TicketRepository to get completed tickets
+        val completedTickets = TicketRepository.bookedTickets.filter { it.status == "completed" }
+        val adapter = BookedTicketAdapter(completedTickets) { ticket ->
             val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.tripId, null)
             findNavController().navigate(action)
         }
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
+        binding.recyclerViewCompletedTrips.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewCompletedTrips.adapter = adapter
     }
 
     override fun onDestroyView() {

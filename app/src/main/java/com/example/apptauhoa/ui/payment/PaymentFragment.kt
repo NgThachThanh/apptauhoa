@@ -79,7 +79,7 @@ class PaymentFragment : Fragment() {
             )
             TicketRepository.addTicket(bookedTicket)
 
-            findNavController().navigate(R.id.action_payment_to_ticket_detail)
+            findNavController().navigate(R.id.action_payment_to_payment_success)
         }
     }
 

@@ -10,12 +10,10 @@ import androidx.navigation.navOptions
 import com.example.apptauhoa.R
 import com.example.apptauhoa.databinding.FragmentTicketDetailBinding
 
-class TicketDetailFragment : Fragment() {
+class PaymentSuccessFragment : Fragment() {
 
     private var _binding: FragmentTicketDetailBinding? = null
     private val binding get() = _binding!!
-
-    // The problematic line and its import have been removed to finally resolve the build error.
 
     override fun onCreateView(
         inflater: LayoutInflater,

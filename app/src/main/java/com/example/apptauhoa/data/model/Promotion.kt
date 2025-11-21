@@ -1,7 +1,9 @@
 package com.example.apptauhoa.data.model
 
+import androidx.annotation.DrawableRes
+
 data class Promotion(
     val id: String,
     val title: String,
-    val imageUrl: String // Placeholder for a drawable or remote URL
+    @DrawableRes val imageResId: Int
 )

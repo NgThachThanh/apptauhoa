@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.apptauhoa.R
+import com.example.apptauhoa.data.model.Promotion
 import com.example.apptauhoa.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -43,6 +44,13 @@ class HomeFragment : Fragment() {
         "Tận hưởng hành trình của bạn"
     )
 
+    private val promotionImages = listOf(
+        R.drawable.hinh_8,
+        R.drawable.hinh_9,
+        R.drawable.hinh_10,
+        R.drawable.hinh_11
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupResultListeners()
@@ -61,6 +69,7 @@ class HomeFragment : Fragment() {
         updateAllUI()
 
         binding.textWelcome.text = welcomeMessages.random()
+        loadDummyPromotions()
     }
 
     private fun setupRecyclerViews() {
@@ -71,8 +80,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.promotions.observe(viewLifecycleOwner) { promotionAdapter.submitList(it) }
-        viewModel.randomSuggestion.observe(viewLifecycleOwner) { binding.textViewSuggestionTitle.text = it.title }
+        viewModel.randomSuggestion.observe(viewLifecycleOwner) { suggestion ->
+            binding.textViewSuggestionTitle.text = suggestion.title
+            binding.imageViewSuggestionBanner.setImageResource(suggestion.imageResId)
+        }
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.suggestionEvent.collect {
@@ -83,6 +94,16 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun loadDummyPromotions() {
+        val promotions = listOf(
+            Promotion("1", "Vé tàu Tết 2025", promotionImages[0]),
+            Promotion("2", "Chào hè sôi động", promotionImages[1]),
+            Promotion("3", "Giảm giá sinh viên", promotionImages[2]),
+            Promotion("4", "Đi nhóm 4 người", promotionImages[3])
+        )
+        promotionAdapter.submitList(promotions)
     }
 
     private fun setupViewListeners() {

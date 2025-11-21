@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.apptauhoa.R
 import com.example.apptauhoa.databinding.ActivityManagePromotionsBinding
 
 class ManagePromotionsActivity : AppCompatActivity() {
@@ -47,12 +48,10 @@ class ManagePromotionsActivity : AppCompatActivity() {
 
     private fun loadDummyData() {
         val dummyPromotions = listOf(
-            Promotion("1", "Vé tàu Tết 2025", "TET2025", "20%", ""),
-            Promotion("2", "Chào hè sôi động", "HE2024", "15%", ""),
-            Promotion("3", "Giảm giá sinh viên", "SINHVIEN30", "30%", ""),
-            Promotion("4", "Đi nhóm 4 người", "NHOM4", "10%", ""),
-            Promotion("5", "Khám phá Đà Nẵng", "DANANG", "25%", ""),
-            Promotion("6", "Về quê ăn Tết", "VEQUE", "10%", "")
+            Promotion("1", "Vé tàu Tết 2025", "TET2025", "20%", R.drawable.hinh_8),
+            Promotion("2", "Chào hè sôi động", "HE2024", "15%", R.drawable.hinh_9),
+            Promotion("3", "Giảm giá sinh viên", "SINHVIEN30", "30%", R.drawable.hinh_10),
+            Promotion("4", "Đi nhóm 4 người", "NHOM4", "10%", R.drawable.hinh_11)
         )
         promotionAdapter.submitList(dummyPromotions)
     }

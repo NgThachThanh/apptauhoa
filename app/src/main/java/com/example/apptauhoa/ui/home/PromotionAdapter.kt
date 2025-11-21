@@ -40,9 +40,7 @@ class PromotionAdapter(
         fun bind(promotion: Promotion) {
             currentPromotion = promotion
             binding.textViewPromotionTitle.text = promotion.title
-            // In a real app, you would load the image from promotion.imageUrl using Glide, Picasso, or Coil.
-            // For this example, we'll just set a placeholder.
-            // e.g. binding.imageViewPromotionBanner.load(promotion.imageUrl)
+            binding.imageViewPromotionBanner.setImageResource(promotion.imageResId)
         }
     }
 }

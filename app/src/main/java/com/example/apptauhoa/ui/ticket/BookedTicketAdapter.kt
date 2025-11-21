@@ -9,12 +9,14 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-class BookedTicketAdapter(private val tickets: List<BookedTicket>) :
-    RecyclerView.Adapter<BookedTicketAdapter.BookedTicketViewHolder>() {
+class BookedTicketAdapter(
+    private val tickets: List<BookedTicket>,
+    private val onClick: (BookedTicket) -> Unit
+) : RecyclerView.Adapter<BookedTicketAdapter.BookedTicketViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookedTicketViewHolder {
         val binding = ItemBookedTicketBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BookedTicketViewHolder(binding)
+        return BookedTicketViewHolder(binding, onClick)
     }
 
     override fun onBindViewHolder(holder: BookedTicketViewHolder, position: Int) {
@@ -23,15 +25,25 @@ class BookedTicketAdapter(private val tickets: List<BookedTicket>) :
 
     override fun getItemCount() = tickets.size
 
-    class BookedTicketViewHolder(private val binding: ItemBookedTicketBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class BookedTicketViewHolder(
+        private val binding: ItemBookedTicketBinding,
+        private val onClick: (BookedTicket) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        private var currentTicket: BookedTicket? = null
+
+        init {
+            itemView.setOnClickListener {
+                currentTicket?.let { ticket ->
+                    onClick(ticket)
+                }
+            }
+        }
 
         fun bind(ticket: BookedTicket) {
-            // The binding logic has been updated to use the correct view IDs from the new layout.
+            currentTicket = ticket
             binding.textDepartureDate.text = formatDate(ticket.departureTime)
-
             binding.textBookingCode.text = ticket.bookingCode
-
             binding.textDepartureTime.text = formatTime(ticket.departureTime)
             binding.textArrivalTime.text = formatTime(ticket.arrivalTime)
 

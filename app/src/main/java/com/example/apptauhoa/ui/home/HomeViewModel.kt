@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.apptauhoa.R
 import com.example.apptauhoa.data.model.DestinationSuggestion
 import com.example.apptauhoa.data.model.Promotion
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -54,10 +55,10 @@ class HomeViewModel : ViewModel() {
      */
     private fun loadPromotions() {
         val promotionList = listOf(
-            Promotion("1", "Giảm 20% vé tàu Thống Nhất", ""),
-            Promotion("2", "Du lịch hè sảng khoái, giá vé giảm ngay 15%", ""),
-            Promotion("3", "Mua vé khứ hồi, giảm chiều về 30%", ""),
-            Promotion("4", "Đi tàu 5 sao, trải nghiệm đẳng cấp", "")
+            Promotion("1", "Giảm 20% vé tàu Thống Nhất", 0),
+            Promotion("2", "Du lịch hè sảng khoái, giá vé giảm ngay 15%", 0),
+            Promotion("3", "Mua vé khứ hồi, giảm chiều về 30%", 0),
+            Promotion("4", "Đi tàu 5 sao, trải nghiệm đẳng cấp", 0)
         )
         _promotions.value = promotionList
     }
@@ -73,7 +74,7 @@ class HomeViewModel : ViewModel() {
             stationName = "Đà Nẵng",
             stationCode = "DN",
             title = "Khám phá Thành phố đáng sống",
-            imageUrl = "" // Placeholder, will be handled by a drawable
+            imageResId = R.drawable.hinh_12 // Use a specific image for the suggestion
         )
         _randomSuggestion.value = suggestion
     }
