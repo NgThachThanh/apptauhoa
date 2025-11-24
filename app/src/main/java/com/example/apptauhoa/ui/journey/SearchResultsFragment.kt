@@ -86,15 +86,13 @@ class SearchResultsFragment : Fragment() {
     private fun setupHeader() {
         binding?.txtRouteTitle?.text = "${args.originName} – ${args.destinationName}"
         try {
-            // The date format from HomeFragment is yyyy-MM-dd
-            val date = LocalDate.parse(args.departureDate) 
+            val date = LocalDate.parse(args.departureDate) // Date format from Home is yyyy-MM-dd
             val outputFormatter = DateTimeFormatter.ofPattern("'Khởi hành' E, dd/MM/yyyy", Locale("vi", "VN"))
             binding?.txtRouteSubtitle?.text = "${date.format(outputFormatter)} • ${args.ticketCount} khách"
         } catch (e: Exception) {
-            // Fallback if parsing fails for any reason
             binding?.txtRouteSubtitle?.text = "${args.departureDate} • ${args.ticketCount} khách"
         }
-        
+
         binding?.btnBack?.setOnClickListener { findNavController().popBackStack() }
         binding?.btnFilter?.setOnClickListener {
             findNavController().navigate(SearchResultsFragmentDirections.actionSearchResultsToTripFilter())
@@ -105,7 +103,7 @@ class SearchResultsFragment : Fragment() {
         trainScheduleAdapter = TrainScheduleAdapter(emptyList()) { trainTrip ->
             // Fetch real coaches from DB
             val realCoaches = dbHelper.getCoachesByTripId(trainTrip.id)
-            
+
             // Fallback to mock if DB has no coaches (for old data)
             val coachesToPass = if (realCoaches.isNotEmpty()) {
                 realCoaches
@@ -139,7 +137,7 @@ class SearchResultsFragment : Fragment() {
 
     private fun parseDateTimeToTimestamp(dateStr: String, timeStr: String): Long {
         return try {
-            // The date format (dateStr) from the database is yyyy-MM-dd
+            // Date format from DB is yyyy-MM-dd
             val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.getDefault())
             val localDateTime = LocalDateTime.parse("$dateStr $timeStr", dateTimeFormatter)
             localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()

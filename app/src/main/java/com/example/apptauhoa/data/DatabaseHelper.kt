@@ -319,8 +319,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     fun getCoachesByTripId(tripId: String): List<Coach> {
         val list = ArrayList<Coach>()
         val db = this.readableDatabase
-        val cursor = db.query(TABLE_COACHES, null, "$KEY_COACH_TRIP_ID=?", arrayOf(tripId), null, null, KEY_COACH_NAME)
-        
+        val allBookedSeatsForTrip = getBookedSeatsForTrip(tripId)
+
+        val cursor = db.query(TABLE_COACHES, null, "$KEY_COACH_TRIP_ID = ?", arrayOf(tripId), null, null, KEY_COACH_NAME)
+
         cursor?.use {
             if (it.moveToFirst()) {
                 do {
@@ -329,8 +331,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                     val type = it.getString(it.getColumnIndexOrThrow(KEY_COACH_TYPE))
                     val price = it.getLong(it.getColumnIndexOrThrow(KEY_COACH_PRICE))
                     val total = it.getInt(it.getColumnIndexOrThrow(KEY_COACH_TOTAL_SEATS))
-                    val avail = it.getInt(it.getColumnIndexOrThrow(KEY_COACH_AVAIL_SEATS))
-                    
+
+                    val bookedSeatsForThisCoach = allBookedSeatsForTrip.count { seatId -> seatId.startsWith(id) }
+                    val avail = total - bookedSeatsForThisCoach
+
                     list.add(Coach(id, name, type, avail, total, price, emptyList()))
                 } while (it.moveToNext())
             }

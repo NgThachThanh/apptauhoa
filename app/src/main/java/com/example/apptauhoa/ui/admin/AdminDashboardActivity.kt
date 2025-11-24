@@ -19,6 +19,8 @@ class AdminDashboardActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_admin_dashboard)
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
 
         setupRecyclerView()
         setupClickListeners()
