@@ -65,15 +65,6 @@ class PaymentFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.radioGroupPayment.setOnCheckedChangeListener { _, checkedId ->
-            val method = when (checkedId) {
-                R.id.radio_cash -> PaymentMethod.CASH_AT_COUNTER
-                R.id.radio_qr -> PaymentMethod.ONLINE_QR
-                else -> return@setOnCheckedChangeListener
-            }
-            viewModel.selectPaymentMethod(method)
-        }
-
         binding.buttonConfirmBooking.setOnClickListener {
             val bookingCode = "#${Random.nextInt(1000, 9999)}"
             val sharedPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
@@ -81,7 +72,7 @@ class PaymentFragment : Fragment() {
 
             val bookedTicket = BookedTicket(
                 selectedSeatsInfo = args.selectedSeatsInfo,
-                originalPrice = args.originalPrice,
+                originalPrice = args.originalPrice, // This is the total price
                 departureTime = args.departureTime,
                 arrivalTime = args.arrivalTime,
                 tripId = args.tripId,
@@ -96,6 +87,15 @@ class PaymentFragment : Fragment() {
             dbHelper.addTicket(bookedTicket, userId)
 
             findNavController().navigate(R.id.action_payment_to_payment_success)
+        }
+
+        binding.radioGroupPayment.setOnCheckedChangeListener { _, checkedId ->
+            val method = when (checkedId) {
+                R.id.radio_cash -> PaymentMethod.CASH_AT_COUNTER
+                R.id.radio_qr -> PaymentMethod.ONLINE_QR
+                else -> return@setOnCheckedChangeListener
+            }
+            viewModel.selectPaymentMethod(method)
         }
     }
 

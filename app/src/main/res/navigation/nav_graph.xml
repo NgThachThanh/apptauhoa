@@ -113,6 +113,12 @@
             android:name="coachId"
             app:argType="string" />
         <argument
+            android:name="coachName"
+            app:argType="string" />
+        <argument
+            android:name="coachType"
+            app:argType="string" />
+        <argument
             android:name="ticketCount"
             app:argType="integer" />
         <argument
@@ -178,8 +184,7 @@
         android:name="com.example.apptauhoa.ui.ticket.TicketDetailsFragment"
         android:label="TicketDetailsFragment"
         tools:layout="@layout/fragment_ticket_details">
-        <argument android:name="tripId" app:argType="string" app:nullable="true"/>
-        <argument android:name="selectionResult" app:argType="com.example.apptauhoa.data.model.SeatSelectionResult" app:nullable="true"/>
+        <argument android:name="ticketBookingCode" app:argType="string"/>
     </fragment>
 
     <!-- Account Flow -->

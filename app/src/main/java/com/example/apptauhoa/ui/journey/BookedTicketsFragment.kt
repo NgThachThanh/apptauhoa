@@ -29,7 +29,7 @@ class BookedTicketsFragment : Fragment() {
 
         val bookedTickets = TicketRepository.bookedTickets
         val adapter = BookedTicketAdapter(bookedTickets) { ticket ->
-            val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.tripId, null)
+            val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.bookingCode)
             findNavController().navigate(action)
         }
 

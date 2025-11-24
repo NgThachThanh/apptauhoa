@@ -27,7 +27,7 @@ class UpcomingTripsFragment : Fragment(R.layout.fragment_upcoming_trips) {
         if (userId != -1) {
             val upcomingTickets = dbHelper.getTicketsForUser(userId, "BOOKED")
             val adapter = PastTripsAdapter(upcomingTickets) { ticket ->
-                val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.tripId, null)
+                val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.bookingCode)
                 findNavController().navigate(action)
             }
             binding.recyclerView.layoutManager = LinearLayoutManager(context)

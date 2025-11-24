@@ -30,7 +30,7 @@ class CompletedTripsFragment : Fragment() {
         // Assume we have a method in TicketRepository to get completed tickets
         val completedTickets = TicketRepository.bookedTickets.filter { it.status == "completed" }
         val adapter = BookedTicketAdapter(completedTickets) { ticket ->
-            val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.tripId, null)
+            val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.bookingCode)
             findNavController().navigate(action)
         }
 

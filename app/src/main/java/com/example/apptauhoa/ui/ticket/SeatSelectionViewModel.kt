@@ -26,6 +26,7 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
 
     private val ticketCount: Int
     val coachType: String
+    val coachName: String // ADDED
 
     private val _displayItems = MutableStateFlow<List<RailCarDisplayItem>>(emptyList())
     val displayItems = _displayItems.asStateFlow()
@@ -45,6 +46,7 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
     init {
         val debugCoachId = savedStateHandle.get<String>("coachId")
         ticketCount = savedStateHandle.get<Int>("ticketCount") ?: 1
+        coachName = savedStateHandle.get<String>("coachName") ?: "" // ADDED
 
         if (!debugCoachId.isNullOrEmpty()) {
             coachType = if (debugCoachId.contains("SLEEPER")) "SLEEPER" else "SEAT"
@@ -137,7 +139,7 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
 
             val navArgs = NavigationEvent(
                 tripId = details.tripId,
-                selectedSeatsInfo = "Toa ${savedStateHandle.get<String>("coachId")}: ${selectedSeats.joinToString { it.number }}",
+                selectedSeatsInfo = "$coachName: ${selectedSeats.joinToString { it.number }}", // MODIFIED
                 originalPrice = selectedSeats.sumOf { it.price },
                 departureTime = details.departureTime,
                 arrivalTime = details.arrivalTime

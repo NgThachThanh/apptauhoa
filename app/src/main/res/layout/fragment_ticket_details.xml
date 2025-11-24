@@ -107,91 +107,146 @@
                 android:layout_height="2dp"
                 android:background="@drawable/bg_dashed_line" />
 
-            <!-- Passenger and Seat Info -->
-            <LinearLayout
+            <!-- All Details Info -->
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false"
                 android:padding="20dp">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hành khách"
-                        android:textAppearance="?attr/textAppearanceLabelMedium"/>
-                    <TextView
-                        android:id="@+id/passenger_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textStyle="bold"
-                        tools:text="Nguyễn Văn A" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Loại vé"
-                        android:layout_marginTop="8dp"
-                        android:textAppearance="?attr/textAppearanceLabelMedium"/>
-                    <TextView
-                        android:id="@+id/ticket_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
-                        tools:text="Người lớn" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/label_passenger"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="vertical">
+                    android:text="Hành khách"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Toa / Chỗ"
-                        android:textAppearance="?attr/textAppearanceLabelMedium"/>
-                    <TextView
-                        android:id="@+id/seat_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textStyle="bold"
-                        tools:text="5 / 24A" />
+                <TextView
+                    android:id="@+id/passenger_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/label_seat_info"
+                    app:layout_constraintStart_toStartOf="@id/label_passenger"
+                    app:layout_constraintTop_toBottomOf="@id/label_passenger"
+                    tools:text="Nguyễn Thị Bích Trâm" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Giá vé"
-                        android:layout_marginTop="8dp"
-                        android:textAppearance="?attr/textAppearanceLabelMedium"/>
-                    <TextView
-                        android:id="@+id/ticket_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
-                        tools:text="975.000đ" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/label_seat_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Toa / Chỗ"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/seat_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/label_seat_info"
+                    app:layout_constraintTop_toBottomOf="@id/label_seat_info"
+                    tools:text="Toa 5 / 24A" />
 
-            <!-- QR Code Section -->
-            <ImageView
-                android:id="@+id/qr_code_image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
+                <TextView
+                    android:id="@+id/label_ticket_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Loại vé"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/passenger_name" />
+
+                <TextView
+                    android:id="@+id/ticket_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    app:layout_constraintStart_toStartOf="@id/label_ticket_type"
+                    app:layout_constraintTop_toBottomOf="@id/label_ticket_type"
+                    tools:text="Người lớn" />
+
+                <TextView
+                    android:id="@+id/label_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Giá vé"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/seat_info" />
+
+                <TextView
+                    android:id="@+id/ticket_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/label_price"
+                    app:layout_constraintTop_toBottomOf="@id/label_price"
+                    tools:text="975.000 đ" />
+
+
+                <TextView
+                    android:id="@+id/label_departure_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Giờ đi"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ticket_type" />
+
+                <TextView
+                    android:id="@+id/departure_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/label_departure_time"
+                    app:layout_constraintTop_toBottomOf="@id/label_departure_time"
+                    tools:text="19:30, 24/12" />
+
+                <TextView
+                    android:id="@+id/label_arrival_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Giờ đến"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ticket_price" />
+
+                <TextView
+                    android:id="@+id/arrival_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/label_arrival_time"
+                    app:layout_constraintTop_toBottomOf="@id/label_arrival_time"
+                    tools:text="08:15, 25/12" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_cancel_ticket"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="20dp"
-                tools:src="@tools:sample/avatars" />
+                android:text="Hủy vé"
+                app:strokeColor="?attr/colorError"
+                android:textColor="?attr/colorError" />
 
         </LinearLayout>
 

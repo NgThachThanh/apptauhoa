@@ -28,7 +28,7 @@ class PastTripsFragment : Fragment(R.layout.fragment_past_trips) {
         if (userId != -1) {
             val completedTickets = dbHelper.getTicketsForUser(userId, "COMPLETED")
             val adapter = PastTripsAdapter(completedTickets) { ticket ->
-                val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.tripId, null)
+                val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.bookingCode)
                 findNavController().navigate(action)
             }
             binding.recyclerView.layoutManager = LinearLayoutManager(context)

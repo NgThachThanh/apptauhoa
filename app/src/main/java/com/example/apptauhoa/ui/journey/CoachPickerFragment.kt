@@ -36,6 +36,8 @@ class CoachPickerFragment : Fragment() {
         coachAdapter = CoachAdapter(args.coachList.toList()) { selectedCoach ->
             val action = CoachPickerFragmentDirections.actionCoachPickerToSeatSelection(
                 coachId = selectedCoach.id,
+                coachName = selectedCoach.name,
+                coachType = selectedCoach.type,
                 ticketCount = args.ticketCount,
                 originStation = args.originStation,
                 destinationStation = args.destinationStation,

@@ -27,7 +27,7 @@ class CancelledTripsFragment : Fragment(R.layout.fragment_cancelled_trips) {
         if (userId != -1) {
             val cancelledTickets = dbHelper.getTicketsForUser(userId, "CANCELLED")
             val adapter = PastTripsAdapter(cancelledTickets) { ticket ->
-                val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.tripId, null)
+                val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.bookingCode)
                 findNavController().navigate(action)
             }
             binding.recyclerView.layoutManager = LinearLayoutManager(context)

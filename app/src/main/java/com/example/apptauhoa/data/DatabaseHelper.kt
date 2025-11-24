@@ -15,9 +15,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "train_ticket.db"
-        private const val DATABASE_VERSION = 5 // Incremented version for new table/fields
+        private const val DATABASE_VERSION = 6 // Incremented version for new time columns
 
-        // Table Users
+        // Users Table
         const val TABLE_USERS = "users"
         const val KEY_USER_ID = "id"
         const val KEY_USER_USERNAME = "username"
@@ -28,12 +28,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val KEY_USER_PHONE = "phone"
         const val KEY_USER_DOB = "dob"
 
-        // Table Stations
+        // Stations Table
         const val TABLE_STATIONS = "stations"
         const val KEY_STATION_CODE = "code"
         const val KEY_STATION_NAME = "name"
 
-        // Table Trips
+        // Trips Table
         const val TABLE_TRIPS = "trips"
         const val KEY_TRIP_ID = "id"
         const val KEY_TRIP_CODE = "train_code"
@@ -46,7 +46,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val KEY_TRIP_DATE = "trip_date"
         const val KEY_TRIP_CLASS = "class_title"
 
-        // Table Coaches
+        // Coaches Table
         const val TABLE_COACHES = "coaches"
         const val KEY_COACH_ID = "id"
         const val KEY_COACH_TRIP_ID = "trip_id"
@@ -56,19 +56,20 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val KEY_COACH_TOTAL_SEATS = "total_seats"
         const val KEY_COACH_AVAIL_SEATS = "avail_seats"
 
-        // Table Tickets
+        // Tickets Table
         const val TABLE_TICKETS = "tickets"
         const val KEY_TICKET_ID = "id"
         const val KEY_TICKET_USER_ID = "user_id"
         const val KEY_TICKET_TRIP_ID = "trip_id"
         const val KEY_TICKET_SEAT = "seat_number"
         const val KEY_TICKET_CODE = "booking_code"
+        const val KEY_TICKET_PRICE = "price"
         const val KEY_TICKET_STATUS = "status"
-        const val KEY_TICKET_PRICE = "price" // New
+        const val KEY_TICKET_DEPARTURE_TIME = "departure_timestamp" // New
+        const val KEY_TICKET_ARRIVAL_TIME = "arrival_timestamp"     // New
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        // Create Users Table (Added username)
         db.execSQL("CREATE TABLE $TABLE_USERS ("
                 + "$KEY_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "$KEY_USER_USERNAME TEXT UNIQUE," 
@@ -79,12 +80,10 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + "$KEY_USER_DOB TEXT,"
                 + "$KEY_USER_ROLE TEXT)")
 
-        // Create Stations Table
         db.execSQL("CREATE TABLE $TABLE_STATIONS ("
                 + "$KEY_STATION_CODE TEXT PRIMARY KEY,"
                 + "$KEY_STATION_NAME TEXT)")
 
-        // Create Trips Table
         db.execSQL("CREATE TABLE $TABLE_TRIPS ("
                 + "$KEY_TRIP_ID TEXT PRIMARY KEY,"
                 + "$KEY_TRIP_CODE TEXT,"
@@ -97,7 +96,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + "$KEY_TRIP_DATE TEXT,"
                 + "$KEY_TRIP_CLASS TEXT)")
 
-        // Create Coaches Table
         db.execSQL("CREATE TABLE $TABLE_COACHES ("
                 + "$KEY_COACH_ID TEXT PRIMARY KEY,"
                 + "$KEY_COACH_TRIP_ID TEXT,"
@@ -107,7 +105,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + "$KEY_COACH_TOTAL_SEATS INTEGER,"
                 + "$KEY_COACH_AVAIL_SEATS INTEGER)")
 
-        // Create Tickets Table
         db.execSQL("CREATE TABLE $TABLE_TICKETS ("
                 + "$KEY_TICKET_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "$KEY_TICKET_USER_ID INTEGER,"
@@ -115,6 +112,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + "$KEY_TICKET_SEAT TEXT,"
                 + "$KEY_TICKET_CODE TEXT,"
                 + "$KEY_TICKET_PRICE INTEGER,"
+                + "$KEY_TICKET_DEPARTURE_TIME INTEGER,"
+                + "$KEY_TICKET_ARRIVAL_TIME INTEGER,"
                 + "$KEY_TICKET_STATUS TEXT)")
 
         insertMockData(db)
@@ -130,7 +129,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     private fun insertMockData(db: SQLiteDatabase) {
-        // Stations
         val stations = listOf(
             Station("SG", "Sài Gòn"),
             Station("HN", "Hà Nội"),
@@ -149,10 +147,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             db.insert(TABLE_STATIONS, null, values)
         }
 
-        // Admin User (Login via Username: admin)
         val admin = ContentValues().apply {
-            put(KEY_USER_USERNAME, "admin") // Username login
-            put(KEY_USER_EMAIL, "admin@dsvn.vn") // Fake email
+            put(KEY_USER_USERNAME, "admin")
+            put(KEY_USER_EMAIL, "admin@dsvn.vn")
             put(KEY_USER_PASSWORD, "admin")
             put(KEY_USER_NAME, "Quản Trị Viên")
             put(KEY_USER_ROLE, "admin")
@@ -280,25 +277,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         addCoach(tripId, "Toa 4", "Giường nằm khoang 4", (basePrice * 1.3).toLong(), 28)
     }
 
-    // --- OTHERS ---
-
-    fun getAllStations(): List<Station> {
-        val stationList = ArrayList<Station>()
-        val selectQuery = "SELECT * FROM $TABLE_STATIONS"
-        val db = this.readableDatabase
-        val cursor: Cursor? = db.rawQuery(selectQuery, null)
-        cursor?.use {
-            if (it.moveToFirst()) {
-                do {
-                    val code = it.getString(it.getColumnIndexOrThrow(KEY_STATION_CODE))
-                    val name = it.getString(it.getColumnIndexOrThrow(KEY_STATION_NAME))
-                    stationList.add(Station(code, name))
-                } while (it.moveToNext())
-            }
-        }
-        return stationList
-    }
-
     fun addTicket(ticket: BookedTicket, userId: Int) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -308,13 +286,15 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(KEY_TICKET_CODE, ticket.bookingCode)
             put(KEY_TICKET_STATUS, ticket.status)
             put(KEY_TICKET_PRICE, ticket.originalPrice)
+            put(KEY_TICKET_DEPARTURE_TIME, ticket.departureTime) // New
+            put(KEY_TICKET_ARRIVAL_TIME, ticket.arrivalTime)     // New
         }
         db.insert(TABLE_TICKETS, null, values)
     }
 
     fun getTicketsForUser(userId: Int, status: String): List<BookedTicket> {
         val ticketList = ArrayList<BookedTicket>()
-        val selectQuery = "SELECT t.*, tr.$KEY_TRIP_CODE, tr.$KEY_TRIP_ORIGIN, tr.$KEY_TRIP_DEST, tr.$KEY_TRIP_DEPARTURE, tr.$KEY_TRIP_ARRIVAL, tr.$KEY_TRIP_DATE FROM $TABLE_TICKETS t JOIN $TABLE_TRIPS tr ON t.$KEY_TICKET_TRIP_ID = tr.$KEY_TRIP_ID WHERE t.$KEY_TICKET_USER_ID = ? AND t.$KEY_TICKET_STATUS = ?"
+        val selectQuery = "SELECT t.*, tr.$KEY_TRIP_CODE, tr.$KEY_TRIP_ORIGIN, tr.$KEY_TRIP_DEST, tr.$KEY_TRIP_DATE FROM $TABLE_TICKETS t JOIN $TABLE_TRIPS tr ON t.$KEY_TICKET_TRIP_ID = tr.$KEY_TRIP_ID WHERE t.$KEY_TICKET_USER_ID = ? AND t.$KEY_TICKET_STATUS = ?"
 
         val db = this.readableDatabase
         val cursor: Cursor? = db.rawQuery(selectQuery, arrayOf(userId.toString(), status))
@@ -330,8 +310,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                         trainCode = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_CODE)),
                         originStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_ORIGIN)),
                         destinationStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DEST)),
-                        departureTime = it.getLong(it.getColumnIndexOrThrow(KEY_TRIP_DEPARTURE)),
-                        arrivalTime = it.getLong(it.getColumnIndexOrThrow(KEY_TRIP_ARRIVAL)),
+                        departureTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_DEPARTURE_TIME)), // Corrected
+                        arrivalTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_ARRIVAL_TIME)),       // Corrected
                         tripDate = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DATE)),
                         originalPrice = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_PRICE))
                     )
@@ -340,6 +320,40 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             }
         }
         return ticketList
+    }
+    
+    fun getTicketByBookingCode(bookingCode: String, userId: Int): BookedTicket? {
+        var ticket: BookedTicket? = null
+        val selectQuery = "SELECT t.*, tr.$KEY_TRIP_CODE, tr.$KEY_TRIP_ORIGIN, tr.$KEY_TRIP_DEST, tr.$KEY_TRIP_DATE FROM $TABLE_TICKETS t JOIN $TABLE_TRIPS tr ON t.$KEY_TICKET_TRIP_ID = tr.$KEY_TRIP_ID WHERE t.$KEY_TICKET_CODE = ? AND t.$KEY_TICKET_USER_ID = ?"
+
+        val db = this.readableDatabase
+        val cursor: Cursor? = db.rawQuery(selectQuery, arrayOf(bookingCode, userId.toString()))
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                ticket = BookedTicket(
+                    tripId = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_TRIP_ID)),
+                    selectedSeatsInfo = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_SEAT)),
+                    bookingCode = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_CODE)),
+                    status = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_STATUS)),
+                    trainCode = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_CODE)),
+                    originStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_ORIGIN)),
+                    destinationStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DEST)),
+                    departureTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_DEPARTURE_TIME)), // Corrected
+                    arrivalTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_ARRIVAL_TIME)),       // Corrected
+                    tripDate = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DATE)),
+                    originalPrice = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_PRICE))
+                )
+            }
+        }
+        return ticket
+    }
+
+    fun updateTicketStatus(bookingCode: String, newStatus: String): Int {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(KEY_TICKET_STATUS, newStatus)
+        return db.update(TABLE_TICKETS, values, "$KEY_TICKET_CODE = ?", arrayOf(bookingCode))
     }
 
     fun addUser(name: String, email: String, pass: String): Long {
@@ -354,10 +368,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return db.insert(TABLE_USERS, null, values)
     }
 
-    // UPDATED: Check both Email OR Username
     fun checkUser(input: String, pass: String): User? {
         val db = this.readableDatabase
-        // Query checks if input matches EITHER email OR username
         val cursor = db.query(
             TABLE_USERS,
             arrayOf(KEY_USER_ID, KEY_USER_EMAIL, KEY_USER_NAME, KEY_USER_ROLE, KEY_USER_PHONE, KEY_USER_DOB),
@@ -414,5 +426,22 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(KEY_USER_DOB, user.dob)
         }
         return db.update(TABLE_USERS, values, "$KEY_USER_ID=?", arrayOf(user.id.toString()))
+    }
+
+    fun getAllStations(): List<Station> {
+        val stationList = ArrayList<Station>()
+        val selectQuery = "SELECT * FROM $TABLE_STATIONS"
+        val db = this.readableDatabase
+        val cursor: Cursor? = db.rawQuery(selectQuery, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                do {
+                    val code = it.getString(it.getColumnIndexOrThrow(KEY_STATION_CODE))
+                    val name = it.getString(it.getColumnIndexOrThrow(KEY_STATION_NAME))
+                    stationList.add(Station(code, name))
+                } while (it.moveToNext())
+            }
+        }
+        return stationList
     }
 }
