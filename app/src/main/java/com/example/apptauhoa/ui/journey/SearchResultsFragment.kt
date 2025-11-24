@@ -86,11 +86,12 @@ class SearchResultsFragment : Fragment() {
     private fun setupHeader() {
         binding?.txtRouteTitle?.text = "${args.originName} – ${args.destinationName}"
         try {
-            val inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("vi", "VN"))
-            val date = LocalDate.parse(args.departureDate, inputFormatter)
+            // The date format from HomeFragment is yyyy-MM-dd
+            val date = LocalDate.parse(args.departureDate) 
             val outputFormatter = DateTimeFormatter.ofPattern("'Khởi hành' E, dd/MM/yyyy", Locale("vi", "VN"))
             binding?.txtRouteSubtitle?.text = "${date.format(outputFormatter)} • ${args.ticketCount} khách"
         } catch (e: Exception) {
+            // Fallback if parsing fails for any reason
             binding?.txtRouteSubtitle?.text = "${args.departureDate} • ${args.ticketCount} khách"
         }
         
@@ -138,7 +139,8 @@ class SearchResultsFragment : Fragment() {
 
     private fun parseDateTimeToTimestamp(dateStr: String, timeStr: String): Long {
         return try {
-            val dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", Locale.getDefault())
+            // The date format (dateStr) from the database is yyyy-MM-dd
+            val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.getDefault())
             val localDateTime = LocalDateTime.parse("$dateStr $timeStr", dateTimeFormatter)
             localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
         } catch (e: Exception) {

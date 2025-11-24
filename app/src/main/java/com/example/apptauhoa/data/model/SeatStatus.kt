@@ -7,6 +7,5 @@ import kotlinx.parcelize.Parcelize
 enum class SeatStatus : Parcelable {
     AVAILABLE,
     SELECTED,
-    BOOKED,
-    PENDING
+    BOOKED
 }

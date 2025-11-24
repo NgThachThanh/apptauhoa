@@ -1,28 +1,49 @@
 <resources>
     <string name="app_name">apptauhoa</string>
-    <string name="compartment">Khoang</string>
-    <string name="bed_left">Giường bên trái</string>
-    <string name="bed_right">Giường bên phải</string>
+    <string name="title_activity_login">LoginActivity</string>
 
-    <!-- Home Screen -->
-    <string name="home_origin_label">Nơi đi</string>
-    <string name="home_destination_label">Nơi đến</string>
-    <string name="home_station_error_same_station">Ga đi và ga đến không được trùng nhau.</string>
-    <string name="home_departure_date_label">Ngày khởi hành</string>
-    <string name="home_departure_date_placeholder">Chọn ngày</string>
-    <string name="home_departure_date_error_empty">Vui lòng chọn ngày khởi hành.</string>
-    <string name="home_passengers_label">Hành khách</string>
-    <string name="home_passengers_default_value">1 người lớn</string>
-    <string name="home_search_trips_button">Tìm chuyến đi</string>
-    <string name="home_promotions_title">Ưu đãi &amp; Khuyến mãi</string>
-    <string name="home_see_all_promotions_button">Xem thêm</string>
-    <string name="home_find_ticket_suggestion_button">Tìm vé ngay</string>
-
-    <!-- Login Screen -->
+    <!-- Login & Register -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Mật khẩu</string>
     <string name="login_title">Đăng nhập</string>
-    <string name="login_email_hint">Email</string>
     <string name="login_password_hint">Mật khẩu</string>
     <string name="login_button_label">Đăng nhập</string>
-    <string name="login_google_button_label">Đăng nhập bằng Google</string>
-    <string name="login_register_prompt">Chưa có tài khoản? Đăng ký</string>
+    <string name="login_google_button_label">Tiếp tục với Google</string>
+    <string name="login_register_prompt">Chưa có tài khoản? Đăng ký ngay</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+    <!-- Home Screen -->
+    <string name="home_origin_label">Ga đi</string>
+    <string name="home_destination_label">Ga đến</string>
+    <string name="home_station_error_same_station">Ga đi và ga đến không được trùng nhau</string>
+    <string name="home_departure_date_label">Ngày đi</string>
+    <string name="home_departure_date_placeholder">Chọn ngày</string>
+    <string name="home_departure_date_error_empty">Vui lòng chọn ngày đi</string>
+    <string name="home_passengers_label">Số hành khách</string>
+    <string name="home_passengers_default_value">1 người</string>
+    <string name="home_search_trips_button">Tìm chuyến</string>
+    <string name="home_promotions_title">Khuyến mãi nổi bật</string>
+    <string name="home_see_all_promotions_button">Xem tất cả</string>
+    <string name="home_find_ticket_suggestion_button">Gợi ý tìm vé</string>
+
+    <!-- Payment Screen -->
+    <string name="promo_code_hint">Mã khuyến mãi</string>
+    <string name="apply_promo_button">Áp dụng</string>
+    <string name="provisional_total_label">Tạm tính</string>
+    <string name="discount_label">Giảm giá</string>
+    <string name="final_total_label">Thành tiền</string>
+    <string name="cash_payment_option">Thanh toán tại quầy vé</string>
+    <string name="qr_payment_option">Thanh toán online (QR Code)</string>
+    <string name="confirm_booking_button">Xác nhận đặt vé</string>
+
+    <!-- Seat Selection -->
+    <string name="compartment">Khoang</string>
+    <string name="bed_left">Giường trái</string>
+    <string name="bed_right">Giường phải</string>
+
 </resources>

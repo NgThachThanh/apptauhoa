@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.apptauhoa.data.DatabaseHelper
 import com.example.apptauhoa.data.model.SeatStatus
 import com.example.apptauhoa.databinding.FragmentSeatSelectionBinding
 import kotlinx.coroutines.launch
@@ -27,12 +28,15 @@ class SeatSelectionFragment : Fragment() {
     private val viewModel: SeatSelectionViewModel by viewModels()
     private val args: SeatSelectionFragmentArgs by navArgs()
     private lateinit var seatAdapter: SeatAdapter
+    private lateinit var dbHelper: DatabaseHelper
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSeatSelectionBinding.inflate(inflater, container, false)
+        dbHelper = DatabaseHelper(requireContext())
         return binding.root
     }
 
@@ -42,6 +46,20 @@ class SeatSelectionFragment : Fragment() {
         binding.toolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        val bookedSeatIds = dbHelper.getBookedSeatsForTrip(args.tripId).toMutableList()
+        // Add some random booked seats for demonstration purposes
+        bookedSeatIds.add("${args.coachId}-1A")
+        bookedSeatIds.add("${args.coachId}-2C")
+        bookedSeatIds.add("${args.coachId}-5B")
+
+        viewModel.initialize(
+            coachName = args.coachName,
+            coachType = args.coachType,
+            passengerCount = args.passengerCount,
+            bookedSeatIds = bookedSeatIds.toSet(),
+            price = args.originalPrice
+        )
 
         setupAdapter()
         setupRecyclerView()
@@ -54,7 +72,6 @@ class SeatSelectionFragment : Fragment() {
 
     private fun setupAdapter() {
         seatAdapter = SeatAdapter { seat ->
-            // Delegate logic to ViewModel directly to avoid sync issues
             viewModel.onSeatSelected(seat)
         }
     }
@@ -106,17 +123,16 @@ class SeatSelectionFragment : Fragment() {
                 }
 
                 launch {
-                    viewModel.navigationEvent.collect { navEvent ->
+                    viewModel.navigationEvent.collect { selectedSeats ->
                         val action = SeatSelectionFragmentDirections.actionSeatSelectionToPayment(
-                            selectedSeatsInfo = navEvent.selectedSeatsInfo,
-                            originalPrice = navEvent.originalPrice,
-                            departureTime = navEvent.departureTime,
-                            arrivalTime = navEvent.arrivalTime,
-                            tripId = navEvent.tripId,
+                            tripId = args.tripId,
                             trainCode = args.trainCode,
                             originStation = args.originStation,
                             destinationStation = args.destinationStation,
-                            tripDate = args.tripDate
+                            tripDate = args.tripDate,
+                            departureTime = args.departureTime,
+                            arrivalTime = args.arrivalTime,
+                            selectedSeats = selectedSeats.toTypedArray()
                         )
                         findNavController().navigate(action)
                     }

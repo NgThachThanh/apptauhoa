@@ -42,7 +42,7 @@ class TicketDetailsFragment : Fragment(R.layout.fragment_ticket_details) {
         val userId = sharedPref.getInt("USER_ID", -1)
         if (userId == -1) return
 
-        val ticket = dbHelper.getTicketByBookingCode(bookingCode, userId)
+        val ticket = dbHelper.getTicketByBookingCode(bookingCode)
         val user = dbHelper.getUserById(userId)
 
         if (ticket != null && user != null) {

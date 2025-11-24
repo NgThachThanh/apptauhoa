@@ -2,23 +2,22 @@ package com.example.apptauhoa.ui.ticket
 
 import com.example.apptauhoa.data.model.Seat
 
-/**
- * Represents a displayable item in the seat selection RecyclerView.
- * This allows for multiple view types (rows, compartments, utility spaces).
- */
-sealed interface RailCarDisplayItem {
-    // A unique ID for DiffUtil
-    val id: String
+sealed class RailCarDisplayItem {
+    data class SeatRow(
+        val seats: List<Seat>,
+        // Use the unique ID of the first seat as the key for the row
+        val key: String = seats.first().id 
+    ) : RailCarDisplayItem()
 
-    data class SeatRow(val seats: List<Seat>) : RailCarDisplayItem {
-        override val id: String = seats.firstOrNull()?.id?.substringBeforeLast('-') ?: "row_${seats.hashCode()}"
-    }
+    data class SleeperCompartment(
+        val beds: List<Seat>,
+        // Use the unique ID of the first bed as the key for the compartment
+        val key: String = beds.first().id 
+    ) : RailCarDisplayItem()
 
-    data class SleeperCompartment(val beds: List<Seat>) : RailCarDisplayItem {
-        override val id: String = beds.firstOrNull()?.id?.substringBeforeLast('-') ?: "comp_${beds.hashCode()}"
-    }
-
-    data class UtilitySpace(val type: String, val key: Int) : RailCarDisplayItem {
-        override val id: String = "${type}_$key"
-    }
+    data class UtilitySpace(
+        val type: String, // e.g., AISLE, TOILET
+        // Create a unique key based on type and a random element
+        val key: String = "${type}_${System.nanoTime()}" 
+    ) : RailCarDisplayItem()
 }

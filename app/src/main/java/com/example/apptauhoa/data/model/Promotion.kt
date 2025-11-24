@@ -1,12 +1,13 @@
 package com.example.apptauhoa.data.model
 
 import android.os.Parcelable
-import androidx.annotation.DrawableRes
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Promotion(
-    val id: String,
-    val title: String,
-    @DrawableRes val imageResId: Int
+    val id: Int = 0,
+    val code: String,
+    val description: String,
+    val discountPercent: Int,
+    val imageResId: String
 ) : Parcelable

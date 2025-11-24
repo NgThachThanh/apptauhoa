@@ -40,10 +40,6 @@ class BedAdapter(private val beds: List<Seat>, private val onBedSelected: (Seat)
                     binding.root.setCardBackgroundColor(context.getColor(android.R.color.darker_gray))
                     binding.textBedNumber.setTextColor(context.getColor(android.R.color.white))
                 }
-                SeatStatus.PENDING -> {
-                    binding.root.setCardBackgroundColor(context.getColor(android.R.color.holo_orange_light))
-                    binding.textBedNumber.setTextColor(context.getColor(android.R.color.white))
-                }
             }
         }
     }

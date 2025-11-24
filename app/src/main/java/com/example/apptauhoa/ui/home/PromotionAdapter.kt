@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.apptauhoa.data.model.Promotion
 import com.example.apptauhoa.databinding.ItemPromotionBinding
+import com.example.apptauhoa.ui.home.Promotion // Corrected import
 
 class PromotionAdapter(
     private val onClick: (Promotion) -> Unit

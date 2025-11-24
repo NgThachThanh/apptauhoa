@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -31,9 +32,16 @@ class PaymentFragment : Fragment() {
     private val args: PaymentFragmentArgs by navArgs()
     private lateinit var dbHelper: DatabaseHelper
 
+    private var originalPrice: Long = 0
+    private var finalPrice: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dbHelper = DatabaseHelper(requireContext())
+        
+        // Calculate original price from the list of seats passed as argument
+        originalPrice = args.selectedSeats.sumOf { it.price }
+        finalPrice = originalPrice
     }
 
     override fun onCreateView(
@@ -57,36 +65,28 @@ class PaymentFragment : Fragment() {
     }
 
     private fun setupSummary() {
-        val summary = "${args.trainCode} | ${args.originStation} -> ${args.destinationStation} | ${args.tripDate}"
-        binding.textTripSummary.text = summary
-        binding.textSeatsInfo.text = args.selectedSeatsInfo
         val currencyFormat = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
-        binding.textFinalPrice.text = currencyFormat.format(args.originalPrice)
+        binding.textTripSummary.text = "${args.trainCode} | ${args.originStation} -> ${args.destinationStation} | ${args.tripDate}"
+        
+        // Generate seat info string from the list of seats
+        val seatsInfo = args.selectedSeats.joinToString(", ") { it.number }
+        binding.textSeatsInfo.text = seatsInfo
+        
+        binding.textOriginalPrice.text = currencyFormat.format(originalPrice)
+        binding.textFinalPrice.text = currencyFormat.format(finalPrice)
+        
+        // Hide discount fields initially
+        binding.labelDiscount.isVisible = false
+        binding.textDiscountAmount.isVisible = false
     }
 
     private fun setupListeners() {
+        binding.buttonApplyPromo.setOnClickListener {
+            applyPromoCode()
+        }
+
         binding.buttonConfirmBooking.setOnClickListener {
-            val bookingCode = "#${Random.nextInt(1000, 9999)}"
-            val sharedPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
-            val userId = sharedPref.getInt("USER_ID", -1)
-
-            val bookedTicket = BookedTicket(
-                selectedSeatsInfo = args.selectedSeatsInfo,
-                originalPrice = args.originalPrice, // This is the total price
-                departureTime = args.departureTime,
-                arrivalTime = args.arrivalTime,
-                tripId = args.tripId,
-                bookingCode = bookingCode,
-                trainCode = args.trainCode,
-                originStation = args.originStation,
-                destinationStation = args.destinationStation,
-                tripDate = args.tripDate,
-                status = "BOOKED"
-            )
-            // Use DatabaseHelper to save the ticket
-            dbHelper.addTicket(bookedTicket, userId)
-
-            findNavController().navigate(R.id.action_payment_to_payment_success)
+            confirmBooking()
         }
 
         binding.radioGroupPayment.setOnCheckedChangeListener { _, checkedId ->
@@ -97,6 +97,58 @@ class PaymentFragment : Fragment() {
             }
             viewModel.selectPaymentMethod(method)
         }
+    }
+
+    private fun applyPromoCode() {
+        val code = binding.editTextPromoCode.text.toString().trim()
+        if (code.isEmpty()) {
+            Toast.makeText(requireContext(), "Vui lòng nhập mã khuyến mãi", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val promo = dbHelper.getPromotionByCode(code)
+        if (promo == null) {
+            Toast.makeText(requireContext(), "Mã khuyến mãi không hợp lệ", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val discountPercent = promo.discountPercent
+        val discountAmount = (originalPrice * discountPercent) / 100
+        finalPrice = originalPrice - discountAmount
+
+        val currencyFormat = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
+        binding.textDiscountAmount.text = "- ${currencyFormat.format(discountAmount)}"
+        binding.textFinalPrice.text = currencyFormat.format(finalPrice)
+
+        binding.labelDiscount.isVisible = true
+        binding.textDiscountAmount.isVisible = true
+        
+        Toast.makeText(requireContext(), "Áp dụng mã thành công!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun confirmBooking() {
+        val bookingCode = "#${Random.nextInt(1000, 9999)}"
+        val sharedPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+        val userId = sharedPref.getInt("USER_ID", -1)
+        val seatsInfo = args.selectedSeats.joinToString(", ") { it.number }
+
+        val bookedTicket = BookedTicket(
+            selectedSeatsInfo = seatsInfo,
+            originalPrice = finalPrice, // Use the final price after discount
+            departureTime = args.departureTime,
+            arrivalTime = args.arrivalTime,
+            tripId = args.tripId,
+            bookingCode = bookingCode,
+            trainCode = args.trainCode,
+            originStation = args.originStation,
+            destinationStation = args.destinationStation,
+            tripDate = args.tripDate,
+            status = "BOOKED"
+        )
+
+        // Correctly call addTicket with the list of seats
+        dbHelper.addTicket(bookedTicket, userId, args.selectedSeats.toList())
+        findNavController().navigate(R.id.action_payment_to_payment_success)
     }
 
     private fun setupObservers() {
@@ -110,8 +162,8 @@ class PaymentFragment : Fragment() {
     }
 
     private fun updatePaymentMethodUI(method: PaymentMethod) {
-        binding.layoutCashDetails.isVisible = method == PaymentMethod.CASH_AT_COUNTER
-        binding.layoutQrDetails.isVisible = method == PaymentMethod.ONLINE_QR
+        binding.layoutCashDetails.root.isVisible = method == PaymentMethod.CASH_AT_COUNTER
+        binding.layoutQrDetails.root.isVisible = method == PaymentMethod.ONLINE_QR
     }
 
     override fun onDestroyView() {

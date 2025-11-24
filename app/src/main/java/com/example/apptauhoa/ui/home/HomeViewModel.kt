@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apptauhoa.R
 import com.example.apptauhoa.data.model.DestinationSuggestion
-import com.example.apptauhoa.data.model.Promotion
+import com.example.apptauhoa.ui.home.Promotion // Corrected import
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -55,10 +55,10 @@ class HomeViewModel : ViewModel() {
      */
     private fun loadPromotions() {
         val promotionList = listOf(
-            Promotion("1", "Giảm 20% vé tàu Thống Nhất", 0),
-            Promotion("2", "Du lịch hè sảng khoái, giá vé giảm ngay 15%", 0),
-            Promotion("3", "Mua vé khứ hồi, giảm chiều về 30%", 0),
-            Promotion("4", "Đi tàu 5 sao, trải nghiệm đẳng cấp", 0)
+            Promotion("1", "Giảm 20% vé tàu Thống Nhất", R.drawable.hinh_8),
+            Promotion("2", "Du lịch hè sảng khoái, giá vé giảm ngay 15%", R.drawable.hinh_9),
+            Promotion("3", "Mua vé khứ hồi, giảm chiều về 30%", R.drawable.hinh_10),
+            Promotion("4", "Đi tàu 5 sao, trải nghiệm đẳng cấp", R.drawable.hinh_11)
         )
         _promotions.value = promotionList
     }

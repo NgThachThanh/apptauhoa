@@ -1,12 +1,9 @@
 package com.example.apptauhoa.ui.ticket
 
-import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apptauhoa.data.model.Seat
 import com.example.apptauhoa.data.model.SeatStatus
-import com.example.apptauhoa.data.model.TripDetails
 import com.example.apptauhoa.ui.ticket.RailCarDisplayItem.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,19 +11,16 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-data class NavigationEvent(
-    val tripId: String,
-    val selectedSeatsInfo: String,
-    val originalPrice: Long,
-    val departureTime: Long,
-    val arrivalTime: Long
+data class TripDetails(
+    val summary: String
 )
 
-class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
+class SeatSelectionViewModel : ViewModel() {
 
-    private val ticketCount: Int
-    val coachType: String
-    val coachName: String // ADDED
+    private var ticketCount: Int = 1
+    private lateinit var coachType: String
+    private lateinit var coachName: String
+    private var price: Long = 0
 
     private val _displayItems = MutableStateFlow<List<RailCarDisplayItem>>(emptyList())
     val displayItems = _displayItems.asStateFlow()
@@ -34,54 +28,40 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
     private val _uiEvent = MutableSharedFlow<String>()
     val uiEvent = _uiEvent.asSharedFlow()
 
-    private val _navigationEvent = MutableSharedFlow<NavigationEvent>()
+    private val _navigationEvent = MutableSharedFlow<List<Seat>>()
     val navigationEvent = _navigationEvent.asSharedFlow()
 
     private val _tripDetails = MutableStateFlow<TripDetails?>(null)
     val tripDetails = _tripDetails.asStateFlow()
 
     private var fullSeatList: List<Seat> = emptyList()
-    private var selectedDeck = 1
 
-    init {
-        val debugCoachId = savedStateHandle.get<String>("coachId")
-        ticketCount = savedStateHandle.get<Int>("ticketCount") ?: 1
-        coachName = savedStateHandle.get<String>("coachName") ?: "" // ADDED
+    fun initialize(coachName: String, coachType: String, passengerCount: Int, bookedSeatIds: Set<String>, price: Long) {
+        this.coachName = coachName
+        this.coachType = coachType
+        this.ticketCount = passengerCount
+        this.price = price
 
-        if (!debugCoachId.isNullOrEmpty()) {
-            coachType = if (debugCoachId.contains("SLEEPER")) "SLEEPER" else "SEAT"
-            generateMockSeats(debugCoachId, coachType)
-            transformSeatsToDisplayItems()
-            _tripDetails.value = generateMockTripDetails(debugCoachId)
-        } else {
-            coachType = "UNKNOWN"
-        }
+        generateMockSeats(coachName, coachType, bookedSeatIds)
+        transformSeatsToDisplayItems()
+        _tripDetails.value = TripDetails("$coachName | $coachType")
     }
 
     private fun transformSeatsToDisplayItems() {
         val items = mutableListOf<RailCarDisplayItem>()
-        val listToProcess = if (coachType == "SLEEPER") {
-            fullSeatList.filter { it.deck == selectedDeck }
-        } else {
-            fullSeatList
-        }
-
-        if (listToProcess.isNotEmpty()) {
-             when (coachType) {
-                "SEAT" -> {
-                    listToProcess.groupBy { it.rowNumber }
+        if (fullSeatList.isNotEmpty()) {
+            when (coachType) {
+                "Ngồi mềm điều hòa" -> {
+                    fullSeatList.groupBy { it.rowNumber }
                         .toSortedMap()
-                        .forEach { (rowNum, seats) ->
+                        .forEach { (_, seats) ->
                             items.add(SeatRow(seats.sortedBy { it.positionInRow }))
-                            if (rowNum % 4 == 0 && rowNum != 0) {
-                                items.add(UtilitySpace("AISLE", rowNum))
-                            }
                         }
                 }
-                "SLEEPER" -> {
-                    listToProcess.groupBy { it.compartmentNumber }
+                "Giường nằm khoang 4" -> {
+                     fullSeatList.groupBy { it.compartmentNumber }
                         .toSortedMap()
-                        .forEach { (compNum, beds) ->
+                        .forEach { (_, beds) ->
                             items.add(SleeperCompartment(beds.sortedBy { it.positionInRow }))
                         }
                 }
@@ -93,12 +73,13 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
     fun onSeatSelected(seat: Seat) {
         val targetSeat = fullSeatList.find { it.id == seat.id } ?: return
 
+        if (targetSeat.status == SeatStatus.BOOKED) {
+            viewModelScope.launch { _uiEvent.emit("Ghế này đã được đặt.") }
+            return
+        }
+
         if (targetSeat.status == SeatStatus.SELECTED) {
-            val newList = fullSeatList.map {
-                if (it.id == targetSeat.id) it.copy(status = SeatStatus.AVAILABLE) else it
-            }
-            fullSeatList = newList
-            transformSeatsToDisplayItems()
+            updateSeatStatus(targetSeat.id, SeatStatus.AVAILABLE)
             return
         }
 
@@ -110,20 +91,17 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
                     _uiEvent.emit("Bạn chỉ được chọn tối đa $ticketCount ghế.")
                 }
                 return
-            }
-            else {
-                val newList = fullSeatList.map {
-                    if (it.id == targetSeat.id) it.copy(status = SeatStatus.SELECTED) else it
-                }
-                fullSeatList = newList
-                transformSeatsToDisplayItems()
-                return
+            } else {
+                updateSeatStatus(targetSeat.id, SeatStatus.SELECTED)
             }
         }
     }
-
-    fun onDeckSelected(deck: Int) {
-        selectedDeck = deck
+    
+    private fun updateSeatStatus(seatId: String, newStatus: SeatStatus) {
+        val newList = fullSeatList.map {
+            if (it.id == seatId) it.copy(status = newStatus) else it
+        }
+        fullSeatList = newList
         transformSeatsToDisplayItems()
     }
 
@@ -134,69 +112,33 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
                 _uiEvent.emit("Vui lòng chọn ít nhất 1 ghế.")
                 return@launch
             }
-
-            val details = _tripDetails.value ?: return@launch
-
-            val navArgs = NavigationEvent(
-                tripId = details.tripId,
-                selectedSeatsInfo = "$coachName: ${selectedSeats.joinToString { it.number }}", // MODIFIED
-                originalPrice = selectedSeats.sumOf { it.price },
-                departureTime = details.departureTime,
-                arrivalTime = details.arrivalTime
-            )
-            _navigationEvent.emit(navArgs)
+            _navigationEvent.emit(selectedSeats)
         }
     }
 
-    private fun generateMockSeats(coachId: String, type: String) {
+    private fun generateMockSeats(coachName: String, type: String, bookedSeatIds: Set<String>) {
         val seats = mutableListOf<Seat>()
-        val price = savedStateHandle.get<Long>("originalPrice") ?: 0L
-         when (type) {
-            "SEAT" -> {
+        val sleeperPrice = (this.price * 1.3).toLong()
+        when (type) {
+            "Ngồi mềm điều hòa" -> {
                 (1..15).forEach { row ->
                     listOf("A", "B", "C", "D").forEach { pos ->
-                        val randomStatus = when { Math.random() > 0.75 -> SeatStatus.BOOKED else -> SeatStatus.AVAILABLE }
-                        seats.add(Seat(id = "$coachId-$row-$pos", number = "$row$pos", status = randomStatus, price = price, seatType = "SEAT", rowNumber = row, positionInRow = pos, deck = 1, compartmentNumber = 0))
+                        val seatId = "$coachName-$row$pos"
+                        val status = if (bookedSeatIds.contains(seatId)) SeatStatus.BOOKED else SeatStatus.AVAILABLE
+                        seats.add(Seat(id = seatId, number = "$row$pos", status = status, price = this.price, seatType = "SEAT", coachName = coachName, rowNumber = row, positionInRow = pos))
                     }
                 }
             }
-            "SLEEPER" -> {
-                (1..4).forEach { compartment ->
-                    listOf(1, 2).forEach { deck ->
-                        listOf("1", "2").forEach { pos ->
-                            val randomStatus = when { Math.random() > 0.75 -> SeatStatus.BOOKED else -> SeatStatus.AVAILABLE }
-                            val bedNumber = "${compartment}${if (deck == 1) "A" else "B"}${pos}"
-                            seats.add(Seat(
-                                id = "$coachId-$compartment-$deck-$pos",
-                                number = bedNumber,
-                                status = randomStatus,
-                                price = price,
-                                seatType = "SLEEPER",
-                                rowNumber = 0,
-                                positionInRow = pos,
-                                deck = deck,
-                                compartmentNumber = compartment)
-                            )
-                        }
+            "Giường nằm khoang 4" -> {
+                (1..7).forEach { compartment ->
+                    listOf("A", "B", "C", "D").forEach { pos ->
+                        val seatId = "$coachName-$compartment$pos"
+                        val status = if (bookedSeatIds.contains(seatId)) SeatStatus.BOOKED else SeatStatus.AVAILABLE
+                        seats.add(Seat(id = seatId, number = "$compartment$pos", status = status, price = sleeperPrice, seatType = "SLEEPER", coachName = coachName, compartmentNumber = compartment, positionInRow = pos))
                     }
                 }
             }
         }
         fullSeatList = seats
-    }
-
-    private fun generateMockTripDetails(coachId: String): TripDetails {
-        val now = System.currentTimeMillis()
-        val origin = savedStateHandle.get<String>("originStation") ?: "N/A"
-        val destination = savedStateHandle.get<String>("destinationStation") ?: "N/A"
-        return TripDetails(
-            tripId = savedStateHandle.get<String>("tripId") ?: "TRIP123",
-            trainCode = savedStateHandle.get<String>("trainCode") ?: "SE8",
-            departureTime = now + 1000 * 60 * 180,
-            arrivalTime = now + 1000 * 60 * 60 * 10,
-            originStation = origin,
-            destinationStation = destination,
-            summary = "$origin - $destination"
-        )
     }
 }

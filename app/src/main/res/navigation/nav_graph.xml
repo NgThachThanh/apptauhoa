@@ -20,6 +20,18 @@
         <action
             android:id="@+id/action_home_to_search_results"
             app:destination="@id/navigation_search_results" />
+        <action
+            android:id="@+id/action_home_to_promotion_detail"
+            app:destination="@id/promotionDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/promotionDetailFragment"
+        android:name="com.example.apptauhoa.ui.home.PromotionDetailFragment"
+        android:label="fragment_promotion_detail"
+        tools:layout="@layout/fragment_promotion_detail">
+        <argument
+            android:name="promotionId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/navigation_station_picker"
@@ -159,8 +171,7 @@
         android:name="com.example.apptauhoa.ui.payment.PaymentFragment"
         android:label="PaymentFragment"
         tools:layout="@layout/fragment_payment">
-        <argument android:name="selectedSeatsInfo" app:argType="string" />
-        <argument android:name="originalPrice" app:argType="long" />
+        <argument android:name="selectedSeats" app:argType="com.example.apptauhoa.data.model.Seat[]" />
         <argument android:name="departureTime" app:argType="long" />
         <argument android:name="arrivalTime" app:argType="long" />
         <argument android:name="tripId" app:argType="string" />

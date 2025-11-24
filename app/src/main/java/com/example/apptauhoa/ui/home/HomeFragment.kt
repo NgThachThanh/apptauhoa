@@ -15,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.apptauhoa.R
-import com.example.apptauhoa.data.model.Promotion
 import com.example.apptauhoa.data.model.Station
 import com.example.apptauhoa.databinding.FragmentHomeBinding
 import kotlinx.coroutines.launch
@@ -74,8 +73,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        promotionAdapter = PromotionAdapter { promotion ->
-            Toast.makeText(context, "Clicked on: ${promotion.title}", Toast.LENGTH_SHORT).show()
+        promotionAdapter = PromotionAdapter { promotion: Promotion ->
+            val action = HomeFragmentDirections.actionHomeToPromotionDetail(promotionId = promotion.id)
+            findNavController().navigate(action)
         }
         binding.recyclerViewPromotions.adapter = promotionAdapter
     }
@@ -87,7 +87,7 @@ class HomeFragment : Fragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.suggestionEvent.collect {
+                viewModel.suggestionEvent.collect { 
                     destinationStation = Station(it.stationCode, it.stationName)
                     updateAllUI()
                     binding.nestedScrollViewHome.smoothScrollTo(0, 0)
@@ -99,10 +99,10 @@ class HomeFragment : Fragment() {
 
     private fun loadDummyPromotions() {
         val promotions = listOf(
-            Promotion("1", "Vé tàu Tết 2025", promotionImages[0]),
-            Promotion("2", "Chào hè sôi động", promotionImages[1]),
-            Promotion("3", "Giảm giá sinh viên", promotionImages[2]),
-            Promotion("4", "Đi nhóm 4 người", promotionImages[3])
+            Promotion("1", "Vé tàu Tết 2025", promotionImages[0], "Nội dung chi tiết..."),
+            Promotion("2", "Chào hè sôi động", promotionImages[1], "Nội dung chi tiết..."),
+            Promotion("3", "Giảm giá sinh viên", promotionImages[2], "Nội dung chi tiết..."),
+            Promotion("4", "Đi nhóm 4 người", promotionImages[3], "Nội dung chi tiết...")
         )
         promotionAdapter.submitList(promotions)
     }

@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.apptauhoa.data.model.BookedTicket
 import com.example.apptauhoa.data.model.Coach
+import com.example.apptauhoa.data.model.Promotion
+import com.example.apptauhoa.data.model.Seat
 import com.example.apptauhoa.data.model.Station
 import com.example.apptauhoa.data.model.Trip
 import com.example.apptauhoa.data.model.User
@@ -15,9 +17,17 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "train_ticket.db"
-        private const val DATABASE_VERSION = 6 // Incremented version for new time columns
+        private const val DATABASE_VERSION = 9 // Incremented version for schema change
 
-        // Users Table
+        // Promotions Table...
+        const val TABLE_PROMOTIONS = "promotions"
+        const val KEY_PROMO_ID = "id"
+        const val KEY_PROMO_CODE = "code"
+        const val KEY_PROMO_DESC = "description"
+        const val KEY_PROMO_DISCOUNT = "discount_percent"
+        const val KEY_PROMO_IMAGE = "image_res_id"
+
+        // Users Table...
         const val TABLE_USERS = "users"
         const val KEY_USER_ID = "id"
         const val KEY_USER_USERNAME = "username"
@@ -28,12 +38,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val KEY_USER_PHONE = "phone"
         const val KEY_USER_DOB = "dob"
 
-        // Stations Table
+        // Stations Table...
         const val TABLE_STATIONS = "stations"
         const val KEY_STATION_CODE = "code"
         const val KEY_STATION_NAME = "name"
 
-        // Trips Table
+        // Trips Table...
         const val TABLE_TRIPS = "trips"
         const val KEY_TRIP_ID = "id"
         const val KEY_TRIP_CODE = "train_code"
@@ -46,7 +56,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val KEY_TRIP_DATE = "trip_date"
         const val KEY_TRIP_CLASS = "class_title"
 
-        // Coaches Table
+        // Coaches Table...
         const val TABLE_COACHES = "coaches"
         const val KEY_COACH_ID = "id"
         const val KEY_COACH_TRIP_ID = "trip_id"
@@ -56,7 +66,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val KEY_COACH_TOTAL_SEATS = "total_seats"
         const val KEY_COACH_AVAIL_SEATS = "avail_seats"
 
-        // Tickets Table
+        // Tickets Table...
         const val TABLE_TICKETS = "tickets"
         const val KEY_TICKET_ID = "id"
         const val KEY_TICKET_USER_ID = "user_id"
@@ -65,11 +75,25 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val KEY_TICKET_CODE = "booking_code"
         const val KEY_TICKET_PRICE = "price"
         const val KEY_TICKET_STATUS = "status"
-        const val KEY_TICKET_DEPARTURE_TIME = "departure_timestamp" // New
-        const val KEY_TICKET_ARRIVAL_TIME = "arrival_timestamp"     // New
+        const val KEY_TICKET_DEPARTURE_TIME = "departure_timestamp"
+        const val KEY_TICKET_ARRIVAL_TIME = "arrival_timestamp"
+
+        // Booked Seats Table (Schema Updated)
+        const val TABLE_BOOKED_SEATS = "booked_seats"
+        const val KEY_BOOKING_ID = "id"
+        const val KEY_BOOKING_TRIP_ID = "trip_id"
+        const val KEY_BOOKING_SEAT_ID = "seat_id"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
+        // Create tables...
+        db.execSQL("CREATE TABLE $TABLE_PROMOTIONS ("
+                + "$KEY_PROMO_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "$KEY_PROMO_CODE TEXT UNIQUE," 
+                + "$KEY_PROMO_DESC TEXT,"
+                + "$KEY_PROMO_IMAGE TEXT,"
+                + "$KEY_PROMO_DISCOUNT INTEGER)")
+
         db.execSQL("CREATE TABLE $TABLE_USERS ("
                 + "$KEY_USER_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "$KEY_USER_USERNAME TEXT UNIQUE," 
@@ -115,19 +139,87 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + "$KEY_TICKET_DEPARTURE_TIME INTEGER,"
                 + "$KEY_TICKET_ARRIVAL_TIME INTEGER,"
                 + "$KEY_TICKET_STATUS TEXT)")
+        
+        db.execSQL("CREATE TABLE $TABLE_BOOKED_SEATS ("
+                + "$KEY_BOOKING_ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "$KEY_BOOKING_TRIP_ID TEXT NOT NULL,"
+                + "$KEY_BOOKING_SEAT_ID TEXT NOT NULL,"
+                + "UNIQUE ($KEY_BOOKING_TRIP_ID, $KEY_BOOKING_SEAT_ID))")
 
         insertMockData(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_PROMOTIONS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_STATIONS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_TRIPS")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_COACHES")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_TICKETS")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_BOOKED_SEATS") // Drop new table
         onCreate(db)
     }
 
+    // ... (rest of the code is the same for now)
+
+    fun getBookedSeatsForTrip(tripId: String): Set<String> {
+        val bookedSeatIds = mutableSetOf<String>()
+        val db = readableDatabase
+        val cursor = db.query(
+            TABLE_BOOKED_SEATS,
+            arrayOf(KEY_BOOKING_SEAT_ID),
+            "$KEY_BOOKING_TRIP_ID = ?",
+            arrayOf(tripId),
+            null, null, null
+        )
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                do {
+                    val seatId = it.getString(it.getColumnIndexOrThrow(KEY_BOOKING_SEAT_ID))
+                    bookedSeatIds.add(seatId)
+                } while (it.moveToNext())
+            }
+        }
+        return bookedSeatIds
+    }
+
+    fun addBookedSeats(tripId: String, seats: List<Seat>) {
+        val db = writableDatabase
+        db.beginTransaction()
+        try {
+            seats.forEach { seat ->
+                val values = ContentValues().apply {
+                    put(KEY_BOOKING_TRIP_ID, tripId)
+                    put(KEY_BOOKING_SEAT_ID, seat.id)
+                }
+                db.insertWithOnConflict(TABLE_BOOKED_SEATS, null, values, SQLiteDatabase.CONFLICT_IGNORE)
+            }
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+    }
+    
+    fun addTicket(ticket: BookedTicket, userId: Int, seats: List<Seat>) {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(KEY_TICKET_USER_ID, userId)
+            put(KEY_TICKET_TRIP_ID, ticket.tripId)
+            put(KEY_TICKET_SEAT, ticket.selectedSeatsInfo)
+            put(KEY_TICKET_CODE, ticket.bookingCode)
+            put(KEY_TICKET_STATUS, ticket.status)
+            put(KEY_TICKET_PRICE, ticket.originalPrice)
+            put(KEY_TICKET_DEPARTURE_TIME, ticket.departureTime)
+            put(KEY_TICKET_ARRIVAL_TIME, ticket.arrivalTime)
+        }
+        val ticketId = db.insert(TABLE_TICKETS, null, values)
+
+        if (ticketId != -1L) {
+            addBookedSeats(ticket.tripId, seats)
+        }
+    }
+    
     private fun insertMockData(db: SQLiteDatabase) {
         val stations = listOf(
             Station("SG", "Sài Gòn"),
@@ -155,6 +247,40 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(KEY_USER_ROLE, "admin")
         }
         db.insert(TABLE_USERS, null, admin)
+        
+        val promotions = listOf(
+            Promotion(code="TET2025", description="Vé tàu Tết 2025", discountPercent=10, imageResId="@drawable/promo_tet"),
+            Promotion(code="HE2024", description="Chào hè sôi động", discountPercent=20, imageResId="@drawable/promo_summer"),
+            Promotion(code="SINHVIEN30", description="Giảm giá sinh viên", discountPercent=30, imageResId="@drawable/promo_student"),
+            Promotion(code="NHOM4", description="Đi nhóm 4 người", discountPercent=15, imageResId="@drawable/promo_group")
+        )
+        for (promo in promotions) {
+            val values = ContentValues().apply {
+                put(KEY_PROMO_CODE, promo.code)
+                put(KEY_PROMO_DESC, promo.description)
+                put(KEY_PROMO_DISCOUNT, promo.discountPercent)
+                put(KEY_PROMO_IMAGE, promo.imageResId)
+            }
+            db.insert(TABLE_PROMOTIONS, null, values)
+        }
+    }
+    
+    fun getPromotionByCode(code: String): Promotion? {
+        val db = this.readableDatabase
+        val cursor = db.query(TABLE_PROMOTIONS, null, "$KEY_PROMO_CODE=?", arrayOf(code), null, null, null)
+        var promo: Promotion? = null
+        cursor?.use {
+            if (it.moveToFirst()) {
+                promo = Promotion(
+                    id = it.getInt(it.getColumnIndexOrThrow(KEY_PROMO_ID)),
+                    code = it.getString(it.getColumnIndexOrThrow(KEY_PROMO_CODE)),
+                    description = it.getString(it.getColumnIndexOrThrow(KEY_PROMO_DESC)),
+                    discountPercent = it.getInt(it.getColumnIndexOrThrow(KEY_PROMO_DISCOUNT)),
+                    imageResId = it.getString(it.getColumnIndexOrThrow(KEY_PROMO_IMAGE))
+                )
+            }
+        }
+        return promo
     }
 
     // --- TRIPS & COACHES ---
@@ -276,22 +402,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         addCoach(tripId, "Toa 3", "Giường nằm khoang 4", (basePrice * 1.3).toLong(), 28)
         addCoach(tripId, "Toa 4", "Giường nằm khoang 4", (basePrice * 1.3).toLong(), 28)
     }
-
-    fun addTicket(ticket: BookedTicket, userId: Int) {
-        val db = this.writableDatabase
-        val values = ContentValues().apply {
-            put(KEY_TICKET_USER_ID, userId)
-            put(KEY_TICKET_TRIP_ID, ticket.tripId)
-            put(KEY_TICKET_SEAT, ticket.selectedSeatsInfo)
-            put(KEY_TICKET_CODE, ticket.bookingCode)
-            put(KEY_TICKET_STATUS, ticket.status)
-            put(KEY_TICKET_PRICE, ticket.originalPrice)
-            put(KEY_TICKET_DEPARTURE_TIME, ticket.departureTime) // New
-            put(KEY_TICKET_ARRIVAL_TIME, ticket.arrivalTime)     // New
-        }
-        db.insert(TABLE_TICKETS, null, values)
-    }
-
     fun getTicketsForUser(userId: Int, status: String): List<BookedTicket> {
         val ticketList = ArrayList<BookedTicket>()
         val selectQuery = "SELECT t.*, tr.$KEY_TRIP_CODE, tr.$KEY_TRIP_ORIGIN, tr.$KEY_TRIP_DEST, tr.$KEY_TRIP_DATE FROM $TABLE_TICKETS t JOIN $TABLE_TRIPS tr ON t.$KEY_TICKET_TRIP_ID = tr.$KEY_TRIP_ID WHERE t.$KEY_TICKET_USER_ID = ? AND t.$KEY_TICKET_STATUS = ?"
@@ -321,14 +431,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }
         return ticketList
     }
-    
-    fun getTicketByBookingCode(bookingCode: String, userId: Int): BookedTicket? {
+
+    fun getTicketByBookingCode(bookingCode: String): BookedTicket? {
         var ticket: BookedTicket? = null
-        val selectQuery = "SELECT t.*, tr.$KEY_TRIP_CODE, tr.$KEY_TRIP_ORIGIN, tr.$KEY_TRIP_DEST, tr.$KEY_TRIP_DATE FROM $TABLE_TICKETS t JOIN $TABLE_TRIPS tr ON t.$KEY_TICKET_TRIP_ID = tr.$KEY_TRIP_ID WHERE t.$KEY_TICKET_CODE = ? AND t.$KEY_TICKET_USER_ID = ?"
-
+        val selectQuery = "SELECT t.*, tr.$KEY_TRIP_CODE, tr.$KEY_TRIP_ORIGIN, tr.$KEY_TRIP_DEST, tr.$KEY_TRIP_DATE FROM $TABLE_TICKETS t JOIN $TABLE_TRIPS tr ON t.$KEY_TICKET_TRIP_ID = tr.$KEY_TRIP_ID WHERE t.$KEY_TICKET_CODE = ?"
         val db = this.readableDatabase
-        val cursor: Cursor? = db.rawQuery(selectQuery, arrayOf(bookingCode, userId.toString()))
-
+        val cursor: Cursor? = db.rawQuery(selectQuery, arrayOf(bookingCode))
         cursor?.use {
             if (it.moveToFirst()) {
                 ticket = BookedTicket(
@@ -339,14 +447,48 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                     trainCode = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_CODE)),
                     originStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_ORIGIN)),
                     destinationStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DEST)),
-                    departureTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_DEPARTURE_TIME)), // Corrected
-                    arrivalTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_ARRIVAL_TIME)),       // Corrected
+                    departureTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_DEPARTURE_TIME)),
+                    arrivalTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_ARRIVAL_TIME)),
                     tripDate = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DATE)),
                     originalPrice = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_PRICE))
                 )
             }
         }
         return ticket
+    }
+
+    fun getTicketsByPassengerName(passengerName: String): List<BookedTicket> {
+        val ticketList = ArrayList<BookedTicket>()
+        val selectQuery = """
+            SELECT t.*, tr.$KEY_TRIP_CODE, tr.$KEY_TRIP_ORIGIN, tr.$KEY_TRIP_DEST, tr.$KEY_TRIP_DATE, u.$KEY_USER_NAME
+            FROM $TABLE_TICKETS t
+            JOIN $TABLE_USERS u ON t.$KEY_TICKET_USER_ID = u.$KEY_USER_ID
+            JOIN $TABLE_TRIPS tr ON t.$KEY_TICKET_TRIP_ID = tr.$KEY_TRIP_ID
+            WHERE u.$KEY_USER_NAME LIKE ?
+        """
+        val db = this.readableDatabase
+        val cursor: Cursor? = db.rawQuery(selectQuery, arrayOf("%$passengerName%"))
+        cursor?.use {
+            if (it.moveToFirst()) {
+                do {
+                    val ticket = BookedTicket(
+                        tripId = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_TRIP_ID)),
+                        selectedSeatsInfo = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_SEAT)),
+                        bookingCode = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_CODE)),
+                        status = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_STATUS)),
+                        trainCode = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_CODE)),
+                        originStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_ORIGIN)),
+                        destinationStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DEST)),
+                        departureTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_DEPARTURE_TIME)),
+                        arrivalTime = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_ARRIVAL_TIME)),
+                        tripDate = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DATE)),
+                        originalPrice = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_PRICE))
+                    )
+                    ticketList.add(ticket)
+                } while (it.moveToNext())
+            }
+        }
+        return ticketList
     }
 
     fun updateTicketStatus(bookingCode: String, newStatus: String): Int {

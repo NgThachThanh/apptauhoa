@@ -68,7 +68,6 @@ abstract class BaseSeatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         button.text = seat.number
         button.setOnClickListener { onSeatClicked(seat) }
 
-        // DISABLE AUTO TOGGLE to fix the bug where visual state gets out of sync
         button.isCheckable = false
 
         when (seat.status) {
@@ -81,14 +80,12 @@ abstract class BaseSeatViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
             SeatStatus.SELECTED -> {
                 button.isEnabled = true
-                // Selected Color (Primary Blue-ish)
                 button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#2196F3"))
                 button.setTextColor(Color.WHITE)
                 button.strokeWidth = 0
             }
-            SeatStatus.BOOKED, SeatStatus.PENDING -> {
+            SeatStatus.BOOKED -> {
                 button.isEnabled = false
-                // Disabled Color (Dark Gray)
                 button.backgroundTintList = ColorStateList.valueOf(Color.DKGRAY)
                 button.setTextColor(Color.WHITE)
                 button.strokeWidth = 0
@@ -134,7 +131,11 @@ class UtilityViewHolder(private val binding: ItemUtilitySpaceBinding) : Recycler
 
 class RailCarDiffCallback : DiffUtil.ItemCallback<RailCarDisplayItem>() {
     override fun areItemsTheSame(oldItem: RailCarDisplayItem, newItem: RailCarDisplayItem): Boolean {
-        return oldItem.id == newItem.id
+        return when (oldItem) {
+            is RailCarDisplayItem.SeatRow -> newItem is RailCarDisplayItem.SeatRow && oldItem.key == newItem.key
+            is RailCarDisplayItem.SleeperCompartment -> newItem is RailCarDisplayItem.SleeperCompartment && oldItem.key == newItem.key
+            is RailCarDisplayItem.UtilitySpace -> newItem is RailCarDisplayItem.UtilitySpace && oldItem.key == newItem.key
+        }
     }
 
     override fun areContentsTheSame(oldItem: RailCarDisplayItem, newItem: RailCarDisplayItem): Boolean {
