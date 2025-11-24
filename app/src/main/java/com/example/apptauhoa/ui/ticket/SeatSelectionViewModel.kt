@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 data class NavigationEvent(
     val tripId: String,
-    val tripSummary: String,
     val selectedSeatsInfo: String,
     val originalPrice: Long,
     val departureTime: Long,
@@ -138,7 +137,6 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
 
             val navArgs = NavigationEvent(
                 tripId = details.tripId,
-                tripSummary = details.summary,
                 selectedSeatsInfo = "Toa ${savedStateHandle.get<String>("coachId")}: ${selectedSeats.joinToString { it.number }}",
                 originalPrice = selectedSeats.sumOf { it.price },
                 departureTime = details.departureTime,
@@ -150,12 +148,13 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
 
     private fun generateMockSeats(coachId: String, type: String) {
         val seats = mutableListOf<Seat>()
+        val price = savedStateHandle.get<Long>("originalPrice") ?: 0L
          when (type) {
             "SEAT" -> {
                 (1..15).forEach { row ->
                     listOf("A", "B", "C", "D").forEach { pos ->
                         val randomStatus = when { Math.random() > 0.75 -> SeatStatus.BOOKED else -> SeatStatus.AVAILABLE }
-                        seats.add(Seat(id = "$coachId-$row-$pos", number = "$row$pos", status = randomStatus, price = 350000L, seatType = "SEAT", rowNumber = row, positionInRow = pos, deck = 1, compartmentNumber = 0))
+                        seats.add(Seat(id = "$coachId-$row-$pos", number = "$row$pos", status = randomStatus, price = price, seatType = "SEAT", rowNumber = row, positionInRow = pos, deck = 1, compartmentNumber = 0))
                     }
                 }
             }
@@ -169,7 +168,7 @@ class SeatSelectionViewModel(private val savedStateHandle: SavedStateHandle) : V
                                 id = "$coachId-$compartment-$deck-$pos",
                                 number = bedNumber,
                                 status = randomStatus,
-                                price = 620000L,
+                                price = price,
                                 seatType = "SLEEPER",
                                 rowNumber = 0,
                                 positionInRow = pos,

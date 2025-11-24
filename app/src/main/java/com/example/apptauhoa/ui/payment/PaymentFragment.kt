@@ -1,5 +1,6 @@
 package com.example.apptauhoa.ui.payment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -56,7 +57,8 @@ class PaymentFragment : Fragment() {
     }
 
     private fun setupSummary() {
-        binding.textTripSummary.text = args.tripSummary
+        val summary = "${args.trainCode} | ${args.originStation} -> ${args.destinationStation} | ${args.tripDate}"
+        binding.textTripSummary.text = summary
         binding.textSeatsInfo.text = args.selectedSeatsInfo
         val currencyFormat = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
         binding.textFinalPrice.text = currencyFormat.format(args.originalPrice)
@@ -74,17 +76,24 @@ class PaymentFragment : Fragment() {
 
         binding.buttonConfirmBooking.setOnClickListener {
             val bookingCode = "#${Random.nextInt(1000, 9999)}"
+            val sharedPref = requireActivity().getSharedPreferences("UserSession", Context.MODE_PRIVATE)
+            val userId = sharedPref.getInt("USER_ID", -1)
+
             val bookedTicket = BookedTicket(
-                tripSummary = args.tripSummary,
                 selectedSeatsInfo = args.selectedSeatsInfo,
                 originalPrice = args.originalPrice,
                 departureTime = args.departureTime,
                 arrivalTime = args.arrivalTime,
                 tripId = args.tripId,
-                bookingCode = bookingCode
+                bookingCode = bookingCode,
+                trainCode = args.trainCode,
+                originStation = args.originStation,
+                destinationStation = args.destinationStation,
+                tripDate = args.tripDate,
+                status = "BOOKED"
             )
             // Use DatabaseHelper to save the ticket
-            dbHelper.addTicket(bookedTicket)
+            dbHelper.addTicket(bookedTicket, userId)
 
             findNavController().navigate(R.id.action_payment_to_payment_success)
         }

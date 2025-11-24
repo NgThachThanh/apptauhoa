@@ -91,8 +91,8 @@
         tools:layout="@layout/fragment_coach_picker">
         <argument android:name="tripId" app:argType="string" />
         <argument android:name="trainCode" app:argType="string" />
-        <argument android:name="departureTime" app:argType="string" />
-        <argument android:name="arrivalTime" app:argType="string" />
+        <argument android:name="departureTime" app:argType="long" />
+        <argument android:name="arrivalTime" app:argType="long" />
         <argument android:name="coachList" app:argType="com.example.apptauhoa.data.model.Coach[]" />
         <argument android:name="originStation" app:argType="string" />
         <argument android:name="destinationStation" app:argType="string" />
@@ -125,6 +125,24 @@
             android:name="passengerCount"
             app:argType="integer"
             android:defaultValue="1" />
+        <argument
+            android:name="tripId"
+            app:argType="string" />
+        <argument
+            android:name="trainCode"
+            app:argType="string" />
+        <argument
+            android:name="tripDate"
+            app:argType="string" />
+        <argument
+            android:name="departureTime"
+            app:argType="long" />
+        <argument
+            android:name="arrivalTime"
+            app:argType="long" />
+        <argument
+            android:name="originalPrice"
+            app:argType="long" />
         <action
             android:id="@+id/action_seat_selection_to_payment"
             app:destination="@id/paymentFragment" />
@@ -135,12 +153,15 @@
         android:name="com.example.apptauhoa.ui.payment.PaymentFragment"
         android:label="PaymentFragment"
         tools:layout="@layout/fragment_payment">
-        <argument android:name="tripSummary" app:argType="string" />
         <argument android:name="selectedSeatsInfo" app:argType="string" />
         <argument android:name="originalPrice" app:argType="long" />
         <argument android:name="departureTime" app:argType="long" />
         <argument android:name="arrivalTime" app:argType="long" />
         <argument android:name="tripId" app:argType="string" />
+        <argument android:name="trainCode" app:argType="string" />
+        <argument android:name="originStation" app:argType="string" />
+        <argument android:name="destinationStation" app:argType="string" />
+        <argument android:name="tripDate" app:argType="string" />
         <action
             android:id="@+id/action_payment_to_payment_success"
             app:destination="@id/paymentSuccessFragment" />
@@ -173,6 +194,9 @@
         <action android:id="@+id/action_accountFragment_to_officeFragment" app:destination="@id/officeFragment" />
         <action android:id="@+id/action_accountFragment_to_settingsFragment" app:destination="@id/settingsFragment" />
         <action android:id="@+id/action_accountFragment_to_userProfileFragment" app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_navigation_account_to_adminDashboardActivity"
+            app:destination="@id/adminDashboardActivity" />
     </fragment>
     <fragment android:id="@+id/introFragment" android:name="com.example.apptauhoa.ui.account.IntroFragment" android:label="Intro" tools:layout="@layout/fragment_intro"/>
     <fragment android:id="@+id/routesFragment" android:name="com.example.apptauhoa.ui.account.RoutesFragment" android:label="Routes" tools:layout="@layout/fragment_routes"/>
@@ -202,5 +226,10 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
+    <activity
+        android:id="@+id/adminDashboardActivity"
+        android:name="com.example.apptauhoa.ui.admin.AdminDashboardActivity"
+        android:label="activity_admin_dashboard"
+        tools:layout="@layout/activity_admin_dashboard" />
 
 </navigation>

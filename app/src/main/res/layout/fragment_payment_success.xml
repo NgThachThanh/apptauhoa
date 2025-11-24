@@ -11,6 +11,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_check_circle"
+        app:tint="@android:color/holo_green_dark"
         app:layout_constraintBottom_toTopOf="@+id/success_message"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.apptauhoa.R
 import com.example.apptauhoa.databinding.FragmentAccountBinding
+import com.example.apptauhoa.ui.admin.AdminDashboardActivity
 
 class AccountFragment : Fragment(R.layout.fragment_account) {
 
@@ -39,6 +40,10 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         binding.tvLogout.setOnClickListener {
             performLogout()
         }
+
+        binding.tvAdminDashboard.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_account_to_adminDashboardActivity)
+        }
         
         // Updated: Navigate to User Profile
         binding.tvUserInfo.setOnClickListener {
@@ -66,6 +71,12 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
             
             binding.tvUserInfo.isVisible = true 
             binding.tvLogout.isVisible = true
+
+            if (userEmail == "admin@dsvn.vn") {
+                binding.tvAdminDashboard.isVisible = true
+            } else {
+                binding.tvAdminDashboard.isVisible = false
+            }
         } else {
             // Show Guest UI
             binding.layoutGuestHeader.isVisible = true
@@ -73,6 +84,7 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
             
             binding.tvUserInfo.isVisible = false
             binding.tvLogout.isVisible = false
+            binding.tvAdminDashboard.isVisible = false
         }
     }
 

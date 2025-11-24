@@ -51,8 +51,7 @@ class BookedTicketAdapter(
             val durationMillis = ticket.arrivalTime - ticket.departureTime
             binding.textDuration.text = formatDuration(durationMillis)
 
-            val route = ticket.tripSummary.replace(" → ", " - ")
-            binding.textRouteInfo.text = "${ticket.tripId} | $route"
+            binding.textRouteInfo.text = "${ticket.trainCode} | ${ticket.originStation} - ${ticket.destinationStation}"
         }
 
         private fun formatDate(timestamp: Long): String {

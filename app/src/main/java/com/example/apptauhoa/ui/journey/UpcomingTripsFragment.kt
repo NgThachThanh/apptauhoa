@@ -1,40 +1,38 @@
 package com.example.apptauhoa.ui.journey
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.apptauhoa.R
+import com.example.apptauhoa.data.DatabaseHelper
 import com.example.apptauhoa.databinding.FragmentUpcomingTripsBinding
-import com.example.apptauhoa.ui.ticket.BookedTicketAdapter
-import com.example.apptauhoa.ui.ticket.TicketRepository
 
-class UpcomingTripsFragment : Fragment() {
+class UpcomingTripsFragment : Fragment(R.layout.fragment_upcoming_trips) {
 
     private var _binding: FragmentUpcomingTripsBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentUpcomingTripsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private lateinit var dbHelper: DatabaseHelper
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentUpcomingTripsBinding.bind(view)
+        dbHelper = DatabaseHelper(requireContext())
 
-        val bookedTickets = TicketRepository.bookedTickets
-        val adapter = BookedTicketAdapter(bookedTickets) { ticket ->
-            val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.tripId, null)
-            findNavController().navigate(action)
+        val sharedPref = requireActivity().getSharedPreferences("UserSession", 0)
+        val userId = sharedPref.getInt("USER_ID", -1)
+
+        if (userId != -1) {
+            val upcomingTickets = dbHelper.getTicketsForUser(userId, "BOOKED")
+            val adapter = PastTripsAdapter(upcomingTickets) { ticket ->
+                val action = JourneyFragmentDirections.actionJourneyToTicketDetails(ticket.tripId, null)
+                findNavController().navigate(action)
+            }
+            binding.recyclerView.layoutManager = LinearLayoutManager(context)
+            binding.recyclerView.adapter = adapter
         }
-
-        binding.recyclerViewUpcomingTrips.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewUpcomingTrips.adapter = adapter
     }
 
     override fun onDestroyView() {

@@ -74,7 +74,7 @@ class SeatSelectionFragment : Fragment() {
                     viewModel.displayItems.collect { items ->
                         seatAdapter.submitList(items)
 
-                        val allSeatsInCoach = items.flatMap {
+                        val allSeatsInCoach = items.flatMap { 
                             when (it) {
                                 is RailCarDisplayItem.SeatRow -> it.seats
                                 is RailCarDisplayItem.SleeperCompartment -> it.beds
@@ -108,12 +108,15 @@ class SeatSelectionFragment : Fragment() {
                 launch {
                     viewModel.navigationEvent.collect { navEvent ->
                         val action = SeatSelectionFragmentDirections.actionSeatSelectionToPayment(
-                            tripSummary = navEvent.tripSummary,
                             selectedSeatsInfo = navEvent.selectedSeatsInfo,
                             originalPrice = navEvent.originalPrice,
                             departureTime = navEvent.departureTime,
                             arrivalTime = navEvent.arrivalTime,
-                            tripId = navEvent.tripId
+                            tripId = navEvent.tripId,
+                            trainCode = args.trainCode,
+                            originStation = args.originStation,
+                            destinationStation = args.destinationStation,
+                            tripDate = args.tripDate
                         )
                         findNavController().navigate(action)
                     }

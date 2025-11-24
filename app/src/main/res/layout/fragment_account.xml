@@ -293,7 +293,47 @@
                     app:tint="?attr/colorOnSurfaceVariant" />
             </RelativeLayout>
 
-            <!-- DELETED TV_ADMIN_LOGIN FROM HERE -->
+            <!-- Menu Item: Admin Dashboard (Admin Only) -->
+            <RelativeLayout
+                android:id="@+id/tvAdminDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/account_menu_item_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/icon_admin_dashboard"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_menu_manage"
+                    app:tint="?attr/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/icon_admin_dashboard"
+                    android:layout_marginStart="16dp"
+                    android:text="Bảng điều khiển của quản trị viên"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@android:drawable/ic_media_play"
+                    android:rotation="90"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+            </RelativeLayout>
 
             <!-- Menu Item: Logout (User Only) -->
             <RelativeLayout

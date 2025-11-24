@@ -15,8 +15,11 @@ import com.example.apptauhoa.data.model.Coach
 import com.example.apptauhoa.data.model.Trip
 import com.example.apptauhoa.databinding.FragmentSearchResultsBinding
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class SearchResultsFragment : Fragment() {
 
@@ -83,9 +86,10 @@ class SearchResultsFragment : Fragment() {
     private fun setupHeader() {
         binding?.txtRouteTitle?.text = "${args.originName} – ${args.destinationName}"
         try {
-            val date = LocalDate.parse(args.departureDate)
-            val formatter = DateTimeFormatter.ofPattern("'Khởi hành' E, dd/MM/yyyy", Locale("vi", "VN"))
-            binding?.txtRouteSubtitle?.text = "${date.format(formatter)} • ${args.ticketCount} khách"
+            val inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale("vi", "VN"))
+            val date = LocalDate.parse(args.departureDate, inputFormatter)
+            val outputFormatter = DateTimeFormatter.ofPattern("'Khởi hành' E, dd/MM/yyyy", Locale("vi", "VN"))
+            binding?.txtRouteSubtitle?.text = "${date.format(outputFormatter)} • ${args.ticketCount} khách"
         } catch (e: Exception) {
             binding?.txtRouteSubtitle?.text = "${args.departureDate} • ${args.ticketCount} khách"
         }
@@ -108,11 +112,18 @@ class SearchResultsFragment : Fragment() {
                 createMockCoachesForTrip(trainTrip)
             }
 
+            val departureTimestamp = parseDateTimeToTimestamp(trainTrip.tripDate, trainTrip.departureTime)
+            var arrivalTimestamp = parseDateTimeToTimestamp(trainTrip.tripDate, trainTrip.arrivalTime)
+
+            if (arrivalTimestamp < departureTimestamp) {
+                arrivalTimestamp += TimeUnit.DAYS.toMillis(1)
+            }
+
             val action = SearchResultsFragmentDirections.actionSearchResultsToCoachPicker(
                 tripId = trainTrip.id,
                 trainCode = trainTrip.trainCode,
-                departureTime = trainTrip.departureTime,
-                arrivalTime = trainTrip.arrivalTime,
+                departureTime = departureTimestamp,
+                arrivalTime = arrivalTimestamp,
                 coachList = coachesToPass.toTypedArray(),
                 originStation = trainTrip.originStation,
                 destinationStation = trainTrip.destinationStation,
@@ -123,6 +134,16 @@ class SearchResultsFragment : Fragment() {
         }
         binding?.rvTrainList?.layoutManager = LinearLayoutManager(context)
         binding?.rvTrainList?.adapter = trainScheduleAdapter
+    }
+
+    private fun parseDateTimeToTimestamp(dateStr: String, timeStr: String): Long {
+        return try {
+            val dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", Locale.getDefault())
+            val localDateTime = LocalDateTime.parse("$dateStr $timeStr", dateTimeFormatter)
+            localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        } catch (e: Exception) {
+            0L
+        }
     }
 
     private fun showLoading() {
@@ -147,12 +168,12 @@ class SearchResultsFragment : Fragment() {
     private fun createMockCoachesForTrip(trip: Trip): List<Coach> {
          return when (trip.classTitle) {
             "Ngồi mềm điều hòa" -> listOf(
-                Coach("C01", "Toa 1", "Ngồi mềm", 5, 56, 350000L),
-                Coach("C02", "Toa 2", "Ngồi mềm", 10, 56, 350000L)
+                Coach("C01", "Toa 1", "Ngồi mềm", 5, 56, trip.price),
+                Coach("C02", "Toa 2", "Ngồi mềm", 10, 56, trip.price)
             )
             "Giường nằm khoang 4" -> listOf(
-                Coach("C05", "Toa 5", "Giường nằm khoang 4", 2, 28, 620000L),
-                Coach("C06", "Toa 6", "Giường nằm khoang 4", 6, 28, 650000L)
+                Coach("C05", "Toa 5", "Giường nằm khoang 4", 2, 28, trip.price),
+                Coach("C06", "Toa 6", "Giường nằm khoang 4", 6, 28, trip.price)
             )
             else -> listOf(
                  Coach("C01", "Toa 1", "Ghế ngồi", 20, 60, trip.price)

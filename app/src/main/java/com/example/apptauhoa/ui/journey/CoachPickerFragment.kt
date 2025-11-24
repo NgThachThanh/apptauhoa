@@ -39,7 +39,13 @@ class CoachPickerFragment : Fragment() {
                 ticketCount = args.ticketCount,
                 originStation = args.originStation,
                 destinationStation = args.destinationStation,
-                passengerCount = args.ticketCount
+                passengerCount = args.ticketCount,
+                tripId = args.tripId,
+                trainCode = args.trainCode,
+                tripDate = args.tripDate,
+                departureTime = args.departureTime,
+                arrivalTime = args.arrivalTime,
+                originalPrice = selectedCoach.price
             )
 
             findNavController().navigate(action)

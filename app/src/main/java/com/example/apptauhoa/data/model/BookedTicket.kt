@@ -5,12 +5,15 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class BookedTicket(
-    val tripSummary: String,
     val selectedSeatsInfo: String,
     val originalPrice: Long,
     val departureTime: Long,
     val arrivalTime: Long,
     val tripId: String,
     val bookingCode: String,
+    val trainCode: String,
+    val originStation: String,
+    val destinationStation: String,
+    val tripDate: String,
     val status: String = "booked"
 ) : Parcelable

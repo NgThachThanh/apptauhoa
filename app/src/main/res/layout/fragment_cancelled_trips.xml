@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.journey.CancelledTripsFragment">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView_cancelled_trips"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="8dp"
-        tools:listitem="@layout/item_booked_ticket" />
-
-</FrameLayout>
+    tools:listitem="@layout/item_past_trip" />

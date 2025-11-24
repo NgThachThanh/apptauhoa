@@ -15,12 +15,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "train_ticket.db"
-        private const val DATABASE_VERSION = 4 // Increased to 4
+        private const val DATABASE_VERSION = 5 // Incremented version for new table/fields
 
         // Table Users
         const val TABLE_USERS = "users"
         const val KEY_USER_ID = "id"
-        const val KEY_USER_USERNAME = "username" // NEW
+        const val KEY_USER_USERNAME = "username"
         const val KEY_USER_EMAIL = "email"
         const val KEY_USER_PASSWORD = "password"
         const val KEY_USER_NAME = "full_name"
@@ -64,6 +64,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val KEY_TICKET_SEAT = "seat_number"
         const val KEY_TICKET_CODE = "booking_code"
         const val KEY_TICKET_STATUS = "status"
+        const val KEY_TICKET_PRICE = "price" // New
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -113,6 +114,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + "$KEY_TICKET_TRIP_ID TEXT,"
                 + "$KEY_TICKET_SEAT TEXT,"
                 + "$KEY_TICKET_CODE TEXT,"
+                + "$KEY_TICKET_PRICE INTEGER,"
                 + "$KEY_TICKET_STATUS TEXT)")
 
         insertMockData(db)
@@ -297,15 +299,47 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return stationList
     }
 
-    fun addTicket(ticket: BookedTicket) {
+    fun addTicket(ticket: BookedTicket, userId: Int) {
         val db = this.writableDatabase
         val values = ContentValues().apply {
+            put(KEY_TICKET_USER_ID, userId)
             put(KEY_TICKET_TRIP_ID, ticket.tripId)
             put(KEY_TICKET_SEAT, ticket.selectedSeatsInfo)
             put(KEY_TICKET_CODE, ticket.bookingCode)
             put(KEY_TICKET_STATUS, ticket.status)
+            put(KEY_TICKET_PRICE, ticket.originalPrice)
         }
         db.insert(TABLE_TICKETS, null, values)
+    }
+
+    fun getTicketsForUser(userId: Int, status: String): List<BookedTicket> {
+        val ticketList = ArrayList<BookedTicket>()
+        val selectQuery = "SELECT t.*, tr.$KEY_TRIP_CODE, tr.$KEY_TRIP_ORIGIN, tr.$KEY_TRIP_DEST, tr.$KEY_TRIP_DEPARTURE, tr.$KEY_TRIP_ARRIVAL, tr.$KEY_TRIP_DATE FROM $TABLE_TICKETS t JOIN $TABLE_TRIPS tr ON t.$KEY_TICKET_TRIP_ID = tr.$KEY_TRIP_ID WHERE t.$KEY_TICKET_USER_ID = ? AND t.$KEY_TICKET_STATUS = ?"
+
+        val db = this.readableDatabase
+        val cursor: Cursor? = db.rawQuery(selectQuery, arrayOf(userId.toString(), status))
+
+        cursor?.use {
+            if (it.moveToFirst()) {
+                do {
+                    val ticket = BookedTicket(
+                        tripId = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_TRIP_ID)),
+                        selectedSeatsInfo = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_SEAT)),
+                        bookingCode = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_CODE)),
+                        status = it.getString(it.getColumnIndexOrThrow(KEY_TICKET_STATUS)),
+                        trainCode = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_CODE)),
+                        originStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_ORIGIN)),
+                        destinationStation = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DEST)),
+                        departureTime = it.getLong(it.getColumnIndexOrThrow(KEY_TRIP_DEPARTURE)),
+                        arrivalTime = it.getLong(it.getColumnIndexOrThrow(KEY_TRIP_ARRIVAL)),
+                        tripDate = it.getString(it.getColumnIndexOrThrow(KEY_TRIP_DATE)),
+                        originalPrice = it.getLong(it.getColumnIndexOrThrow(KEY_TICKET_PRICE))
+                    )
+                    ticketList.add(ticket)
+                } while (it.moveToNext())
+            }
+        }
+        return ticketList
     }
 
     fun addUser(name: String, email: String, pass: String): Long {
