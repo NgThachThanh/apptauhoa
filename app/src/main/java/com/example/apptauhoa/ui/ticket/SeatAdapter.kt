@@ -118,7 +118,9 @@ class SleeperViewHolder(
 
     fun bind(item: RailCarDisplayItem.SleeperCompartment) {
         bedAdapter.submitList(item.beds)
-        val spanCount = if (item.beds.size > 4) 3 else 2
+        // Use 4 columns for 4-bed compartments to force a single row.
+        // Use 3 columns for 6-bed compartments (creating a 3x2 grid).
+        val spanCount = if (item.beds.size == 4) 4 else 3
         binding.rvBeds.layoutManager = GridLayoutManager(itemView.context, spanCount)
     }
 }
