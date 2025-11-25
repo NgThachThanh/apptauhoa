@@ -50,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Deck & Legend Controls -->
+    <!-- Legend Controls -->
     <LinearLayout
         android:id="@+id/controls_container"
         android:layout_width="0dp"
@@ -58,16 +58,16 @@
         android:orientation="horizontal"
         android:paddingVertical="8dp"
         android:paddingHorizontal="16dp"
-        android:gravity="center_vertical"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/tabs_coach"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:id="@+id/legend"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -80,7 +80,7 @@
                 app:drawableStartCompat="@drawable/ic_seat_available" />
 
             <Space
-                android:layout_width="8dp"
+                android:layout_width="16dp"
                 android:layout_height="wrap_content"/>
 
             <TextView
@@ -92,29 +92,6 @@
                 android:textAppearance="?attr/textAppearanceLabelSmall"
                 app:drawableStartCompat="@drawable/ic_seat_booked" />
         </LinearLayout>
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_deck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:chipSpacingHorizontal="4dp"
-            app:singleLine="true"
-            app:singleSelection="true">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_lower"
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tầng dưới" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_upper"
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tầng trên" />
-        </com.google.android.material.chip.ChipGroup>
 
     </LinearLayout>
 
