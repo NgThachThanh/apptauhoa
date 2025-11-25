@@ -3,21 +3,21 @@ package com.example.apptauhoa.ui.ticket
 import com.example.apptauhoa.data.model.Seat
 
 sealed class RailCarDisplayItem {
-    data class SeatRow(
-        val seats: List<Seat>,
-        // Use the unique ID of the first seat as the key for the row
-        val key: String = seats.first().id 
-    ) : RailCarDisplayItem()
+    abstract val key: String
 
-    data class SleeperCompartment(
-        val beds: List<Seat>,
-        // Use the unique ID of the first bed as the key for the compartment
-        val key: String = beds.first().id 
-    ) : RailCarDisplayItem()
+    data class Header(val title: String) : RailCarDisplayItem() {
+        override val key: String = title
+    }
 
-    data class UtilitySpace(
-        val type: String, // e.g., AISLE, TOILET
-        // Create a unique key based on type and a random element
-        val key: String = "${type}_${System.nanoTime()}" 
-    ) : RailCarDisplayItem()
+    data class SeatRow(val seats: List<Seat>) : RailCarDisplayItem() {
+        override val key: String = "row-${seats.first().rowNumber}"
+    }
+
+    data class SleeperCompartment(val beds: List<Seat>) : RailCarDisplayItem() {
+        override val key: String = "sleeper-${beds.first().compartmentNumber}"
+    }
+
+    data class UtilitySpace(val type: String) : RailCarDisplayItem() {
+        override val key: String = "util-$type"
+    }
 }
