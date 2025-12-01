@@ -159,7 +159,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/icon_intro"
                     android:layout_marginStart="16dp"
-                    android:text="Giới thiệu nhà xe"
+                    android:text="Giới thiệu ga tàu"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="16sp" />
 
